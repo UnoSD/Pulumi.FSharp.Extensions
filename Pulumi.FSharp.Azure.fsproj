@@ -18,6 +18,8 @@
         <Compile Include="Regions.fs" />
         <Compile Include="ResourceGroup.fs" />
         <Compile Include="StorageAccount.fs" />
+        <Compile Include="StorageContainer.fs" />
+        <Content Include="README.md" />
     </ItemGroup>
 
     <ItemGroup>

@@ -8,15 +8,23 @@ F# computational expressions to reduce boilerplate in Pulumi code
 ```fsharp
 let rg =
     resourceGroup {
-        name "ResourceGroupName"
+        name                "ResourceGroupName"
     }
 
-let storageAccount =
+let sa =
     storageAccount {
-        name          "StorageAccountName"
-        resourceGroup rg
-        replication   LRS
-        tier          Standard
-        httpsOnly     true
+        name                "StorageAccountName"
+        resourceGroup       rg
+        replication         LRS
+        tier                Standard
+        httpsOnly           true
+    }
+    
+let container =
+    storageContainer {
+        name                "StorageContainer"
+        storageAccountInput sa.Name
+        access              Private
+        containerName       "containername"
     }
 ```
