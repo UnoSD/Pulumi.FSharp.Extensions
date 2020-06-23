@@ -48,6 +48,8 @@ module StorageAccount =
                                    ResourceGroupName = (match args.ResourceGroup with
                                                         | Object rg -> io rg.Name
                                                         | Name n -> input n),
+                                   // Convert from type name to string
+                                   AccountTier = input (match args.Tier with | Standard -> "Standard"),
                                    AccountReplicationType = input (match args.Replication with | LRS -> "LRS"),
                                    EnableHttpsTrafficOnly = input args.HttpsOnly,
                                    Tags = inputMap args.Tags)) |>
