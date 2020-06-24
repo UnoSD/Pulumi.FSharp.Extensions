@@ -8,18 +8,21 @@ pool:
 
 steps:
   - task: DotNetCoreCLI@2
+    displayName: Build
     inputs:
       command: build
 
   - task: DotNetCoreCLI@2
+    displayName: Pack
     inputs:
       command: pack
       packagesToPack: '**/*.fsproj'
       versioningScheme: byBuildNumber
 
-  - task: DotNetCoreCLI@2
+  - task: NuGetCommand@2
+    displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
       nuGetFeedType: external
-      publishFeedCredentials: NuGet Pulumi.FSharp.Azure
+      publishFeedCredentials: 'NuGet Pulumi.FSharp.Azure'
