@@ -84,15 +84,13 @@ module StorageAccount =
             args with ResourceGroup = Object resourceGroup
         }
         
-        [<CustomOperation("resourceGroupName")>]
-        member __.ResourceGroupName(args : StorageAccountArgsRecord, resourceGroup) = {
+        member __.ResourceGroup(args : StorageAccountArgsRecord, resourceGroup) = {
             args with ResourceGroup = Name resourceGroup
         }
         
-        [<CustomOperation("iotags")>]
-        member __.IoTags(args : StorageAccountArgsRecord, tags) = { args with Tags = tags }
-
         [<CustomOperation("tags")>]
+        member __.Tags(args : StorageAccountArgsRecord, tags) = { args with Tags = tags }
+
         member __.Tags(args : StorageAccountArgsRecord, tags) = { args with Tags = tags |>
                                                                                    List.map (fun (n, v) -> (n, input v)) }
 

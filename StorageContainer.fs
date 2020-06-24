@@ -39,7 +39,7 @@ module StorageContainer =
         member __.ContainerName(args, name) = { args with ContainerName = name }
        
         member __.Run (args : StorageContainerArgsRecord) =
-             ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "Standard"),
+             ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "Private"),
                            StorageAccountName = (match args.StorageAccount with
                                                  | Object sa -> io sa.Name
                                                  | Name n -> input n
@@ -51,14 +51,12 @@ module StorageContainer =
             args with StorageAccount = Object storageAccount
         }
         
-        [<CustomOperation("storageAccountName")>]
-        member __.StorageAccountName(args, storageAccount) = {
+        member __.StorageAccount(args, storageAccount) = {
             args with StorageAccount = Name storageAccount
         }
         
         // Support all Input and Output (and string) types without overloading
-        [<CustomOperation("storageAccountInput")>]
-        member __.StorageAccountInput(args, storageAccount) = {
+        member __.StorageAccount(args, storageAccount) = {
             args with StorageAccount = IO storageAccount
         } 
 

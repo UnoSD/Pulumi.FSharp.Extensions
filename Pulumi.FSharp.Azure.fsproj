@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Pulumi.Azure" Version="3.9.3" />
+      <PackageReference Include="Pulumi.Azure" Version="3.10.0" />
       <PackageReference Include="Pulumi.FSharp" Version="2.4.0" />
       <PackageReference Include="FSharp.Core" Version="4.7.2" />
     </ItemGroup>

@@ -33,10 +33,9 @@ module ResourceGroup =
         [<CustomOperation("region")>]
         member __.Region(args, region) = { args with Region = region }
         
-        [<CustomOperation("iotags")>]
-        member __.IoTags(args, tags) = { args with Tags = tags }
-
         [<CustomOperation("tags")>]
+        member __.Tags(args, tags) = { args with Tags = tags }
+        
         member __.Tags(args, tags) = { args with Tags = tags |>
                                                         List.map (fun (n, v) -> (n, input v)) }
 
