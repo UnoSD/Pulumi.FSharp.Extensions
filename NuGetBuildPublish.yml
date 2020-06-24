@@ -1,28 +1,25 @@
 name: 1.0.$(Rev:r)
 
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: build
-  
-- task: NuGetCommand@2
-  inputs:
-    command: pack
-    packagesToPack: '**/*.fsproj'
-    versioningScheme: byBuildNumber
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: build
 
-- task: NuGetAuthenticate@0
-  inputs:
-    nuGetServiceConnections: NuGet Pulumi.FSharp.Azure
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: pack
+      packagesToPack: '**/*.fsproj'
+      versioningScheme: byBuildNumber
 
-- task: NuGetCommand@2
-  inputs:
-    command: push
-    feedsToUse: config
-    includeNugetOrg: true
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: push
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      nuGetFeedType: external
+      publishFeedCredentials: NuGet Pulumi.FSharp.Azure
