@@ -20,6 +20,7 @@
         <Compile Include="StorageAccount.fs" />
         <Compile Include="StorageContainer.fs" />
         <Content Include="README.md" />
+        <Content Include="NuGetBuildPublish.yml" />
     </ItemGroup>
 
     <ItemGroup>
