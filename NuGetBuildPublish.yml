@@ -1,0 +1,24 @@
+name: 1.0.$(Rev:r)
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: '**/*.fsproj'
+    versioningScheme: byBuildNumber
+
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: NuGet Pulumi.FSharp.Azure
+
+- task: NuGetCommand@2
+  inputs:
+    command: push
+    feedsToUse: config
+    includeNugetOrg: true
