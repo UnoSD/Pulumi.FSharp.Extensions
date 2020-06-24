@@ -39,7 +39,7 @@ module StorageContainer =
         member __.ContainerName(args, name) = { args with ContainerName = name }
        
         member __.Run (args : StorageContainerArgsRecord) =
-             ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "Private"),
+             ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "private"),
                            StorageAccountName = (match args.StorageAccount with
                                                  | Object sa -> io sa.Name
                                                  | Name n -> input n
