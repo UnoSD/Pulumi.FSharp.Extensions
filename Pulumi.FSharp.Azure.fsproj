@@ -25,6 +25,7 @@
         <Compile Include="StorageAccount.fs" />
         <Compile Include="StorageContainer.fs" />
         <Compile Include="StorageBlob.fs" />
+        <Compile Include="AppInsight.fs" />
         <Content Include="README.md" />
         <Content Include="NuGetBuildPublish.yml" />
     </ItemGroup>

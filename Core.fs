@@ -1,5 +1,6 @@
 namespace Pulumi.FSharp.Azure
 
+open Microsoft.FSharp.Reflection
 open Pulumi.FSharp
 open Pulumi
 
@@ -14,3 +15,7 @@ module Core =
         | Object o -> (^a : (member Name: Output<string>) (o)) |> io
         | Name n -> input n
         | IO i -> io i
+        
+    let getUnionCaseName<'a> case = 
+        match FSharpValue.GetUnionFields(case, typeof<'a>) with
+        | case, _ -> case.Name  
