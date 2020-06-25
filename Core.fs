@@ -16,6 +16,6 @@ module Core =
         | Name n -> input n
         | IO i -> io i
         
-    let getUnionCaseName<'a> case = 
+    let getUnionCaseName (case : 'a) = 
         match FSharpValue.GetUnionFields(case, typeof<'a>) with
         | case, _ -> case.Name  
