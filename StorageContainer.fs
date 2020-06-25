@@ -1,22 +1,17 @@
 namespace Pulumi.FSharp.Azure
 
+open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.Storage
 open Pulumi.FSharp
-open Pulumi
 
 [<AutoOpen>]
 module StorageContainer =
-    type StorageAccountArg =
-        | Object of Account
-        | Name of string
-        | IO of Output<string>
-    
     type Access =
         | Private
     
     type StorageContainerArgsRecord = {
         Name: string
-        StorageAccount: StorageAccountArg
+        StorageAccount: IOArg<Account>
         Access: Access
         ContainerName: string option
     }
@@ -41,10 +36,7 @@ module StorageContainer =
         member __.Run (args : StorageContainerArgsRecord) =
              ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "private"),
                            Name = (Option.map input args.ContainerName |> Option.defaultValue null),
-                           StorageAccountName = (match args.StorageAccount with
-                                                 | Object sa -> io sa.Name
-                                                 | Name n -> input n
-                                                 | IO i -> io i)) |>
+                           StorageAccountName = getName args.StorageAccount) |>
              fun sca -> Container(args.Name, sca)
 
         [<CustomOperation("storageAccount")>]

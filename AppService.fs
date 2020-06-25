@@ -1,8 +1,10 @@
 namespace Pulumi.FSharp.Azure
 
 open Pulumi.Azure.AppService.Inputs
-open Pulumi.Azure.AppService
+open Pulumi.FSharp.Azure.Regions
 open Pulumi.FSharp.Azure.Core
+open Pulumi.Azure.AppService
+open Pulumi.Azure.Core
 open Pulumi.FSharp
 open Pulumi
 
@@ -37,7 +39,7 @@ module AppService =
         Name: string
         Region: Region
         Tags: (string * Input<string>) list
-        ResourceGroup: ResourceGroupArg
+        ResourceGroup: IOArg<ResourceGroup>
         Tier: Tier
         Kind: Kind
         Size: Size
@@ -51,7 +53,7 @@ module AppService =
             Name = ""
             Region = WestEurope
             Tags = []
-            ResourceGroup = ResourceGroupName ""
+            ResourceGroup = Name ""
             Tier = Dynamic
             Kind = defaultKind
             Size = Y1
@@ -60,7 +62,7 @@ module AppService =
         member __.Run args =
            PlanSkuArgs(Tier = (input <| getTier args.Tier),
                        Size = input (match args.Size with | Y1 -> "Y1")) |>
-           (fun psa -> PlanArgs(ResourceGroupName = (getResourceGroupInput args.ResourceGroup),
+           (fun psa -> PlanArgs(ResourceGroupName = (getName args.ResourceGroup),
                                 Location = input (regionName args.Region),
                                 Kind = input (getKind args.Kind),
                                 Sku = input psa)) |>           
@@ -77,11 +79,11 @@ module AppService =
         
         [<CustomOperation("resourceGroup")>]
         member __.ResourceGroup(args : AppServiceArgsRecord, resourceGroup) = {
-            args with ResourceGroup = ResourceGroupObject resourceGroup
+            args with ResourceGroup = Object resourceGroup
         }
         
         member __.ResourceGroup(args : AppServiceArgsRecord, resourceGroup) = {
-            args with ResourceGroup = ResourceGroupName resourceGroup
+            args with ResourceGroup = Name resourceGroup
         }
         
         // Can a custom operation have two arguments? CommonArgs + AppService args?

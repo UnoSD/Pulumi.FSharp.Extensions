@@ -1,6 +1,6 @@
 namespace Pulumi.FSharp.Azure
 
-module Core =    
+module Regions =    
     // Get list from Azure REST API (find anonymous endpoint)
     // Create type provider to convert to discriminated union the response of:
     // https://management.azure.com/subscriptions/{subscriptionId}/locations?api-version=2020-01-01

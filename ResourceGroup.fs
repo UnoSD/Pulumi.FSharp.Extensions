@@ -1,21 +1,12 @@
 namespace Pulumi.FSharp.Azure
 
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Regions
 open Pulumi.Azure.Core
 open Pulumi.FSharp
 open Pulumi
 
 [<AutoOpen>]
 module ResourceGroup =
-    type ResourceGroupArg =
-        | ResourceGroupObject of ResourceGroup
-        | ResourceGroupName of string
-    
-    let getResourceGroupInput = 
-        function
-        | ResourceGroupObject rg -> io rg.Name
-        | ResourceGroupName name -> input name
-    
     type ResourceGroupBuilderArgs = {
         Name: string
         Region: Region
