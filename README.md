@@ -27,4 +27,10 @@ let container =
         access              Private
         containerName       "containername"
     }
+    
+let appServicePlan =
+    appService {
+        name                "FunctionAppServiceName"
+        resourceGroup       rg
+    }
 ```

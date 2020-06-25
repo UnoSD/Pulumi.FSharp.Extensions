@@ -18,6 +18,7 @@
         <Content Include="Regions.json" />
         <Compile Include="Regions.fs" />
         <Compile Include="ResourceGroup.fs" />
+        <Compile Include="AppService.fs" />
         <Compile Include="StorageAccount.fs" />
         <Compile Include="StorageContainer.fs" />
         <Content Include="README.md" />

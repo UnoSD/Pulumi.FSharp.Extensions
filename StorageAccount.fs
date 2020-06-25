@@ -3,16 +3,11 @@ namespace Pulumi.FSharp.Azure
 open System.Collections.Generic
 open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.Storage
-open Pulumi.Azure.Core
 open Pulumi.FSharp
 open Pulumi
 
 [<AutoOpen>]
 module StorageAccount =
-    type ResourceGroupArg =
-        | Object of ResourceGroup
-        | Name of string
-
     type Replication =
         | LRS
         
@@ -32,9 +27,9 @@ module StorageAccount =
     type StorageAccountBuilder internal () =
         member __.Yield _ = {
             Name = ""
-            Region = WestEurope
+            Region = WestEurope // From resource group if None
             Tags = []
-            ResourceGroup = Name ""
+            ResourceGroup = ResourceGroupName ""
             Replication = LRS
             Tier = Standard
             HttpsOnly = true
@@ -45,9 +40,7 @@ module StorageAccount =
             regionName |>
             input |>
             (fun l  -> AccountArgs(Location = l,
-                                   ResourceGroupName = (match args.ResourceGroup with
-                                                        | Object rg -> io rg.Name
-                                                        | Name n -> input n),
+                                   ResourceGroupName = (getResourceGroupInput args.ResourceGroup),
                                    // Convert from type name to string
                                    AccountTier = input (match args.Tier with | Standard -> "Standard"),
                                    AccountReplicationType = input (match args.Replication with | LRS -> "LRS"),
@@ -81,11 +74,11 @@ module StorageAccount =
         
         [<CustomOperation("resourceGroup")>]
         member __.ResourceGroup(args : StorageAccountArgsRecord, resourceGroup) = {
-            args with ResourceGroup = Object resourceGroup
+            args with ResourceGroup = ResourceGroupObject resourceGroup
         }
         
         member __.ResourceGroup(args : StorageAccountArgsRecord, resourceGroup) = {
-            args with ResourceGroup = Name resourceGroup
+            args with ResourceGroup = ResourceGroupName resourceGroup
         }
         
         [<CustomOperation("tags")>]
