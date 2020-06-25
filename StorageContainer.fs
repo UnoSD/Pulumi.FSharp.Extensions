@@ -18,7 +18,7 @@ module StorageContainer =
         Name: string
         StorageAccount: StorageAccountArg
         Access: Access
-        ContainerName: string
+        ContainerName: string option
     }
 
     type StorageContainerBuilder internal () =
@@ -26,7 +26,7 @@ module StorageContainer =
             Name = ""
             StorageAccount = Name ""
             Access = Private
-            ContainerName = ""
+            ContainerName = None
         }
 
         [<CustomOperation("name")>]
@@ -36,11 +36,11 @@ module StorageContainer =
         member __.Access(args, access) = { args with Access = access }
         
         [<CustomOperation("containerName")>]
-        member __.ContainerName(args, name) = { args with ContainerName = name }
+        member __.ContainerName(args, name) = { args with ContainerName = Some name }
        
         member __.Run (args : StorageContainerArgsRecord) =
              ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "private"),
-                           Name = input args.ContainerName,
+                           Name = (Option.map input args.ContainerName |> Option.defaultValue null),
                            StorageAccountName = (match args.StorageAccount with
                                                  | Object sa -> io sa.Name
                                                  | Name n -> input n
