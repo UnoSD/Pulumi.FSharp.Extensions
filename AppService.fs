@@ -12,7 +12,19 @@ module AppService =
         | Dynamic
         
     type Kind =
+        | Windows
+        | App
+        | Linux
+        | Elastic
         | FunctionAppKind
+        
+    let getKind =
+        function
+        | Windows
+        | App             -> "Windows"
+        | Linux           -> "Linux"
+        | Elastic         -> "elastic"
+        | FunctionAppKind -> "FunctionApp"
         
     type Size =
         | Y1
@@ -34,14 +46,14 @@ module AppService =
     // Should not default to FunctionApp it's an App Service after all
     // Maybe expose two builders and parameterize the default type in
     // the constructor
-    type AppServiceBuilder internal () =
+    type AppServiceBuilder internal (defaultKind) =
         member __.Yield _ = {
             Name = ""
             Region = WestEurope
             Tags = []
             ResourceGroup = ResourceGroupName ""
             Tier = Dynamic
-            Kind = FunctionAppKind
+            Kind = defaultKind
             Size = Y1
         }
 
@@ -50,7 +62,7 @@ module AppService =
                        Size = input (match args.Size with | Y1 -> "Y1")) |>
            (fun psa -> PlanArgs(ResourceGroupName = (getResourceGroupInput args.ResourceGroup),
                                 Location = input (regionName args.Region),
-                                Kind = input (match args.Kind with | FunctionAppKind -> "FunctionApp"),
+                                Kind = input (getKind args.Kind),
                                 Sku = input psa)) |>           
            fun pa -> Plan(args.Name, pa)
 
@@ -80,4 +92,5 @@ module AppService =
         member __.Tags(args : AppServiceArgsRecord, tags) = { args with Tags = tags |>
                                                                                List.map (fun (n, v) -> (n, input v)) }
 
-    let appService = AppServiceBuilder()
+    let appService = AppServiceBuilder(Windows)
+    let functionAppService = AppServiceBuilder(FunctionAppKind)
