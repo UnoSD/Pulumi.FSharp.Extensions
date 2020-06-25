@@ -1,6 +1,6 @@
 namespace Pulumi.FSharp.Azure
 
-module Core =
+module Tags =
     
     ()
     // Avoid repetition of set tags code on all resources
