@@ -35,18 +35,19 @@ let getResourceGroup =
     List.tryPick (fun x -> match x with | ResourceGroupArg x -> Some x | _ -> None) >>
     Option.defaultValue (Name "")
 
+[<AbstractClass>]
 type AzureResource () =
-    //abstract member __Yield a
-    //abstract member __Run a
-
     let addOrReplaceResourceGroup extras resourceGroup =
         (resourceGroup |> ResourceGroupArg) ::
         (extras |>
          List.filter (fun x -> match x with | ResourceGroupArg _ -> false | _ -> true))
-        
+
     let rg cargs resourceGroup =
         Object resourceGroup |>
         addOrReplaceResourceGroup cargs.Extras
+            
+    //abstract member __Yield : 'a -> AzureResourceArgs * 'b
+    //abstract member __Run : AzureResourceArgs * 'b -> 'a
         
     static member Zero = {
          Name = "" // This needs to be an option or mandatory
@@ -70,3 +71,5 @@ type AzureResource () =
     member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (rg cargs resourceGroup) }, args
     
     member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (Name resourceGroup)) }, args
+    
+    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (IO resourceGroup)) }, args

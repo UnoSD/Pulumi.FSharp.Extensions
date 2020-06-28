@@ -16,7 +16,7 @@ module StorageContainer =
         ContainerName: string option
     }
 
-    type StorageContainerBuilder internal () =
+    type StorageContainerBuilder () =
         member __.Yield _ = {
             Name = ""
             StorageAccount = Name ""

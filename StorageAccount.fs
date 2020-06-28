@@ -23,7 +23,7 @@ module StorageAccount =
         HttpsOnly: bool
     }
 
-    type StorageAccountBuilder internal () =
+    type StorageAccountBuilder () =
         inherit AzureResource()
         
         member __.Yield _ = (AzureResource.Zero, {
@@ -55,12 +55,15 @@ module StorageAccount =
                                ])))
 
         [<CustomOperation("replication")>]
-        member __.Replication((cargs, args : StorageAccountArgsRecord), replication) = cargs, { args with Replication = replication }
+        member __.Replication((cargs, args : StorageAccountArgsRecord), replication) =
+            cargs, { args with Replication = replication }
         
         [<CustomOperation("tier")>]
-        member __.Tier((cargs, args : StorageAccountArgsRecord), tier) = cargs, { args with Tier = tier }
+        member __.Tier((cargs, args : StorageAccountArgsRecord), tier) =
+            cargs, { args with Tier = tier }
         
         [<CustomOperation("httpsOnly")>]
-        member __.HttpsOnly((cargs, args : StorageAccountArgsRecord), httpsOnly) = cargs, { args with HttpsOnly = httpsOnly }
+        member __.HttpsOnly((cargs, args : StorageAccountArgsRecord), httpsOnly) =
+            cargs, { args with HttpsOnly = httpsOnly }
 
     let storageAccount = StorageAccountBuilder()

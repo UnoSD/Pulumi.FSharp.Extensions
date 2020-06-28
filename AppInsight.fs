@@ -2,7 +2,6 @@ namespace Pulumi.FSharp.Azure
 
 open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.AppInsights
-open Pulumi.Azure.Core
 open Pulumi.FSharp
 
 module AppInsightPrivate =
@@ -17,8 +16,6 @@ module AppInsightPrivate =
         | Web
     
     type AppInsightsArgsRecord = {
-        Name: string
-        ResourceGroup: IOArg<ResourceGroup>
         ApplicationType: ApplicationType
         RetentionInDays: int
     }
@@ -29,49 +26,33 @@ module AppInsightPrivate =
         | MobileCenter -> "MobileCenter"
         | other        -> getUnionCaseName(other).ToLowerInvariant()
     
-    let run args =
+    let run (cargs, args) =
         InsightsArgs(
             ApplicationType = input (getType args.ApplicationType),
-            ResourceGroupName = getName args.ResourceGroup,
+            ResourceGroupName = (getResourceGroup cargs.Extras |> getName),
             RetentionInDays = input args.RetentionInDays
         ) |>
-        fun ia -> Insights(args.Name, ia)
+        fun ia -> Insights(cargs.Name, ia)
 
 [<AutoOpen>]
 module AppInsight =
     open AppInsightPrivate
 
-    type AppInsightBuilder internal () =
-        member __.Yield _ = {
-            Name = ""
-            ResourceGroup = Name ""
+    type AppInsightBuilder () =
+        inherit AzureResource ()
+        
+        member __.Yield _ = (AzureResource.Zero, {
             ApplicationType = Web
             RetentionInDays = 90
-        }
+        })
 
-        [<CustomOperation("name")>]
-        member __.Name(args : AppInsightsArgsRecord, name) = { args with Name = name }
-        
         [<CustomOperation("applicationType")>]
-        member __.ApplicationType(args, applicationType) = { args with ApplicationType = applicationType }
+        member __.ApplicationType((cargs, args), applicationType) = cargs, { args with ApplicationType = applicationType }
         
         [<CustomOperation("retentionInDays")>]
-        member __.RetentionInDays(args, days) = { args with RetentionInDays = days }
+        member __.RetentionInDays ((cargs, args), days) = cargs, { args with RetentionInDays = days }
         
-        member __.Run (args : AppInsightsArgsRecord) =
-             run args
-
-        [<CustomOperation("resourceGroup")>]
-        member __.ResourceGroup(args : AppInsightsArgsRecord, storageAccount) = {
-            args with ResourceGroup = Object storageAccount
-        }
-        
-        member __.ResourceGroup(args : AppInsightsArgsRecord, storageAccount) = {
-            args with ResourceGroup = Name storageAccount
-        }
-        
-        member __.ResourceGroup(args : AppInsightsArgsRecord, storageAccount) = {
-            args with ResourceGroup = IO storageAccount
-        } 
+        member __.Run (cargs, args) =
+             run (cargs, args)
 
     let appInsight = AppInsightBuilder()
