@@ -32,7 +32,7 @@ type AzureResourceArgs = {
 }
 
 let getResourceGroup =
-    List.tryPick (fun x -> match x with | ResourceGroupArg x -> Some x | _ -> None) >>
+    List.tryPick (fun x -> match x with | ResourceGroupArg x -> Some x) >>
     Option.defaultValue (Name "")
 
 [<AbstractClass>]
@@ -40,7 +40,7 @@ type AzureResource () =
     let addOrReplaceResourceGroup extras resourceGroup =
         (resourceGroup |> ResourceGroupArg) ::
         (extras |>
-         List.filter (fun x -> match x with | ResourceGroupArg _ -> false | _ -> true))
+         List.filter (fun x -> match x with | ResourceGroupArg _ -> false))
 
     let rg cargs resourceGroup =
         Object resourceGroup |>
@@ -57,19 +57,26 @@ type AzureResource () =
      }
     
     [<CustomOperation("name")>]
-    member __.Name((cra, rga), name) = { cra with Name = name }, rga
+    member __.Name((cra, rga), name) =
+        { cra with Name = name }, rga
     
     [<CustomOperation("region")>]
-    member __.Region((cra, rga), region) = cra, { rga with Region = region }
+    member __.Region((cra, rga), region) =
+        cra, { rga with Region = region }
 
     [<CustomOperation("tags")>]
-    member __.Tags((cra, rga), tags) = { cra with Tags = tags }, rga
+    member __.Tags((cra, rga), tags) =
+        { cra with Tags = tags }, rga
     
-    member __.Tags((cra, rga), tags) = { cra with Tags = tags |> List.map (fun (n, v) -> (n, input v)) }, rga
+    member __.Tags((cra, rga), tags) =
+        { cra with Tags = tags |> List.map (fun (n, v) -> (n, input v)) }, rga
 
     [<CustomOperation("resourceGroup")>]
-    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (rg cargs resourceGroup) }, args
+    member __.ResourceGroup((cargs, args), resourceGroup) =
+        { cargs with Extras = (rg cargs resourceGroup) }, args
     
-    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (Name resourceGroup)) }, args
+    member __.ResourceGroup((cargs, args), resourceGroup) =
+        { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (Name resourceGroup)) }, args
     
-    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (IO resourceGroup)) }, args
+    member __.ResourceGroup((cargs, args), resourceGroup) =
+        { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (IO resourceGroup)) }, args
