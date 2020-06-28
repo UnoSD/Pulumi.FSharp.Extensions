@@ -6,11 +6,11 @@ open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.Core
 open Pulumi.FSharp
 
-type ResourceGroupBuilder () =
+type ResourceGroupBuilder internal () =
     inherit AzureResource ()
     
     member __.Yield _ =
-        (AzureResource.Zero, None)
+        (AzureResource.Zero, ())
 
     member __.Run (cargs, _) =
         cargs |>

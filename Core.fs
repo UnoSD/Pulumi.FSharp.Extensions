@@ -36,7 +36,7 @@ let getResourceGroup =
     Option.defaultValue (Name "")
 
 [<AbstractClass>]
-type AzureResource () =
+type AzureResource internal () =
     let addOrReplaceResourceGroup extras resourceGroup =
         (resourceGroup |> ResourceGroupArg) ::
         (extras |>
