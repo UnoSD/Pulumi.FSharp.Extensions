@@ -6,7 +6,6 @@ open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.AppService
 open Pulumi.Azure.Core
 open Pulumi.FSharp
-open Pulumi
 
 [<AutoOpen>]
 module AppService =        
@@ -36,9 +35,6 @@ module AppService =
         | Dynamic -> "Dynamic"
 
     type AppServiceArgsRecord = {
-        Name: string
-        Region: Region
-        Tags: (string * Input<string>) list
         ResourceGroup: IOArg<ResourceGroup>
         Tier: Tier
         Kind: Kind
@@ -49,50 +45,35 @@ module AppService =
     // Maybe expose two builders and parameterize the default type in
     // the constructor
     type AppServiceBuilder internal (defaultKind) =
-        member __.Yield _ = {
-            Name = ""
-            Region = WestEurope
-            Tags = []
+        inherit AzureResource()
+        
+        member __.Yield _ = (AzureResource.Zero, {
             ResourceGroup = Name ""
             Tier = Dynamic
             Kind = defaultKind
             Size = Y1
-        }
+        })
 
-        member __.Run args =
+        member __.Run (cargs, args) =
            PlanSkuArgs(Tier = (input <| getTier args.Tier),
                        Size = input (match args.Size with | Y1 -> "Y1")) |>
            (fun psa -> PlanArgs(ResourceGroupName = (getName args.ResourceGroup),
-                                Location = input (regionName args.Region),
+                                Location = input (regionName cargs.Region),
                                 Kind = input (getKind args.Kind),
                                 Sku = input psa)) |>           
-           fun pa -> Plan(args.Name, pa)
-
-        [<CustomOperation("name")>]
-        member __.Name(args : AppServiceArgsRecord, name) = { args with Name = name }
-
-        [<CustomOperation("region")>]
-        member __.Region(args : AppServiceArgsRecord, region) = { args with Region = region }
+           fun pa -> Plan(cargs.Name, pa)
         
         [<CustomOperation("tier")>]
-        member __.Tier(args : AppServiceArgsRecord, tier) = { args with Tier = tier }
+        member __.Tier((cargs, args), tier) = cargs, { args with Tier = tier }
         
         [<CustomOperation("resourceGroup")>]
-        member __.ResourceGroup(args : AppServiceArgsRecord, resourceGroup) = {
+        member __.ResourceGroup((cargs, args), resourceGroup) = cargs, {
             args with ResourceGroup = Object resourceGroup
         }
         
-        member __.ResourceGroup(args : AppServiceArgsRecord, resourceGroup) = {
+        member __.ResourceGroup((cargs, args), resourceGroup) = cargs, {
             args with ResourceGroup = Name resourceGroup
         }
-        
-        // Can a custom operation have two arguments? CommonArgs + AppService args?
-        // If so, we can inherit this from a base class with generic member (args, cargs, tags)
-        [<CustomOperation("tags")>]
-        member __.Tags(args : AppServiceArgsRecord, tags) = { args with Tags = tags }
-
-        member __.Tags(args : AppServiceArgsRecord, tags) = { args with Tags = tags |>
-                                                                               List.map (fun (n, v) -> (n, input v)) }
 
     let appService = AppServiceBuilder(Windows)
     let functionAppService = AppServiceBuilder(FunctionAppKind)
