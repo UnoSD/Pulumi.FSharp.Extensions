@@ -1,5 +1,6 @@
 module Pulumi.FSharp.Azure.Core
 
+open Pulumi.Azure.Core
 open Pulumi.FSharp.Azure.Regions
 open Microsoft.FSharp.Reflection
 open Pulumi.FSharp
@@ -20,20 +21,38 @@ let getUnionCaseName (case : 'a) =
     match FSharpValue.GetUnionFields(case, typeof<'a>) with
     | case, _ -> case.Name
     
+type AzureResourceExtraArgs =
+    | ResourceGroupArg of IOArg<ResourceGroup>
+    
 type AzureResourceArgs = {
     Name: string
     Region: Region // From resource group if None
     Tags: (string * Input<string>) list
+    Extras: AzureResourceExtraArgs list
 }
 
-type AzureResourceGroup () =
+let getResourceGroup =
+    List.tryPick (fun x -> match x with | ResourceGroupArg x -> Some x | _ -> None) >>
+    Option.defaultValue (Name "")
+
+type AzureResource () =
     //abstract member __Yield a
     //abstract member __Run a
-    
+
+    let addOrReplaceResourceGroup extras resourceGroup =
+        (resourceGroup |> ResourceGroupArg) ::
+        (extras |>
+         List.filter (fun x -> match x with | ResourceGroupArg _ -> false | _ -> true))
+        
+    let rg cargs resourceGroup =
+        Object resourceGroup |>
+        addOrReplaceResourceGroup cargs.Extras
+        
     static member Zero = {
          Name = "" // This needs to be an option or mandatory
          Tags = []
          Region = WestEurope
+         Extras = [ Name "" |> ResourceGroupArg ]
      }
     
     [<CustomOperation("name")>]
@@ -46,3 +65,8 @@ type AzureResourceGroup () =
     member __.Tags((cra, rga), tags) = { cra with Tags = tags }, rga
     
     member __.Tags((cra, rga), tags) = { cra with Tags = tags |> List.map (fun (n, v) -> (n, input v)) }, rga
+
+    [<CustomOperation("resourceGroup")>]
+    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (rg cargs resourceGroup) }, args
+    
+    member __.ResourceGroup((cargs, args), resourceGroup) = { cargs with Extras = (addOrReplaceResourceGroup cargs.Extras (Name resourceGroup)) }, args

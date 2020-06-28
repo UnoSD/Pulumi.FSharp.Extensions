@@ -6,7 +6,6 @@ open Pulumi.FSharp.Azure.Regions
 open System.Collections.Generic
 open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.Storage
-open Pulumi.Azure.Core
 open Pulumi.FSharp
 open Pulumi
 
@@ -19,17 +18,15 @@ module StorageAccount =
         | Standard
 
     type StorageAccountArgsRecord = {
-        ResourceGroup: IOArg<ResourceGroup>
         Replication: Replication
         Tier: Tier
         HttpsOnly: bool
     }
 
     type StorageAccountBuilder internal () =
-        inherit AzureResourceGroup()
+        inherit AzureResource()
         
-        member __.Yield _ = (AzureResourceGroup.Zero, {
-            ResourceGroup = Name ""
+        member __.Yield _ = (AzureResource.Zero, {
             Replication = LRS
             Tier = Standard
             HttpsOnly = true
@@ -40,7 +37,7 @@ module StorageAccount =
             regionName |>
             input |>
             (fun l  -> AccountArgs(Location = l,
-                                   ResourceGroupName = (getName args.ResourceGroup),
+                                   ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
                                    // Convert from type name to string
                                    AccountTier = input (match args.Tier with | Standard -> "Standard"),
                                    AccountReplicationType = input (match args.Replication with | LRS -> "LRS"),
@@ -65,14 +62,5 @@ module StorageAccount =
         
         [<CustomOperation("httpsOnly")>]
         member __.HttpsOnly((cargs, args : StorageAccountArgsRecord), httpsOnly) = cargs, { args with HttpsOnly = httpsOnly }
-        
-        [<CustomOperation("resourceGroup")>]
-        member __.ResourceGroup((cargs, args : StorageAccountArgsRecord), resourceGroup) = cargs, {
-            args with ResourceGroup = Object resourceGroup
-        }
-        
-        member __.ResourceGroup((cargs, args : StorageAccountArgsRecord), resourceGroup) = cargs, {
-            args with ResourceGroup = Name resourceGroup
-        }
 
     let storageAccount = StorageAccountBuilder()

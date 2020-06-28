@@ -7,14 +7,10 @@ open Pulumi.Azure.Core
 open Pulumi.FSharp
 
 type ResourceGroupBuilder () =
-    inherit AzureResourceGroup ()
+    inherit AzureResource ()
     
     member __.Yield _ =
-        ({
-             Name = "" // This needs to be an option or mandatory
-             Tags = []
-             Region = WestEurope
-         }, None)
+        (AzureResource.Zero, None)
 
     member __.Run (cargs, _) =
         cargs |>
