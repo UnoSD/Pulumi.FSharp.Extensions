@@ -7,7 +7,7 @@ open Pulumi.Azure.Core
 open Pulumi.FSharp
 
 type ResourceGroupBuilder () =
-    inherit AzureResource ()
+    inherit AzureResourceGroup ()
     
     member __.Yield _ =
         ({

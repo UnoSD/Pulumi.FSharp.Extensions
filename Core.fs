@@ -26,7 +26,7 @@ type AzureResourceArgs = {
     Tags: (string * Input<string>) list
 }
 
-type AzureResource () =
+type AzureResourceGroup () =
     //abstract member __Yield a
     //abstract member __Run a
     

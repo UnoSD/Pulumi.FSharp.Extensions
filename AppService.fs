@@ -45,9 +45,9 @@ module AppService =
     // Maybe expose two builders and parameterize the default type in
     // the constructor
     type AppServiceBuilder internal (defaultKind) =
-        inherit AzureResource()
+        inherit AzureResourceGroup()
         
-        member __.Yield _ = (AzureResource.Zero, {
+        member __.Yield _ = (AzureResourceGroup.Zero, {
             ResourceGroup = Name ""
             Tier = Dynamic
             Kind = defaultKind

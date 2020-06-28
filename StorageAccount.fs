@@ -26,9 +26,9 @@ module StorageAccount =
     }
 
     type StorageAccountBuilder internal () =
-        inherit AzureResource()
+        inherit AzureResourceGroup()
         
-        member __.Yield _ = (AzureResource.Zero, {
+        member __.Yield _ = (AzureResourceGroup.Zero, {
             ResourceGroup = Name ""
             Replication = LRS
             Tier = Standard
