@@ -27,6 +27,7 @@
         <Compile Include="StorageAccount.fs" />
         <Compile Include="StorageContainer.fs" />
         <Compile Include="StorageBlob.fs" />
+        <Compile Include="SasToken.fs" />
         <Compile Include="AppInsight.fs" />
         <Compile Include="ArmTemplate.fs" />
     </ItemGroup>
