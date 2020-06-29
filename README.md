@@ -52,6 +52,14 @@ let appInsights =
         retentionInDays     90
     }
     
+let template =
+    armTemplate {
+        name                "ArmTemplate"
+        resourceGroup       rg
+        json                (File.ReadAllText("Template.json"))
+        parameters          [ "location", io rg.Location ]
+    }
+    
 // Output computational expressions
 let deploymentCountBars =
     output {
