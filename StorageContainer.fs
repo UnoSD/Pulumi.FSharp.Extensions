@@ -41,7 +41,7 @@ type StorageContainerBuilder internal () =
                        StorageAccountName = getName args.StorageAccount) |>
          fun sca -> Container(args.Name, sca)
 
-    [<CustomOperation("storageAccount")>]
+    [<CustomOperation("account")>]
     member __.StorageAccount(args, storageAccount) = {
         args with StorageAccount = Object storageAccount
     }
