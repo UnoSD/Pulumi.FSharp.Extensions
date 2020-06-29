@@ -24,7 +24,7 @@ type SasTokenBuilder internal () =
     member __.Run (args) =
          SharedAccessSignature.SignedBlobReadUrl(args.Blob, args.StorageAccount)
 
-    [<CustomOperation("storageAccount")>]
+    [<CustomOperation("account")>]
     member __.StorageAccount(args, storageAccount) = {
         args with StorageAccount = storageAccount
     }

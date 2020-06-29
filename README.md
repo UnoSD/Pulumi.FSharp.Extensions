@@ -10,60 +10,60 @@ open Pulumi.FSharp.Azure
 
 let rg =
     resourceGroup {
-        name                "ResourceGroupName"
+        name            "ResourceGroupName"
     }
 
 let sa =
     storageAccount {
-        name                "StorageAccountName"
-        resourceGroup       rg
-        replication         LRS
-        tier                Standard
-        httpsOnly           true
+        name            "StorageAccountName"
+        resourceGroup   rg
+        replication     LRS
+        tier            Standard
+        httpsOnly       true
     }
     
 let container =
     storageContainer {
-        name                "StorageContainer"
-        storageAccountInput sa.Name
-        access              Private
-        containerName       "containername"
+        name            "StorageContainer"
+        account         sa.Name
+        access          Private
+        containerName   "containername"
     }
     
 let blob =
     storageBlob {
-        name                "StorageBlob"
-        storageAccount      storage
-        container           buildContainer
-        source              (input (("Blob content" |> StringAsset) :> AssetOrArchive))
+        name            "StorageBlob"
+        account         storage
+        container       buildContainer
+        source          (input (("Blob content" |> StringAsset) :> AssetOrArchive))
     }
     
 let appServicePlan =
     appService {
-        name                "FunctionAppServiceName"
-        resourceGroup       rg
+        name            "FunctionAppServiceName"
+        resourceGroup   rg
     }
     
 let appInsights =
     appInsight {
-        name                "AppInsight"
-        resourceGroup       rg
-        applicationType     Web
-        retentionInDays     90
+        name            "AppInsight"
+        resourceGroup   rg
+        applicationType Web
+        retentionInDays 90
     }
     
 let template =
     armTemplate {
-        name                "ArmTemplate"
-        resourceGroup       rg
-        json                (File.ReadAllText("Template.json"))
-        parameters          [ "location", io rg.Location ]
+        name            "ArmTemplate"
+        resourceGroup   rg
+        json            (File.ReadAllText("Template.json"))
+        parameters      [ "location", io rg.Location ]
     }
     
 let sasToken =
     sasToken {
-        storageAccount      sa
-        blob                apiBlob
+        storage         sa
+        blob            apiBlob
     }
     
 // Output computational expressions
