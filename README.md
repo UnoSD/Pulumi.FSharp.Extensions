@@ -51,4 +51,21 @@ let appInsights =
         applicationType     Web
         retentionInDays     90
     }
+    
+// Output computational expressions
+let deploymentCountBars =
+    output {
+        let! previousOutputs =
+            StackReference(Deployment.Instance.StackName).Outputs
+        
+        return previousOutputs.["CountBars"] + "I"
+    }
+    
+let someSecret =
+    secretOutput {
+        let! key1 = sa.PrimaryConnectionString
+        let! key2 = sa.SecondaryConnectionString
+        
+        return "Secret connection strings: " + key1 + " " + key2
+    }
 ```

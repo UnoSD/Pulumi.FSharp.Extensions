@@ -16,6 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="OutputBuilder.fs" />
         <Content Include="Regions.json" />
         <Compile Include="Regions.fs" />
         <Compile Include="Core.fs" />
