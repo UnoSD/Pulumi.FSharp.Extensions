@@ -83,4 +83,32 @@ let someSecret =
         
         return "Secret connection strings: " + key1 + " " + key2
     }
+    
+// Mixing Output<> and Task<>
+let sas =
+    output {
+        let! connectionString = sa.PrimaryConnectionString
+        let! containerName = container.Name
+        let! url = blob.Url
+
+        let start =
+            DateTime.Now.ToString("u").Replace(' ', 'T')
+        
+        let expiry =
+            DateTime.Now.AddHours(1.).ToString("u").Replace(' ', 'T')
+        
+        // Task to Output
+        let! tokenResult =
+            GetAccountBlobContainerSASArgs(
+                ConnectionString = connectionString,
+                ContainerName = containerName,
+                Start = start,
+                Expiry = expiry,
+                Permissions = (GetAccountBlobContainerSASPermissionsArgs(Read = true))
+            ) |>
+            // This returns Task<>
+            GetAccountBlobContainerSAS.InvokeAsync
+
+        return url + tokenResult.Sas
+    }
 ```
