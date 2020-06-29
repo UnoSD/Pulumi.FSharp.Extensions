@@ -14,9 +14,11 @@ type OutputBuilder internal (isSecret) =
     
     member __.Bind (comp : Output<'a>, func : 'a -> Output<'b>) =
         comp.Apply<'b>(func)
-    
-    member __.Bind (comp : Output<_>, func : _ -> Task<'b>) =
-        comp.Apply<'b>(func)
+      
+    member this.Bind (comp : Task<'a>, func : 'a -> Output<'b>) =
+        this.Bind((match isSecret with
+                   | false -> Output.Create<'a>(comp)
+                   | true  -> Output.CreateSecret<'a>(comp)), func)
     
     member __.ReturnFrom (v : Output<_>) =
         v
