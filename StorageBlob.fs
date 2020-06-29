@@ -72,7 +72,7 @@ type StorageBlobBuilder internal () =
     member __.Run (args) =
          run args
 
-    [<CustomOperation("storageAccount")>]
+    [<CustomOperation("account")>]
     member __.StorageAccount(args : StorageBlobArgsRecord, storageAccount) = {
         args with StorageAccount = Object storageAccount
     }
