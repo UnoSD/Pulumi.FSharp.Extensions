@@ -12,6 +12,7 @@ type BlobType =
 module StorageBlobInternal =    
     type StorageBlobArgsRecord = {
         Name: string
+        BlobName: string option
         StorageAccount: IOArg<Account>
         StorageContainer: IOArg<Container>
         Type: BlobType
@@ -22,6 +23,9 @@ open StorageBlobInternal
 
 let private run args =
     BlobArgs(
+        Name = (match args.BlobName with
+                | None      -> null
+                | Some name -> input name),
         StorageAccountName = getName args.StorageAccount,
         StorageContainerName = getName args.StorageContainer,
         Type = input (match args.Type with | Block -> "Block"),
@@ -32,12 +36,20 @@ let private run args =
 type StorageBlobBuilder internal () =
     member __.Yield _ = {
         Name = ""
+        BlobName = None
         StorageAccount = Name ""
         StorageContainer = Name ""
         Type = Block
         Source = null
     }
 
+    [<CustomOperation("blobName")>]
+    member __.BlobName(args, blobName) =
+        { args with BlobName = match blobName with
+                               | null
+                               | ""   -> None
+                               | name -> Some name }
+    
     [<CustomOperation("name")>]
     member __.Name(args : StorageBlobArgsRecord, name) =
         { args with Name = name }

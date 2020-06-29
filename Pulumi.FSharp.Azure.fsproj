@@ -30,6 +30,7 @@
         <Compile Include="SasToken.fs" />
         <Compile Include="AppInsight.fs" />
         <Compile Include="ArmTemplate.fs" />
+        <Compile Include="ApimApi.fs" />
     </ItemGroup>
 
     <ItemGroup>
