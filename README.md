@@ -60,6 +60,12 @@ let template =
         parameters          [ "location", io rg.Location ]
     }
     
+let sasToken =
+    sasToken {
+        storageAccount      sa
+        blob                apiBlob
+    }
+    
 // Output computational expressions
 let deploymentCountBars =
     output {
@@ -69,6 +75,7 @@ let deploymentCountBars =
         return previousOutputs.["CountBars"] + "I"
     }
     
+// Output as secret
 let someSecret =
     secretOutput {
         let! key1 = sa.PrimaryConnectionString
