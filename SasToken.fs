@@ -12,21 +12,21 @@ module SasTokenInternal =
 open SasTokenInternal
 
 type SasTokenBuilder internal () =
+    
     member __.Yield _ = {
         StorageAccount = null
         Blob = null
     }
-   
+    
+    member __.Run (args) =
+         SharedAccessSignature.SignedBlobReadUrl(args.Blob, args.StorageAccount)
+    
     [<CustomOperation("blob")>]
     member __.Blob(args, blob) =
         { args with Blob = blob }
-       
-    member __.Run (args) =
-         SharedAccessSignature.SignedBlobReadUrl(args.Blob, args.StorageAccount)
 
     [<CustomOperation("account")>]
-    member __.StorageAccount(args, storageAccount) = {
-        args with StorageAccount = storageAccount
-    }
+    member __.StorageAccount(args, storageAccount) =
+        { args with StorageAccount = storageAccount }
 
 let sasToken = SasTokenBuilder()
