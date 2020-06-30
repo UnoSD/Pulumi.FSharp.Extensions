@@ -1,6 +1,7 @@
 [<AutoOpen>]
 module Pulumi.FSharp.Azure.ArmTemplate
 
+open System.IO
 open Pulumi.FSharp.Azure.Core
 open Pulumi.Azure.Core
 open Pulumi.FSharp
@@ -37,7 +38,11 @@ type ArmTemplateBuilder internal () =
     
     [<CustomOperation("json")>]
     member __.Json((cargs, args), json) =
-        cargs, { args with Json = json }        
+        cargs, { args with Json = json }
+        
+    [<CustomOperation("jsonFile")>]
+    member __.JsonFile((cargs, args), path) =
+        cargs, { args with Json = File.ReadAllText(path) }        
     
     [<CustomOperation("parameters")>]
     member __.Parameters((cargs, args), parameters) =

@@ -67,7 +67,10 @@ type StorageBlobBuilder internal () =
    
     [<CustomOperation("source")>]
     member __.Source(args, source) =
-        { args with Source = source }
+        { args with Source = input source }
+        
+    member __.Source(args, source) =
+        { args with Source = io source }
         
     member __.Source(args, source : FileAsset) =
         { args with Source = (source :> AssetOrArchive |> input) }
