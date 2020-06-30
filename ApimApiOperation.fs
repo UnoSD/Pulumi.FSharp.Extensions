@@ -22,8 +22,8 @@ module ApimApiOperationInternal =
         Api: IOArg<Api>
         UrlTemplate: string
         Method: HttpMethod
-        DisplayName: string
-        OperationId: string
+        DisplayName: string option
+        OperationId: string option
     }
 
 open ApimApiOperationInternal
@@ -48,19 +48,31 @@ type ApimApiOperationBuilder internal () =
         Api = Name ""
         UrlTemplate = "/"
         Method = Get
-        DisplayName = ""
-        OperationId = ""
+        DisplayName = None
+        OperationId = None
     })
 
     member __.Run (cargs, args) =
+        let method =
+            args.Method |>
+            getMethod
+            
+        let displayName =
+            match args.DisplayName with
+            | Some dn -> dn
+            | None    -> method
+        
+        let idFrom (displayName : string) =
+            displayName.Replace(' ', '-').ToLowerInvariant()
+        
         ApiOperationArgs(
             ResourceGroupName = (cargs.Extras |> getResourceGroup |> getName),
             ApiManagementName = getName args.ApiManagement,
             ApiName = getName args.Api,
             UrlTemplate = input args.UrlTemplate,
-            Method = (args.Method |> getMethod |> input),
-            DisplayName = input args.DisplayName,
-            OperationId = input args.OperationId
+            Method = input method,
+            DisplayName = input displayName,
+            OperationId = ((match args.OperationId with | Some x -> x | None -> (idFrom displayName)) |> input)
         ) |>
         fun aoa -> ApiOperation(cargs.Name, aoa)
     
@@ -85,10 +97,10 @@ type ApimApiOperationBuilder internal () =
         
     [<CustomOperation("displayName")>]
     member __.DisplayName((cargs, args), displayName) =
-        cargs, { args with DisplayName = displayName }
+        cargs, { args with DisplayName = Some displayName }
         
     [<CustomOperation("id")>]
     member __.OperationId((cargs, args), id) =
-        cargs, { args with OperationId = id }
+        cargs, { args with OperationId = Some id }
 
 let apiOperation = ApimApiOperationBuilder()
