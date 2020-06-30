@@ -31,6 +31,7 @@
         <Compile Include="AppInsight.fs" />
         <Compile Include="ArmTemplate.fs" />
         <Compile Include="ApimApi.fs" />
+        <Compile Include="ApimApiOperation.fs" />
     </ItemGroup>
 
     <ItemGroup>
