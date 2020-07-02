@@ -81,12 +81,17 @@ type SasTokenBuilder internal () =
     }
     
     member __.Run (args) =
-         match args.TimeRange, args.Permissions with
-         | None, []
-         | None, [ Read ]    -> SharedAccessSignature.SignedBlobReadUrl(args.Blob,
-                                                                        args.StorageAccount)
-         | Some range, perms -> granularSas args range (perms |> toArgs)
-         | None, perms       -> granularSas args defaultDuration (perms |> toArgs) 
+         let token =
+            match args.TimeRange, args.Permissions with
+            | None, []
+            | None, [ Read ]    -> SharedAccessSignature.SignedBlobReadUrl(args.Blob,
+                                                                           args.StorageAccount)
+            | Some range, perms -> granularSas args range (perms |> toArgs)
+            | None, perms       -> granularSas args defaultDuration (perms |> toArgs)
+         
+         secretOutput {
+             return! token
+         }
     
     [<CustomOperation("blob")>]
     member __.Blob(args, blob) =
