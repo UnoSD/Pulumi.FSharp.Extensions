@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <NoWarn>NU1605</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Library.fs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="build\Pulumi.FSharp.Azure.Myriad.props">
+            <Pack>true</Pack>
+            <PackagePath>%(Identity)</PackagePath>
+            <Visible>true</Visible>
+        </Content>
+        <Content Include="build\Pulumi.FSharp.Azure.Myriad.InTest.props" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="FsAst" Version="0.5.0" />
+        <PackageReference Include="FSharp.Core" Version="4.7.2" />
+        <PackageReference Include="Myriad.Core" Version="0.2.8" />
+        <PackageReference Include="Myriad.Sdk" Version="0.2.8" />
+        <PackageReference Include="Pulumi.Azure" Version="3.11.0" />
+    </ItemGroup>
+    
+</Project>

@@ -1,0 +1,5 @@
+<Project>
+    <ItemGroup>
+        <MyriadSdkGenerator Include="$(MSBuildThisFileDirectory)/../lib/netcoreapp3.1/Pulumi.FSharp.Azure.Myriad.dll" />
+    </ItemGroup>
+</Project>
