@@ -48,8 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="Pulumi.FSharp.Azure.Myriad\Pulumi.FSharp.Azure.Myriad.fsproj"
-                        PrivateAssets="All" />
+      <ProjectReference Include="Pulumi.FSharp.Azure.Myriad\Pulumi.FSharp.Azure.Myriad.fsproj" PrivateAssets="All" />
     </ItemGroup>
 
     <Import Project="Pulumi.FSharp.Azure.Myriad\build\Pulumi.FSharp.Azure.Myriad.InTest.props" />
