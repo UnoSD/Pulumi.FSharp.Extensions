@@ -7,9 +7,10 @@ open FSharp.Compiler.SyntaxTree
 open FsAst
 open Myriad.Core
 
+// Version needs to match NuGet package
 [<Literal>]
 let private pulumiSchemaUrl =
-    "https://raw.githubusercontent.com/pulumi/pulumi-azure/master/provider/cmd/pulumi-resource-azure/schema.json"
+    "https://raw.githubusercontent.com/pulumi/pulumi-azure/v3.11.0/provider/cmd/pulumi-resource-azure/schema.json"
 
 type private PulumiProvider =
     JsonProvider<pulumiSchemaUrl>
@@ -19,16 +20,18 @@ module Generator =
     type PulumiAttribute() =
         inherit Attribute()
 
+let private createAttribute name =
+    SynAttributeList.Create(SynAttribute.Create(name))
+
 let private createModule name content =
-    let componentInfo = SynComponentInfoRcd.Create [ Ident.Create name ]
+    let componentInfo =
+        { SynComponentInfoRcd.Create [ Ident.Create name ] with 
+              Attributes = [ createAttribute "AutoOpen" ]  }
     SynModuleDecl.CreateNestedModule(componentInfo, content)
 
 let private createNamespace name content =
     { SynModuleOrNamespaceRcd.CreateNamespace(Ident.CreateLong name)
                 with Declarations = content }
-
-let private createAttribute name =
-    SynAttributeList.Create(SynAttribute.Create(name))
 
 let private createAttributeWithArg (name : string) (arg : string) =
     let o : SynAttribute = { TypeName = LongIdentWithDots.CreateString(name)
@@ -133,11 +136,14 @@ let private createOperationsFor name pType argsType tupleArgs =
     let setRights =
         match pType with
         | "string"
+        | "integer"
+        | "number"
         | "boolean" -> [ SynExpr.CreateIdentString("input"); SynExpr.CreateIdentString("io") ]
         | "array" -> [ SynExpr.CreateIdentString("inputList") ]
         | "object" -> [ SynExpr.CreateIdentString("inputMap") ]
         // What to do here?
         | "complex" -> [ SynExpr.CreateIdentString("input") ]
+        | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
     
     let setExpr setRight =
         SynExpr.Set (SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("args." + name)),
@@ -199,15 +205,34 @@ let private createType (provider : PulumiProvider.Root) (fqType : string, jValue
         Array.tryFind (fun (t, _) -> ("#/types/" + t) = v.AsString()) |>
         ignore
         "complex"
-
+   
     let [| fullProvider; fullType |] = fqType.Split("/")
-    let [| provider; category |] = fullProvider.Split(':')
+    let [| tProvider; category |] = fullProvider.Split(':')
     let [| resourceType; _(*subtype*) |] = fullType.Split(':')
-    let ns = sprintf "Pulumi.%s.%s" (toPascalCase provider) (toPascalCase category)
     let typeName = toPascalCase resourceType
-    let properties = jValue.GetProperty("properties").Properties()
+    let properties = jValue.GetProperty("inputProperties").Properties()
     
+    let serviceProvider =
+        provider.Language.Csharp.Namespaces.JsonValue.Properties() |>
+        Array.find (fun (p, _) -> p = category) |>
+        snd |>
+        (fun jv -> jv.AsString())
+    
+    let ns =
+        serviceProvider |>
+        sprintf "Pulumi.%s.%s" (toPascalCase tProvider)
+
     let nameAndType (name, jValue : JsonValue) =
+        let tName =
+            match jValue.Properties() |>
+                  Array.tryFind (fun (p, _) -> p = "language") |>
+                  Option.bind (fun (_, v) -> v.Properties() |>
+                                             Array.tryFind (fun (p, _) -> p = "csharp") |>
+                                             Option.map snd) |>
+                  Option.map (fun v -> v.GetProperty("name").AsString()) with
+            | Some name -> name
+            | None      -> name
+        
         let pType =
             jValue.Properties() |>
             Array.choose (fun (p, v) -> match p with
@@ -217,17 +242,9 @@ let private createType (provider : PulumiProvider.Root) (fqType : string, jValue
                                         | _ -> None) |>
             Array.head
         
-        (name, pType)
+        (tName, pType)
     
-    createOuterModule ("Pulumi.FSharp.Azure." + typeName) [
-         createOpen "Pulumi.FSharp.Azure.Core"
-         createOpen "Pulumi.FSharp"
-         createOpen ns
-         
-         createAzureBuilderClass typeName (properties |> Array.map (nameAndType))
-         
-         createLet (toSnakeCase typeName) (createInstance (typeName + "Builder") SynExpr.CreateUnit)
-    ]
+    ns, typeName, properties, nameAndType, serviceProvider
 
 [<MyriadGenerator("example1")>]
 type Example1Gen() =
@@ -235,7 +252,23 @@ type Example1Gen() =
         member __.Generate(_, _) =
             let provider = PulumiProvider.GetSample()
             
-            provider.Resources.JsonValue.Properties() |>
-            Array.filter (fun (r, _) -> r = "azure:compute/virtualMachine:VirtualMachine") |> // Remove
-            Array.map (createType provider) |>
-            Array.head // Remove
+            let moduleWithType (ns, typeName, properties, nameAndType, serviceProvider) =
+                createModule ((serviceProvider |> toPascalCase) + typeName) [
+                     createOpen ns
+                     
+                     createAzureBuilderClass typeName (properties |> Array.map (nameAndType))
+                     
+                     createLet (toSnakeCase (serviceProvider + typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
+                ]
+            
+            let modules =
+                provider.Resources.JsonValue.Properties() |>
+                //Array.filter (fun (r, _) -> r = "azure:compute/virtualMachine:VirtualMachine") |> // Remove
+                Array.map (createType provider >>
+                           moduleWithType) |>
+                List.ofArray
+            
+            createNamespace ("Pulumi.FSharp.Azure") ([
+                 createOpen "Pulumi.FSharp.Azure.Core"
+                 createOpen "Pulumi.FSharp"
+            ] @ modules)
