@@ -108,6 +108,15 @@ let private toSnakeCase =
 let private toPascalCase =
     changeInitial Char.ToUpper
     
+let private createOperation' name coName argName typeName hasAttribute =
+    let attributes =
+        if hasAttribute then
+            [ createAttributeWithArg "CustomOperation" coName ]
+        else
+            []
+    
+    createMember name [createTuple [ argsTuple true typeName; createPattern argName [] ] true] attributes
+    
 let private createOperation name typeName hasAttribute =
     let snakeCaseName =
         toSnakeCase name
@@ -115,15 +124,10 @@ let private createOperation name typeName hasAttribute =
     let coName =
         match snakeCaseName with
         | "resourceGroupName" -> "resourceGroup"
+        | "name" -> "resourceName"
         | x -> x
     
-    let attributes =
-        if hasAttribute then
-            [ createAttributeWithArg "CustomOperation" coName ]
-        else
-            []
-    
-    createMember name [createTuple [ argsTuple true typeName; createPattern snakeCaseName [] ] true] attributes
+    createOperation' (coName |> toPascalCase) coName snakeCaseName typeName hasAttribute
 
 let private createInstance name args =
     let identifier =
@@ -181,7 +185,12 @@ let private createAzureBuilderClass name props =
         props |>
         Array.collect (fun (prop, t) -> createOperationsFor (prop |> toPascalCase) t argsType tupleArgs) |>
         List.ofArray
-        
+    
+    let field = RecordFieldName(LongIdentWithDots.CreateString("Name"), true)
+    let updates = [(field, SynExpr.CreateIdentString("name") |> Some, None)]
+    let recordUpdate = SynExpr.CreateRecordUpdate(SynExpr.CreateIdentString("cargs"), updates)    
+    let returnTuple = SynExpr.CreateTuple(tupleArgs (recordUpdate))
+    
     SynModuleDecl.CreateType(SynComponentInfoRcd.Create(typeName),
                              [
                                  implicitCtor ()
@@ -189,6 +198,7 @@ let private createAzureBuilderClass name props =
                                  
                                  createYield (createInstance argsType SynExpr.CreateUnit)
                                  createRun argsType (createInstance name runArgs)
+                                 createOperation' "Name" "name" "name" argsType true returnTuple
                              ] @ operations)
 
 let private createLet name expr =
@@ -276,6 +286,8 @@ type Example1Gen() =
                     "azure:apimanagement/apiOperation:ApiOperation"
                     "azure:appservice/functionApp:FunctionApp"
                 ] |> List.contains r |> not)) |>
+                // Debug only
+                //Array.filter (fun (r, _) -> r = "azure:compute/virtualMachine:VirtualMachine") |>
                 Array.map (createType provider >>
                            moduleWithType) |>
                 List.ofArray
