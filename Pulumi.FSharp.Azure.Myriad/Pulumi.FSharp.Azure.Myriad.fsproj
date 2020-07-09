@@ -4,8 +4,6 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <NoWarn>NU1605</NoWarn>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <UseNETCoreGenerator>true</UseNETCoreGenerator>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,7 +26,6 @@
         <PackageReference Include="Myriad.Core" Version="0.2.8" />
         <PackageReference Include="Myriad.Sdk" Version="0.2.8" />
         <PackageReference Include="Pulumi.Azure" Version="3.11.0" />
-        <PackageReference Include="System.Runtime" Version="4.3.1" />
     </ItemGroup>
     
 </Project>
