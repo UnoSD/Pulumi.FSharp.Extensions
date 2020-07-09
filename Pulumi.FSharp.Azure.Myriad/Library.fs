@@ -263,7 +263,19 @@ type Example1Gen() =
             
             let modules =
                 provider.Resources.JsonValue.Properties() |>
-                //Array.filter (fun (r, _) -> r = "azure:compute/virtualMachine:VirtualMachine") |> // Remove
+                // Filtering out the ones that I created manually, for now
+                Array.filter (fun (r, _) -> ([
+                    "azure:core/resourceGroup:ResourceGroup"
+                    "azure:appservice/plan:Plan"
+                    "azure:storage/account:Account"
+                    "azure:storage/container:Container"
+                    "azure:storage/blob:Blob"
+                    "azure:appinsights/insights:Insights"
+                    "azure:core/templateDeployment:TemplateDeployment"
+                    "azure:apimanagement/api:Api"
+                    "azure:apimanagement/apiOperation:ApiOperation"
+                    "azure:appservice/functionApp:FunctionApp"
+                ] |> List.contains r |> not)) |>
                 Array.map (createType provider >>
                            moduleWithType) |>
                 List.ofArray
