@@ -13,6 +13,7 @@
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <Version>1.0.1</Version>
         <NoWarn>NU1605</NoWarn>
+        <UseNETCoreGenerator>true</UseNETCoreGenerator>
     </PropertyGroup>
 
     <ItemGroup>
