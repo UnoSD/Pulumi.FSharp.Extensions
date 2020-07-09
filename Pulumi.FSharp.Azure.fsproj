@@ -12,8 +12,7 @@
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <Version>1.0.1</Version>
-        <NoWarn>NU1605</NoWarn>
-        <NoWarn>FS0058</NoWarn>
+        <NoWarn>NU1605,FS0058</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
