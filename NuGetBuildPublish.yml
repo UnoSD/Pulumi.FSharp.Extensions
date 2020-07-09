@@ -30,6 +30,6 @@ steps:
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/Pulumi.FSharp.Azure.nupkg'
       nuGetFeedType: external
       publishFeedCredentials: 'NuGet Pulumi.FSharp.Azure'
