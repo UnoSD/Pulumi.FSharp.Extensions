@@ -45,6 +45,7 @@
         <PackageReference Include="Pulumi.FSharp" Version="2.5.0" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.2.8" />
+        <PackageReference Include="System.Runtime" Version="4.3.1" />
     </ItemGroup>
 
     <ItemGroup>
