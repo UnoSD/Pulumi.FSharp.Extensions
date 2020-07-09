@@ -250,6 +250,12 @@ let private createType (provider : PulumiProvider.Root) (fqType : string, jValue
 type Example1Gen() =
     interface IMyriadGenerator with
         member __.Generate(_, _) =
+            let loadTypes =
+                [ typeof<System.Runtime.ProfileOptimization>
+                  typeof<System.DateTime>
+                  typeof<System.TimeZoneInfo> ]
+            printfn "%A" loadTypes
+            
             let provider = PulumiProvider.GetSample()
             
             let moduleWithType (ns, typeName, properties, nameAndType, serviceProvider) =
