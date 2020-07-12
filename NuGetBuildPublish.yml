@@ -26,6 +26,11 @@ steps:
       packagesToPack: '**/Pulumi.FSharp.Azure.fsproj'
       versioningScheme: byBuildNumber
 
+  - script: |
+      echo -e "**Ciao**\n/home/vsts/work/1/a/Pulumi.FSharp.Azure.1.0.46.nupkg" > summary.log
+      echo "$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$(Rev:r).nupkg" >> summary.log
+      echo "##vso[task.uploadsummary]summary.log"
+
   - task: NuGetCommand@2
     displayName: Push
     inputs:
