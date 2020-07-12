@@ -30,6 +30,6 @@ steps:
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.*.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.1.0.*.nupkg'
       nuGetFeedType: external
       publishFeedCredentials: 'NuGet Pulumi.FSharp.Azure'
