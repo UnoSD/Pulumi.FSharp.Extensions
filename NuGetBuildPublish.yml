@@ -14,13 +14,6 @@ steps:
       version: 3.1.103
       installationPath: $(Agent.ToolsDirectory)/dotnet
     
-  - script: |
-      echo -e "**Ciao**\n/home/vsts/work/1/a/Pulumi.FSharp.Azure.1.0.46.nupkg" > summary.log
-      echo "$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$VAL.nupkg" >> summary.log
-      echo "##vso[task.uploadsummary]$(pwd)/summary.log"
-    env:
-      VAL: $(Rev:r)
-    
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
@@ -37,6 +30,6 @@ steps:
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$(Rev:r).nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.*.nupkg'
       nuGetFeedType: external
       publishFeedCredentials: 'NuGet Pulumi.FSharp.Azure'
