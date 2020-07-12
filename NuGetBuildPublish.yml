@@ -16,8 +16,11 @@ steps:
     
   - script: |
       echo -e "**Ciao**\n/home/vsts/work/1/a/Pulumi.FSharp.Azure.1.0.46.nupkg" > summary.log
-      echo "$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$(Rev:r).nupkg" >> summary.log
-      echo "##vso[task.uploadsummary]summary.log"
+      VALX=$Rev_r
+      echo "$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$VALX.nupkg" >> summary.log
+      VAL=$(Rev:r)
+      echo "$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.Myriad.1.0.$VAL.nupkg" >> summary.log
+      echo "##vso[task.uploadsummary]$(pwd)/summary.log"
     
   - task: DotNetCoreCLI@2
     displayName: Build
