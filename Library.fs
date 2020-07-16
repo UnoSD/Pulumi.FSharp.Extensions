@@ -6,4 +6,4 @@ open Pulumi.FSharp.Azure.Myriad
     do()
     
 module ForceChange =
-    let _ = 18736
+    let _ = 16096

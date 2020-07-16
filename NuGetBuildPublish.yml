@@ -1,4 +1,4 @@
-name: 1.0.$(Rev:r)
+name: 2.0.$(Rev:r)
 
 trigger:
   - master
@@ -30,6 +30,6 @@ steps:
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.1.0.*-prerelease.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.2.0.*.nupkg'
       nuGetFeedType: external
       publishFeedCredentials: 'NuGet Pulumi.FSharp.Azure'

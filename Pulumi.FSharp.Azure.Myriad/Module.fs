@@ -9,17 +9,21 @@ open AstInstance
 open AstAttribute
 open FsAst
 
-let private createModule' name content =
+let private createModule' name content attributes =
     let componentInfo =
         { SynComponentInfoRcd.Create [ Ident.Create name ] with 
-              Attributes = [ createAttribute "AutoOpen" ]  }
+              Attributes = attributes }
     SynModuleDecl.CreateNestedModule(componentInfo, content)
 
 let createModule (ns, typeName, properties, nameAndType, serviceProvider) =
-    createModule' ((serviceProvider |> toPascalCase) + typeName) [
+    createModule' (serviceProvider |> toPascalCase) [
          createOpen ns
          
-         createAzureBuilderClass typeName (properties |> Array.map (nameAndType))
+         // Create Compute types
          
-         createLet (toSnakeCase (serviceProvider + typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
-    ]
+         createModule' typeName [
+             createAzureBuilderClass typeName (properties |> Array.map (nameAndType))
+             
+             createLet (toSnakeCase (serviceProvider + typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
+         ] [ createAttribute "AutoOpen" ]
+    ] []

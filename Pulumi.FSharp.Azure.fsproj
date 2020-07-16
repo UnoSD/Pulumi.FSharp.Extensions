@@ -34,6 +34,7 @@
         <Compile Include="ApimApiOperation.fs" />
         <Compile Include="FunctionApp.fs" />
         <Compile Include="Library.fs" />
+        <None Include="Example.fs" />
         <Compile Include="Generated.fs">
             <MyriadFile>Library.fs</MyriadFile>
             <MyriadNameSpace>Pulumi.FSharp.Azure</MyriadNameSpace>
