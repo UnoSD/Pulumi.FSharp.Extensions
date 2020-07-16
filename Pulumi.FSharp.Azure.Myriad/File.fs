@@ -26,7 +26,7 @@ let createFile () =
     
     let modules =
         provider.Resources.JsonValue.Properties() |>
-        debugFilters |>
+        //debugFilters |>
         Array.map (createType provider >>
                    moduleWithType) |>
         List.ofArray
