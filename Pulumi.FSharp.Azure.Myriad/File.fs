@@ -20,15 +20,12 @@ type private PulumiProvider =
 
 let createFile () =
     let provider = PulumiProvider.GetSample()
-    
-    let moduleWithType =
-        createModule
-    
+  
     let modules =
         provider.Resources.JsonValue.Properties() |>
         //debugFilters |>
         Array.map (createType provider >>
-                   moduleWithType) |>
+                   createModule) |>
         List.ofArray
     
     createNamespace modules
