@@ -132,6 +132,9 @@ let createAzureBuilderClass name props =
     let createDelay() =
         createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.func("f"))
     
+    let createZero() =
+        createMember "Zero" [] [] (Expr.unit)
+    
     SynModuleDecl.CreateType(SynComponentInfoRcd.Create(typeName),
                              [
                                  implicitCtor ()
@@ -141,5 +144,6 @@ let createAzureBuilderClass name props =
                                  createCombine()
                                  createFor()
                                  createDelay()
+                                 createZero()
                                  createNameOperation newNameExpr
                              ] @ operations)
