@@ -28,8 +28,18 @@ let private getTypeInfo (typeName : string) =
 let createType (provider : PulumiProvider.Root) (fqType : string, jValue : JsonValue) =
     let getComplexType typeFullPath =
         provider.Types.JsonValue.Properties() |>
-        Array.find (fun (t, _) -> ("#/types/" + t) = typeFullPath) |>
-        (fun (complexType, _) -> "complex:" + (getTypeInfo complexType |> (fun (_,_,_,_,_,t) -> t)))
+        Array.tryFind (fun (t, _) -> ("#/types/" + t) = typeFullPath) |>
+        (fun o -> match o with
+                  | Some x -> x
+                  | None -> if typeFullPath.StartsWith("pulumi.json#") then
+                                "complex", JsonValue.Null
+                            else
+                                sprintf "Not found: %s" typeFullPath |> failwith) |>
+        (fun (complexType, _) ->
+            if complexType = "complex" then
+                "complex"
+            else
+                "complex:" + (getTypeInfo complexType |> (fun (_,_,_,_,_,t) -> t)))
 
     let (_,
          _,
