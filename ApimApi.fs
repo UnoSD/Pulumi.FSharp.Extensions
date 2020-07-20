@@ -44,12 +44,15 @@ type ApimApiBuilder internal () =
             Name = input args.Name,
             DisplayName = input args.DisplayName,
             Path = input args.Path,
-            Protocols = ((match args.Protocol with
-                          | Http      -> [ "http" ]
-                          | Https     -> [ "https" ]
-                          | HttpHttps -> [ "https"; "http" ]) |>
-                         List.map input |>
-                         inputList),
+            Protocols = (
+                (
+                    match args.Protocol with
+                    | Http -> [ "http" ]
+                    | Https -> [ "https" ]
+                    | HttpHttps -> [ "https"; "http" ]
+                )
+                |> List.map input
+                |> inputList),
             Revision = input args.Revision,
             ServiceUrl = io args.ServiceUrl
         ) |>

@@ -54,8 +54,8 @@ type ApimApiOperationBuilder internal () =
 
     member __.Run (cargs, args) =
         let method =
-            args.Method |>
-            getMethod
+            args.Method
+            |> getMethod
             
         let displayName =
             match args.DisplayName with
@@ -72,9 +72,15 @@ type ApimApiOperationBuilder internal () =
             UrlTemplate = input args.UrlTemplate,
             Method = input method,
             DisplayName = input displayName,
-            OperationId = ((match args.OperationId with | Some x -> x | None -> (idFrom displayName)) |> input)
-        ) |>
-        fun aoa -> ApiOperation(cargs.Name, aoa)
+            OperationId = (
+                (
+                    match args.OperationId with
+                    | Some x -> x
+                    | None -> (idFrom displayName)
+                )
+                |> input)
+        )
+        |> fun aoa -> ApiOperation(cargs.Name, aoa)
     
     [<CustomOperation("apim")>]
     member __.Apim((cargs, args), apim) =

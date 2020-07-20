@@ -33,8 +33,8 @@ type ArmTemplateBuilder internal () =
             ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
             TemplateBody = input args.Json,
             Parameters = inputMap args.Parameters,
-            DeploymentMode = input (match args.Mode with | Incremental -> "Incremental")) |>
-        fun tda -> TemplateDeployment(cargs.Name, tda)
+            DeploymentMode = input (match args.Mode with | Incremental -> "Incremental"))
+        |> fun tda -> TemplateDeployment(cargs.Name, tda)
     
     [<CustomOperation("json")>]
     member __.Json((cargs, args), json) =

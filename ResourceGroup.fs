@@ -13,11 +13,11 @@ type ResourceGroupBuilder internal () =
         (AzureResource.Zero, ())
 
     member __.Run (cargs, _) =
-        cargs |>
-        (fun args -> args.Region) |>
-        regionName |>
-        input |>
-        (fun l  -> ResourceGroupArgs(Location = l, Tags = inputMap cargs.Tags)) |>
-        fun rga -> ResourceGroup(cargs.Name, rga)
+        cargs
+        |> (fun args -> args.Region)
+        |> regionName
+        |> input
+        |> (fun l  -> ResourceGroupArgs(Location = l, Tags = inputMap cargs.Tags))
+        |> fun rga -> ResourceGroup(cargs.Name, rga)
 
 let resourceGroup = ResourceGroupBuilder()

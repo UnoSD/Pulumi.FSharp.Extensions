@@ -36,10 +36,11 @@ type StorageContainerBuilder internal () =
     member __.ContainerName(args, name) = { args with ContainerName = Some name }
    
     member __.Run (args : StorageContainerArgsRecord) =
-         ContainerArgs(ContainerAccessType = input (match args.Access with | Private -> "private"),
-                       Name = (Option.map input args.ContainerName |> Option.defaultValue null),
-                       StorageAccountName = getName args.StorageAccount) |>
-         fun sca -> Container(args.Name, sca)
+        ContainerArgs(
+            ContainerAccessType = input (match args.Access with | Private -> "private"),
+            Name = (Option.map input args.ContainerName |> Option.defaultValue null),
+            StorageAccountName = getName args.StorageAccount)
+        |> fun sca -> Container(args.Name, sca)
 
     [<CustomOperation("account")>]
     member __.StorageAccount(args, storageAccount) = {
