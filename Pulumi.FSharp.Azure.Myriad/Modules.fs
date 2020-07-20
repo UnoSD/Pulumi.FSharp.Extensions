@@ -58,19 +58,19 @@ type BuilderType =
     
 let createPulumiModules schemaUrl =
     let schema =
-        getSchemaFromCacheOrUrl schemaUrl |>
-        JsonValue.Parse
+        getSchemaFromCacheOrUrl schemaUrl
+        |> JsonValue.Parse
     
     let pulumiProviderName =
         schema.["name"].AsString()
     
     let types =
-        schema.["types"].Properties() |>
-        Array.map (fun (type', jv) -> typeInfo.TypedMatch(type') |> Type, jv)
+        schema.["types"].Properties()
+        |> Array.map (fun (type', jv) -> typeInfo.TypedMatch(type') |> Type, jv)
     
     let resources =
-        schema.["resources"].Properties() |>
-        Array.map (fun (type', jv) -> resourceInfo.TypedMatch(type') |> Resource, jv)
+        schema.["resources"].Properties()
+        |> Array.map (fun (type', jv) -> resourceInfo.TypedMatch(type') |> Resource, jv)
     
     let resourceProvider (builder, _) =
         match builder with
@@ -81,9 +81,9 @@ let createPulumiModules schemaUrl =
         schema.["language"]
               .["csharp"]
               .["namespaces"]
-              .Properties() |>
-        Array.map (fun (p, jv) -> (p, jv.AsString())) |>
-        Map.ofArray              
+              .Properties()
+        |> Array.map (fun (p, jv) -> (p, jv.AsString()))
+        |> Map.ofArray              
     
     let createBuilders (typeInfo, jsonValue) =
         match typeInfo with
@@ -97,12 +97,12 @@ let createPulumiModules schemaUrl =
             | None    -> sprintf "Unable to find namespace %s" providerName |> failwith
         
         let types =
-            builders |>
+            builders
             // Debug filter
             //Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
             //                               | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine")) |>
-            Array.collect createBuilders |>
-            List.ofArray
+            |> Array.collect createBuilders
+            |> List.ofArray
         
         Module.module'(moduleName,
                        [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
@@ -110,12 +110,20 @@ let createPulumiModules schemaUrl =
                        @ types)
     
     let providerModules =
-        Array.concat [ types; resources ] |>
-        Array.groupBy resourceProvider |>
+        Array.concat [ types; resources ]
+        |> Array.groupBy resourceProvider
         // Debug filter
         //Array.filter (fun (x, _) -> x = "compute") |>
-        Array.filter (fun (_, b) -> not <| Array.isEmpty b) |>
-        Array.filter (fun (x, _) -> [ "config"; "index" ] |> List.contains x |> not) |>
-        Array.map createProviderModule
-    
+        |> Array.filter (fun (_, b) ->
+            b
+            |> Array.isEmpty
+            |> not)
+        |> Array.filter (fun (x, _) ->
+            [ "config"; "index" ]
+            |> List.contains x
+            |> not)
+        |> Array.map createProviderModule
+
+
+
     providerModules |> List.ofArray

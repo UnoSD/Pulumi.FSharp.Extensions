@@ -16,8 +16,8 @@ let private implicitCtor () =
 
 let createAzureBuilderClass isType name props =
     let typeName =
-        name + "Builder" |>
-        Ident.CreateLong
+        name + "Builder"
+        |> Ident.CreateLong
         
     let argsType =
         name + "Args"
@@ -85,9 +85,10 @@ let createAzureBuilderClass isType name props =
         [fst; listCons]
         
     let operations =
-        props |>
-        Array.collect (fun (prop, t) -> createOperationsFor isType (prop |> toPascalCase) t argsType opTupleArgs) |>
-        List.ofArray
+        props
+        |> Array.collect (fun (prop, t) ->
+            createOperationsFor isType (prop |> toPascalCase) t argsType opTupleArgs)
+        |> List.ofArray
     
     let newNameExpr =
         Expr.tuple(Expr.ident("newName"),

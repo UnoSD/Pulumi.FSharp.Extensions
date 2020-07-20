@@ -51,13 +51,13 @@ type AppServiceBuilder internal () =
     })
 
     member __.Run (cargs, args) =
-       PlanSkuArgs(Tier = (input <| getTier args.Tier),
-                   Size = input (match args.Size with | Y1 -> "Y1")) |>
-       (fun psa -> PlanArgs(ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
+        PlanSkuArgs(Tier = (input (getTier args.Tier)),
+                   Size = input (match args.Size with | Y1 -> "Y1"))
+        |> (fun psa -> PlanArgs(ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
                             Location = input (regionName cargs.Region),
                             Kind = input (getKind args.Kind),
-                            Sku = input psa)) |>           
-       fun pa -> Plan(cargs.Name, pa)
+                            Sku = input psa))
+        |> fun pa -> Plan(cargs.Name, pa)
     
     [<CustomOperation("tier")>]
     member __.Tier((cargs, args), tier) = cargs, { args with Tier = tier }        

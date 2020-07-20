@@ -39,12 +39,13 @@ let getResourceGroup =
 type AzureResource internal () =
     let addOrReplaceResourceGroup extras resourceGroup =
         (resourceGroup |> ResourceGroupArg) ::
-        (extras |>
-         List.filter (fun x -> match x with | ResourceGroupArg _ -> false))
+        (
+            extras
+            |>List.filter (fun x -> match x with | ResourceGroupArg _ -> false))
 
     let rg cargs resourceGroup =
-        Object resourceGroup |>
-        addOrReplaceResourceGroup cargs.Extras
+        Object resourceGroup
+        |> addOrReplaceResourceGroup cargs.Extras
             
     //abstract member __Yield : 'a -> AzureResourceArgs * 'b
     //abstract member __Run : AzureResourceArgs * 'b -> 'a

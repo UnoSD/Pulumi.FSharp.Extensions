@@ -30,8 +30,8 @@ let private run args =
         StorageContainerName = getName args.StorageContainer,
         Type = input (match args.Type with | Block -> "Block"),
         Source = args.Source
-    ) |>
-    fun ba -> Blob(args.Name, ba)
+    )
+    |> fun ba -> Blob(args.Name, ba)
 
 type StorageBlobBuilder internal () =
     member __.Yield _ = {

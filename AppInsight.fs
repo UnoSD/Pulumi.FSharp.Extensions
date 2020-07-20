@@ -34,8 +34,8 @@ let private run (cargs, args) =
         ApplicationType = input (getType args.ApplicationType),
         ResourceGroupName = (getResourceGroup cargs.Extras |> getName),
         RetentionInDays = input args.RetentionInDays
-    ) |>
-    fun ia -> Insights(cargs.Name, ia)
+    )
+    |> fun ia -> Insights(cargs.Name, ia)
 
 type AppInsightBuilder () =
     inherit AzureResource ()

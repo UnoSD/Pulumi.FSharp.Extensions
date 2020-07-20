@@ -37,10 +37,10 @@ type Pat =
             Pattern = Pat.ident(name).ToRcd
             Type = SynType.CreateLongIdent(typeName)
             Range = range.Zero
-        } |>
-        SynPatRcd.Typed |>
-        SynPatRcd.CreateParen |>
-        (fun x -> x.FromRcd)
+        }
+        |> SynPatRcd.Typed
+        |> SynPatRcd.CreateParen
+        |> (fun x -> x.FromRcd)
 
 type Expr =
     static member ident(str) =
@@ -168,5 +168,5 @@ type Module =
         Module.module'(name, content, [ Attribute.attribute("AutoOpen") ])
         
     static member open'(namespaceOrModule) =
-        LongIdentWithDots.CreateString(namespaceOrModule) |>
-        SynModuleDecl.CreateOpen
+        LongIdentWithDots.CreateString(namespaceOrModule)
+        |> SynModuleDecl.CreateOpen

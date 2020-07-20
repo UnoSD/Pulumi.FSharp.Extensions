@@ -61,8 +61,8 @@ type FunctionAppBuilder internal () =
                                                  SupportCredentials = input args.CorsCredentials))
     
         let appSettings =
-            args.AppSettings |>
-            List.map getAppSetting
+            args.AppSettings
+            |> List.map getAppSetting
         
         FunctionAppArgs(
             ResourceGroupName = (cargs.Extras |> getResourceGroup |> getName),
@@ -72,8 +72,8 @@ type FunctionAppBuilder internal () =
             StorageAccountAccessKey = io args.StorageAccount.PrimaryAccessKey,
             Version = input args.Version,
             SiteConfig = input (FunctionAppSiteConfigArgs(Cors = functionAppCors))
-        ) |>
-        fun faa -> FunctionApp(cargs.Name, faa)
+        )
+        |> fun faa -> FunctionApp(cargs.Name, faa)
     
     [<CustomOperation("runtime")>]
     member __.Runtime((cargs, args), runtime) =

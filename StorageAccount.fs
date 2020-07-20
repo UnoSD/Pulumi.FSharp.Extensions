@@ -34,19 +34,26 @@ type StorageAccountBuilder () =
     })
 
     member __.Run (cargs, args) =
-        cargs.Region |>
-        regionName |>
-        input |>
-        (fun l  -> AccountArgs(Location = l,
-                               ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
-                               // Convert from type name to string
-                               AccountTier = input (match args.Tier with | Standard -> "Standard"),
-                               AccountReplicationType = input (match args.Replication with | LRS -> "LRS"),
-                               EnableHttpsTrafficOnly = input args.HttpsOnly,
-                               Tags = inputMap cargs.Tags)) |>
-        fun saa -> Account(cargs.Name,
-                           saa,
-                           CustomResourceOptions(AdditionalSecretOutputs = List<string>([
+        cargs.Region
+        |> regionName
+        |> input
+        |> (fun l  -> 
+            AccountArgs(
+                Location = l,
+                ResourceGroupName = (getName (cargs.Extras |> getResourceGroup)),
+                // Convert from type name to string
+                AccountTier = input (match args.Tier with | Standard -> "Standard"),
+                AccountReplicationType = input (match args.Replication with | LRS -> "LRS"),
+                EnableHttpsTrafficOnly = input args.HttpsOnly,
+                Tags = inputMap cargs.Tags))
+        |> fun saa -> 
+            Account(
+                cargs.Name,
+                saa,
+                CustomResourceOptions(
+                    AdditionalSecretOutputs =
+                        List<string>(
+                            [
                                "PrimaryAccessKey"
                                "SecondaryAccessKey"
                                "PrimaryConnectionString"

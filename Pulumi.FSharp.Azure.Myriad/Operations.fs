@@ -98,11 +98,17 @@ let createOperationsFor' isType name pType (argsType : string) tupleArgs =
             SynExpr.CreateTuple(tupleArgs (SynExpr.CreateIdentString(nameArgName)))
         ])
         
-    setRights |>
-    List.map (fun sr -> sr, SynExpr.CreateIdentString(match name with | "Name" when not isType -> "resourceName" | _ -> name |> toCamelCase)) |>
-    List.map (letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation' nameArgName isType name (i = 0) e) |>
-    Array.ofList
+    setRights
+    |> List.map (fun sr ->
+        let nameString =
+            match name with
+            | "Name" when not isType -> "resourceName" 
+            | _ -> name
+            |> toCamelCase
+        sr, SynExpr.CreateIdentString(nameString))
+    |> List.map (letExpr >> expr)
+    |> List.mapi (fun i e -> createOperation' nameArgName isType name (i = 0) e)
+    |> Array.ofList
     
 let createOperationsFor isType name (pType : string) argsType tupleArgs =
     let setExpr =

@@ -47,16 +47,16 @@ type SasTokenBuilder internal () =
                     Start = range.From.ToString("u").Replace(' ', 'T'),
                     Expiry = range.To.ToString("u").Replace(' ', 'T'),
                     Permissions = permissions
-                ) |>
-                GetAccountBlobContainerSAS.InvokeAsync            
+                )
+                |> GetAccountBlobContainerSAS.InvokeAsync            
         
             return result.Sas
         }
     
     let toArgs permissions =
         let has permission =
-            permissions |>
-            List.contains permission
+            permissions
+            |> List.contains permission
         
         GetAccountBlobContainerSASPermissionsArgs(
             Add = (has Add),
