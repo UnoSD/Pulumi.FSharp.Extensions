@@ -1,8 +1,8 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.ResourceGroup
+module Pulumi.FSharp.Azure.Legacy.ResourceGroup
 
 open Pulumi.FSharp.Azure.Regions
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.Core
 open Pulumi.FSharp
 

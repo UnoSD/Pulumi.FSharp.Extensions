@@ -14,7 +14,7 @@ open Core
 let private implicitCtor () =
     SynMemberDefn.CreateImplicitCtor()
 
-let createAzureBuilderClass name props =
+let createAzureBuilderClass isType name props =
     let typeName =
         name + "Builder" |>
         Ident.CreateLong
@@ -64,10 +64,13 @@ let createAzureBuilderClass name props =
                                                   SynExpr.CreateApp(arg1, SynExpr.CreateApp(arg2, arg3)))
        
     let runArgs =
-        SynExpr.CreateParenedTuple([
-            SynExpr.CreateLongIdent(LongIdentWithDots.CreateString ("name"))
-            SynExpr.CreateParen(apply)
-        ])
+        if isType then
+            apply
+        else 
+            SynExpr.CreateParenedTuple([
+                SynExpr.CreateLongIdent(LongIdentWithDots.CreateString ("name"))
+                SynExpr.CreateParen(apply)
+            ])
         
     let listCons =
         Expr.funcTuple("List.Cons", [ "apply"; "args" ])
@@ -83,7 +86,7 @@ let createAzureBuilderClass name props =
         
     let operations =
         props |>
-        Array.collect (fun (prop, t) -> createOperationsFor (prop |> toPascalCase) t argsType opTupleArgs) |>
+        Array.collect (fun (prop, t) -> createOperationsFor isType (prop |> toPascalCase) t argsType opTupleArgs) |>
         List.ofArray
     
     let newNameExpr =
@@ -93,7 +96,7 @@ let createAzureBuilderClass name props =
     let runReturnExpr =
         Expr.sequential([
             letFunc
-            createInstance name runArgs
+            if isType then runArgs else createInstance name runArgs
         ])
     
     let yieldReturnExpr =
@@ -140,10 +143,10 @@ let createAzureBuilderClass name props =
                                  implicitCtor ()
                                  
                                  createYield yieldReturnExpr
-                                 createRun runReturnExpr
+                                 createRun (if isType then null else "name") runReturnExpr
                                  createCombine()
                                  createFor()
                                  createDelay()
                                  createZero()
-                                 createNameOperation newNameExpr
+                                 yield! if isType then [] else [ createNameOperation newNameExpr ]
                              ] @ operations)

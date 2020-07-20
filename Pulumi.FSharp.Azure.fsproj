@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>1.0.1</Version>
+        <Version>2.0.0</Version>
         <NoWarn>NU1605,FS0058</NoWarn>
     </PropertyGroup>
 
@@ -33,12 +33,6 @@
         <Compile Include="ApimApi.fs" />
         <Compile Include="ApimApiOperation.fs" />
         <Compile Include="FunctionApp.fs" />
-        <Compile Include="Library.fs" />
-        <None Include="Example.fs" />
-        <Compile Include="Generated.fs">
-            <MyriadFile>Library.fs</MyriadFile>
-            <MyriadNameSpace>Pulumi.FSharp.Azure</MyriadNameSpace>
-        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -47,9 +41,24 @@
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.2.8" PrivateAssets="All" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <ProjectReference Include="Pulumi.FSharp.Azure.Myriad\Pulumi.FSharp.Azure.Myriad.fsproj" PrivateAssets="All" />
+        <None Include="Example.fs" />
+        
+        <Compile Include="Myriad.fs" />
+        
+        <None Include="Generated - Errors.fs" />
+        
+        <None Include="Generated - Working.fs" />
+        
+        <Compile Include="Generated.fs">
+            <MyriadFile>Myriad.fs</MyriadFile>
+        </Compile>
+        
+        <Compile Include="Test.fs" />
+        
+        <!-- This is required only to force build of the plugin -->
+        <ProjectReference Include="Pulumi.FSharp.Azure.Myriad\Pulumi.FSharp.Azure.Myriad.fsproj" PrivateAssets="All" />
     </ItemGroup>
 
     <Import Project="Pulumi.FSharp.Azure.Myriad\build\Pulumi.FSharp.Azure.Myriad.InTest.props" />

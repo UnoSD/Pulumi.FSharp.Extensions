@@ -3,10 +3,10 @@
 // code text generator
 
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.FunctionApp
+module Pulumi.FSharp.Azure.Legacy.FunctionApp
 
 open Pulumi.Azure.AppService.Inputs
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.AppInsights
 open Pulumi.Azure.AppService
 open Pulumi.Azure.Storage

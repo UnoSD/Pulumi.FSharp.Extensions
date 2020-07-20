@@ -1,4 +1,4 @@
-module Pulumi.FSharp.Azure.Core
+module Pulumi.FSharp.Azure.Common
 
 open Pulumi.Azure.Core
 open Pulumi.FSharp.Azure.Regions

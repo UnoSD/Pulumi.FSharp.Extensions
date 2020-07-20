@@ -19,11 +19,10 @@
         <Compile Include="Run.fs" />
         <Compile Include="Let.fs" />
         <Compile Include="Builder.fs" />
-        <Compile Include="Module.fs" />
         <Compile Include="Type.fs" />
         <Compile Include="Debug.fs" />
-        <Compile Include="File.fs" />
-        <Compile Include="Library.fs" />
+        <Compile Include="Modules.fs" />
+        <Compile Include="Generator.fs" />
     </ItemGroup>
     
     <ItemGroup>

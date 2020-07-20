@@ -144,3 +144,29 @@ type Match =
                               expr,
                               range.Zero,
                               DebugPointForTarget.No)
+
+type Namespace =
+    static member namespace'(name, content) =
+        { SynModuleOrNamespaceRcd.CreateNamespace(Ident.CreateLong name)
+                with Declarations = content }
+        
+type Attribute =
+    static member attribute(name) =
+        SynAttributeList.Create(SynAttribute.Create(name))
+        
+type Module =
+    static member module'(name, content, attributes) =
+        let componentInfo =
+            { SynComponentInfoRcd.Create [ Ident.Create name ] with 
+                  Attributes = attributes }
+        SynModuleDecl.CreateNestedModule(componentInfo, content)
+        
+    static member module'(name, content) =
+        Module.module'(name, content, [])
+        
+    static member autoOpenModule(name, content) =
+        Module.module'(name, content, [ Attribute.attribute("AutoOpen") ])
+        
+    static member open'(namespaceOrModule) =
+        LongIdentWithDots.CreateString(namespaceOrModule) |>
+        SynModuleDecl.CreateOpen

@@ -1,8 +1,8 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.ApimApiOperation
+module Pulumi.FSharp.Azure.Legacy.ApimApiOperation
 
 open Pulumi.Azure.ApiManagement
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.FSharp
     
 type HttpMethod =

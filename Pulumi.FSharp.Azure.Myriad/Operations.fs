@@ -19,7 +19,7 @@ let private createTuple items withParen =
     else
         SynPatRcd.CreateTuple(items)
 
-let private argsTuple' nameVarName withParen =
+let argsTuple' nameVarName withParen =
     let nvn =
         match nameVarName with
         | null -> SynPatRcd.CreateWild
@@ -27,9 +27,6 @@ let private argsTuple' nameVarName withParen =
     
     createTuple [ nvn
                   createPattern "args" [] ] withParen
-
-let argsTuple =
-    argsTuple' "name"
 
 let private createOperation'' nameVarName name coName argName hasAttribute =
     let attributes =
@@ -47,28 +44,25 @@ let private createOperation'' nameVarName name coName argName hasAttribute =
     
     createMember name patterns attributes
 
-let createOperation =
-    createOperation'' "name"
-
-let private createOperation' name typeName hasAttribute =
+let private createOperation' nameArgName isType name typeName hasAttribute =
     let snakeCaseName =
-        if name = "Name" then
+        if name = "Name" && (not isType) then
             "resourceName"
         else 
-            toSnakeCase name
+            toCamelCase name
     
     let coName =
         match snakeCaseName with
         | "resourceGroupName" -> "resourceGroup"
-        | "name" -> "resourceName"
+        | "name" when not isType -> "resourceName"
         | x -> x
     
-    createOperation (coName |> toPascalCase) coName snakeCaseName typeName hasAttribute
+    createOperation'' nameArgName (coName |> toPascalCase) coName snakeCaseName typeName hasAttribute
 
 let createNameOperation newNameExpr =
     createOperation'' null "Name" "name" "newName" true newNameExpr    
 
-let createOperationsFor' name pType (argsType : string) tupleArgs =
+let createOperationsFor' isType name pType (argsType : string) tupleArgs =
     let setRights =
         match pType with
         | "string"
@@ -91,19 +85,26 @@ let createOperationsFor' name pType (argsType : string) tupleArgs =
     let letExpr setRight =
         Expr.let'("apply", [ (Pat.typed("args", argsType)) ], setExpr setRight)
     
+    // This should be the same as the member arg (currently "n")
+    let nameArgName =
+        if isType then
+            "n"
+        else
+            "name"
+    
     let expr setExpr =
         SynExpr.CreateSequential([
             setExpr
-            SynExpr.CreateTuple(tupleArgs (SynExpr.CreateIdentString("name")))
+            SynExpr.CreateTuple(tupleArgs (SynExpr.CreateIdentString(nameArgName)))
         ])
         
     setRights |>
-    List.map (fun sr -> sr, SynExpr.CreateIdentString(match name with | "Name" -> "resourceName" | _ -> name |> toSnakeCase)) |>
+    List.map (fun sr -> sr, SynExpr.CreateIdentString(match name with | "Name" when not isType -> "resourceName" | _ -> name |> toCamelCase)) |>
     List.map (letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation' name (i = 0) e) |>
+    List.mapi (fun i e -> createOperation' nameArgName isType name (i = 0) e) |>
     Array.ofList
     
-let createOperationsFor name (pType : string) argsType tupleArgs =
+let createOperationsFor isType name (pType : string) argsType tupleArgs =
     let setExpr =
         SynExpr.CreateSequential([
             SynExpr.Set (SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("args." + name)),
@@ -111,7 +112,7 @@ let createOperationsFor name (pType : string) argsType tupleArgs =
                          range.Zero)
             SynExpr.CreateIdentString("args")])
     
-    let expr typeName =
+    let expr _ =
         Expr.paren(
             Expr.sequential([
                 Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
@@ -122,4 +123,4 @@ let createOperationsFor name (pType : string) argsType tupleArgs =
     if pType.StartsWith("complex:") then
         [| createYield' (Pat.ident("arg")) (Expr.list([ expr (pType.Substring(8)) ])) |]
     else 
-        createOperationsFor' name pType argsType tupleArgs
+        createOperationsFor' isType name pType argsType tupleArgs

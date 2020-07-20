@@ -1,10 +1,10 @@
 // Autogenerate the builders based on Pulumi assembly
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.StorageAccount
+module Pulumi.FSharp.Azure.Legacy.StorageAccount
 
 open Pulumi.FSharp.Azure.Regions
 open System.Collections.Generic
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.Storage
 open Pulumi.FSharp
 open Pulumi

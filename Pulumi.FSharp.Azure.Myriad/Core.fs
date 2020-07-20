@@ -13,7 +13,7 @@ let private changeInitial change value =
     
     sprintf "%c%s" (change x) xs
 
-let toSnakeCase =
+let toCamelCase =
     changeInitial Char.ToLower
     
 let toPascalCase =

@@ -1,8 +1,8 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.ApimApi
+module Pulumi.FSharp.Azure.Legacy.ApimApi
 
 open Pulumi.Azure.ApiManagement
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.FSharp
 open Pulumi
 

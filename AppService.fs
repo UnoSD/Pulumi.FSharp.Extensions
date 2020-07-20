@@ -1,9 +1,9 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.AppService
+module Pulumi.FSharp.Azure.Legacy.AppService
 
 open Pulumi.Azure.AppService.Inputs
 open Pulumi.FSharp.Azure.Regions
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.AppService
 open Pulumi.FSharp
 

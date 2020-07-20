@@ -1,7 +1,7 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.AppInsight
+module Pulumi.FSharp.Azure.Legacy.AppInsight
 
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.AppInsights
 open Pulumi.FSharp
 

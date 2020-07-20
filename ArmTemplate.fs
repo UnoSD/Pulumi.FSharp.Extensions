@@ -1,8 +1,8 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.ArmTemplate
+module Pulumi.FSharp.Azure.Legacy.ArmTemplate
 
 open System.IO
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.Core
 open Pulumi.FSharp
 open Pulumi

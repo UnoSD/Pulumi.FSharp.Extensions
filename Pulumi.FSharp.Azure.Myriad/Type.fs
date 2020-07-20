@@ -25,9 +25,9 @@ let private getTypeInfo (typeName : string) =
     
     fullProvider, fullType, tProvider, category, resourceType, formattedTypeName
     
-let createType (provider : PulumiProvider.Root) (fqType : string, jValue : JsonValue) =
+let createType isType (provider : JsonValue) (fqType : string, jValue : JsonValue) =
     let getComplexType typeFullPath =
-        provider.Types.JsonValue.Properties() |>
+        provider.["types"].Properties() |>
         Array.tryFind (fun (t, _) -> ("#/types/" + t) = typeFullPath) |>
         (fun o -> match o with
                   | Some x -> x
@@ -49,10 +49,13 @@ let createType (provider : PulumiProvider.Root) (fqType : string, jValue : JsonV
          typeName) =
         getTypeInfo fqType
         
-    let properties = jValue.GetProperty("inputProperties").Properties()
+    let propertiesProperty =
+        if isType then "properties" else "inputProperties"
+        
+    let properties = jValue.GetProperty(propertiesProperty).Properties()
     
     let serviceProvider =
-        provider.Language.Csharp.Namespaces.JsonValue.Properties() |>
+        provider.["language"].["csharp"].["namespaces"].Properties() |>
         Array.find (fun (p, _) -> p = category) |>
         snd |>
         (fun jv -> jv.AsString())

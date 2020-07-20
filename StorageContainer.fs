@@ -1,7 +1,7 @@
 [<AutoOpen>]
-module Pulumi.FSharp.Azure.StorageContainer
+module Pulumi.FSharp.Azure.Legacy.StorageContainer
 
-open Pulumi.FSharp.Azure.Core
+open Pulumi.FSharp.Azure.Common
 open Pulumi.Azure.Storage
 open Pulumi.FSharp
 
