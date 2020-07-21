@@ -136,7 +136,7 @@ let createAzureBuilderClass isType name props =
         createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.func("f"))
     
     let createZero() =
-        createMember "Zero" [] [] (Expr.unit)
+        createMember "Zero" [Pat.wild.ToRcd] [] (Expr.unit)
     
     SynModuleDecl.CreateType(SynComponentInfoRcd.Create(typeName),
                              [

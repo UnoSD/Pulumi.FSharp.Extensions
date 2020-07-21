@@ -6,6 +6,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+timeoutInMinutes: 0
+
 steps:
   - task: UseDotNet@2
     displayName: 'Use .NET Core SDK 3.1.103'

@@ -18,12 +18,11 @@ type private PulumiProvider =
 #nowarn "25"
     
 let private getTypeInfo (typeName : string) =
-    let [| fullProvider; fullType |] = typeName.Split("/")
-    let [| tProvider; category |] = fullProvider.Split(':')
+    let [| _; fullType |] = typeName.Split("/")
     let [| resourceType; _(*subtype*) |] = fullType.Split(':')
     let formattedTypeName = toPascalCase resourceType
     
-    fullProvider, fullType, tProvider, category, resourceType, formattedTypeName
+    formattedTypeName
     
 let createType isType (provider : JsonValue) (fqType : string, jValue : JsonValue) =
     let getComplexType typeFullPath =
@@ -39,30 +38,15 @@ let createType isType (provider : JsonValue) (fqType : string, jValue : JsonValu
             if complexType = "complex" then
                 "complex"
             else
-                "complex:" + (getTypeInfo complexType |> (fun (_,_,_,_,_,t) -> t)))
+                "complex:" + (getTypeInfo complexType |> (fun t -> t)))
 
-    let (_,
-         _,
-         tProvider,
-         category,
-         _,
-         typeName) =
+    let typeName =
         getTypeInfo fqType
         
     let propertiesProperty =
         if isType then "properties" else "inputProperties"
         
     let properties = jValue.GetProperty(propertiesProperty).Properties()
-    
-    let serviceProvider =
-        provider.["language"].["csharp"].["namespaces"].Properties() |>
-        Array.find (fun (p, _) -> p = category) |>
-        snd |>
-        (fun jv -> jv.AsString())
-    
-    let ns =
-        serviceProvider |>
-        sprintf "Pulumi.%s.%s" (toPascalCase tProvider)
 
     let nameAndType (name, jValue : JsonValue) =
         let tName =
@@ -91,4 +75,4 @@ let createType isType (provider : JsonValue) (fqType : string, jValue : JsonValu
         
         (tName, pType)
     
-    ns, typeName, properties, nameAndType, serviceProvider
+    typeName, properties, nameAndType

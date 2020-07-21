@@ -13,13 +13,7 @@ open AstInstance
 open FSharp.Text.RegexProvider
 open FsAst
 
-let private createModule' name content attributes =
-    let componentInfo =
-        { SynComponentInfoRcd.Create [ Ident.Create name ] with 
-              Attributes = attributes }
-    SynModuleDecl.CreateNestedModule(componentInfo, content)
-
-let private createModuleContent isType (_, typeName, properties, nameAndType, _) =
+let private createModuleContent isType (typeName, properties, nameAndType) =
     [|
         createAzureBuilderClass isType typeName (properties |> Array.map (nameAndType))
         
@@ -101,13 +95,26 @@ let createPulumiModules schemaUrl =
             // Debug filter
             //Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
             //                               | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine")) |>
+            Array.filter (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get") ||
+                                                         // Fix this
+                                                         x.ResourceType.Value = "AccountNetworkRules" -> false
+                                           | _ -> true)) |>
             Array.collect createBuilders |>
             List.ofArray
         
+        let hasTypes =
+            builders |>
+            Array.exists (fst >> (function | Type _ -> true | _ -> false))
+        
+        let openInputs =
+            match hasTypes with
+            | true  -> [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName + ".Inputs") ]
+            | false -> []
+            
         Module.module'(moduleName,
-                       [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
-                         Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName + ".Inputs") ]
-                       @ types)
+                       Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
+                       :: openInputs
+                       @  types)
     
     let providerModules =
         Array.concat [ types; resources ] |>
