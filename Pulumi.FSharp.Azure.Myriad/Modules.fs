@@ -1,14 +1,15 @@
 module AstModules
 
-open System.IO
-open AstHelpers
-open FSharp.Data
+open System
 open FSharp.Compiler.SyntaxTree
-open AstBuilder
-open AstLet
-open Core
 open AstInstance
+open FSharp.Data
+open AstHelpers
+open AstBuilder
+open System.IO
+open AstLet
 open FsAst
+open Core
 
 let private createModuleContent (properties : (string * JsonValue) []) typeName isType types =
     [|
@@ -61,17 +62,7 @@ let createPulumiModules schemaUrl =
               .["namespaces"]
               .Properties() |>
         Array.map (fun (p, jv) -> (p, jv.AsString())) |>
-        Map.ofArray              
-    
-//open FSharp.Text.RegexProvider
-//
-//type PossibleValues =
-//    Regex<"Possible values are `(?<Value>[\w])`(?:, `(?<Value>[\w])`)? and `(?<Value>[\w])`.">
-//
-//let x (jValue : JsonValue) =
-//    jValue.Properties() |>
-//    Array.tryFind (fun (p, _) -> p = "description") |>
-//    Option.map (snd >> (fun x -> x.AsString() |> PossibleValues().TypedMatches) >> (fun x -> x))
+        Map.ofArray
     
     let create (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
@@ -94,10 +85,10 @@ let createPulumiModules schemaUrl =
             builders |>
             
             // Debug filter
-            //Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
-            //                               | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine")) |>
+            Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
+                                           | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine")) |>
             
-            Array.filter (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get") ||
+            Array.filter (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) ||
                                                          // Fix this
                                                          x.ResourceType.Value = "AccountNetworkRules" -> false
                                            | _ -> true)) |>
@@ -106,27 +97,26 @@ let createPulumiModules schemaUrl =
         
         let hasTypes =
             builders |>
-            Array.exists (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get") |> not -> true | _ -> false))
+            Array.exists (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) |> not -> true | _ -> false))
         
         let openInputs =
-            match hasTypes with
-            | true  -> [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName + ".Inputs") ]
-            | false -> []
+            if hasTypes then
+                [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName + ".Inputs") ]
+            else
+                []
             
-        Module.module'(moduleName,
-                       Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
-                       :: openInputs
-                       @  types)
+        Module.module'(moduleName, [
+            yield  Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
+            yield! openInputs
+            yield! types
+        ])
     
-    let providerModules =
-        Array.concat [ types; resources ] |>
-        Array.groupBy resourceProvider |>
-        
-        // Debug filter
-        //Array.filter (fun (x, _) -> x = "compute") |>
-        
-        Array.filter (fun (_, b) -> not <| Array.isEmpty b) |>
-        Array.filter (fun (x, _) -> [ "config"; "index" ] |> List.contains x |> not) |>
-        Array.map createProviderModule
+    Array.concat [ types; resources ] |>
+    Array.groupBy resourceProvider |>
     
-    providerModules |> List.ofArray
+    // Debug filter
+    Array.filter (fun (provider, _) -> provider = "compute") |>
+    
+    Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
+    Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index" ]) |>
+    Array.map createProviderModule

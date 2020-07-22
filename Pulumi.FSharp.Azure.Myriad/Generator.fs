@@ -24,7 +24,7 @@ type PulumiFSharpGenerator() =
     interface IMyriadGenerator with
         member _.Generate(_, _) =
             Namespace.namespace'("Pulumi.FSharp." + provider, [
-                yield Module.open'("Pulumi.FSharp")
+                yield  Module.open'("Pulumi.FSharp")
                 
                 yield! createPulumiModules pulumiSchemaUrl
             ])
