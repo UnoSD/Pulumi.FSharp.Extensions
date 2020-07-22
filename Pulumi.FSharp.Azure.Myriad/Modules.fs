@@ -8,6 +8,7 @@ open AstHelpers
 open AstBuilder
 open System.IO
 open AstLet
+open Debug
 open FsAst
 open Core
 
@@ -83,11 +84,7 @@ let createPulumiModules schemaUrl =
         
         let types =
             builders |>
-            
-            // Debug filter
-            Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
-                                           | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine")) |>
-            
+            debugFilterTypes |>
             Array.filter (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) ||
                                                          // Fix this
                                                          x.ResourceType.Value = "AccountNetworkRules" -> false
@@ -112,10 +109,7 @@ let createPulumiModules schemaUrl =
     
     Array.concat [ types; resources ] |>
     Array.groupBy resourceProvider |>
-    
-    // Debug filter
-    Array.filter (fun (provider, _) -> provider = "compute") |>
-    
+    debugFilterProvider |>
     Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
     Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index" ]) |>
     Array.Parallel.map createProviderModule

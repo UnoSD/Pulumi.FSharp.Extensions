@@ -1,22 +1,21 @@
 module Debug
 
-open FSharp.Data
+open AstBuilder
+open Core
 
-let excludeTypes = [
-    "azure:core/resourceGroup:ResourceGroup"
-    "azure:appservice/plan:Plan"
-    "azure:storage/account:Account"
-    "azure:storage/container:Container"
-    "azure:storage/blob:Blob"
-    "azure:appinsights/insights:Insights"
-    "azure:core/templateDeployment:TemplateDeployment"
-    "azure:apimanagement/api:Api"
-    "azure:apimanagement/apiOperation:ApiOperation"
-    "azure:appservice/functionApp:FunctionApp"
-]
+let private isDebug = false
 
-let debugFilters : ((string * JsonValue) [] -> (string * JsonValue) []) =
-    // Filtering out the ones that I created manually, for now
-    Array.filter (fun (r, _) -> (excludeTypes |> List.contains r |> not)) >>
-    // Debug only
-    Array.filter (fun (r, _) -> r = "azure:compute/virtualMachine:VirtualMachine")
+let debugFilterTypes x =
+    x |>
+    if isDebug then
+        Array.filter (fst >> (function | Type x -> x.ResourceType.Value = "VirtualMachineStorageOsDisk"
+                                       | Resource x -> x.ResourceTypeCamelCase.Value = "virtualMachine"))
+    else
+        id
+
+let debugFilterProvider (x : (string * 'a) []) : ((string * 'a) []) =
+    x |>
+    if isDebug then
+        Array.filter (fun (provider, _) -> provider = "compute")
+    else
+        id
