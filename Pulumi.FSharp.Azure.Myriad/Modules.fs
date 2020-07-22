@@ -92,8 +92,7 @@ let createPulumiModules schemaUrl =
                                                          // Fix this
                                                          x.ResourceType.Value = "AccountNetworkRules" -> false
                                            | _ -> true)) |>
-            Array.collect createBuilders |>
-            List.ofArray
+            Array.Parallel.collect createBuilders
         
         let hasTypes =
             builders |>
@@ -119,4 +118,4 @@ let createPulumiModules schemaUrl =
     
     Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
     Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index" ]) |>
-    Array.map createProviderModule
+    Array.Parallel.map createProviderModule
