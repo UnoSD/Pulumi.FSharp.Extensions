@@ -104,23 +104,36 @@ let createOperationsFor' isType name pType (argsType : string) tupleArgs =
     List.mapi (fun i e -> createOperation' nameArgName isType name (i = 0) e) |>
     Array.ofList
     
+let private argIdent =
+    Pat.ident("arg")
+    
+let private argToInput =
+    Expr.func("input", "arg")
+    
+let private args =
+    Expr.ident("args")
+    
+let private funcIdent =
+    Expr.ident("func")
+    
 let createOperationsFor isType name (pType : string) argsType tupleArgs =
     let setExpr =
-        SynExpr.CreateSequential([
-            SynExpr.Set (SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("args." + name)),
-                         SynExpr.CreateApp(Expr.ident("input"), Expr.ident("arg")),
-                         range.Zero)
-            SynExpr.CreateIdentString("args")])
+        Expr.sequential([
+            Expr.set("args." + name, argToInput)
+            args
+        ])
     
-    let expr _ =
-        Expr.paren(
-            Expr.sequential([
-                Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
-                Expr.ident("func")
-            ])      
-        )
+    let expr =
+        Expr.list([
+            Expr.paren(
+                Expr.sequential([
+                    Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
+                    funcIdent
+                ])
+            )
+        ])
     
     if pType.StartsWith("complex:") then
-        [| createYield' (Pat.ident("arg")) (Expr.list([ expr (pType.Substring(8)) ])) |]
+        [| createYield' argIdent expr |]
     else 
         createOperationsFor' isType name pType argsType tupleArgs

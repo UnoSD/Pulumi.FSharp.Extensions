@@ -102,6 +102,9 @@ type Expr =
         | x :: xs -> Expr.func(name, Expr.func(x, xs))
         | []      -> failwith "Empty arguments"
         
+    static member func(name, arg : string) =
+        Expr.func(name, [arg])
+        
     static member match'(expr, clauses) =
         SynExpr.CreateMatch(expr, clauses)
 
@@ -136,6 +139,16 @@ type Expr =
             ],
             Expr.unit,
             range.Zero)
+      
+    static member longIdent(identString) =
+        identString |>
+        LongIdentWithDots.CreateString |>
+        SynExpr.CreateLongIdent
+        
+    static member set(identString, exp) =
+        SynExpr.Set (Expr.longIdent(identString),
+                     exp,
+                     range.Zero)
 
 type Match =
     static member clause(pat, expr) =

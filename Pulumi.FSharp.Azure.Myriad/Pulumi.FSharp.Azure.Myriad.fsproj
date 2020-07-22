@@ -19,7 +19,6 @@
         <Compile Include="Run.fs" />
         <Compile Include="Let.fs" />
         <Compile Include="Builder.fs" />
-        <Compile Include="Type.fs" />
         <Compile Include="Debug.fs" />
         <Compile Include="Modules.fs" />
         <Compile Include="Generator.fs" />

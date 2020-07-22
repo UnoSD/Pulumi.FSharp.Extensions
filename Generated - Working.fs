@@ -6,6 +6,9 @@ namespace Pulumi.FSharp.Azure
 
 open Pulumi.FSharp
 
+module Advisor =
+    open Pulumi.Azure.Advisor
+
 module AnalysisServices =
     open Pulumi.Azure.AnalysisServices
     open Pulumi.Azure.AnalysisServices.Inputs
@@ -28,7 +31,7 @@ module AnalysisServices =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -101,7 +104,7 @@ module AnalysisServices =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -276,7 +279,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentFormat")>]
         member _.ContentFormat((n, args), contentFormat) =
@@ -342,7 +345,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endpointName")>]
         member _.EndpointName((n, args), endpointName) =
@@ -398,7 +401,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -464,7 +467,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -580,7 +583,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -697,7 +700,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -797,7 +800,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -914,7 +917,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -988,7 +991,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -1104,7 +1107,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -1204,7 +1207,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -1321,7 +1324,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultValue")>]
         member _.DefaultValue((n, args), defaultValue) =
@@ -1437,7 +1440,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("header")>]
         member _.Header((n, args), header) =
@@ -1494,7 +1497,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -1551,7 +1554,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -1610,7 +1613,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("parameter")>]
         member _.Parameter((n, args), parameter) =
@@ -1666,7 +1669,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -1739,7 +1742,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientCertificateThumbprint")>]
         member _.ClientCertificateThumbprint((n, args), clientCertificateThumbprint) =
@@ -1822,7 +1825,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("issuerCertificateThumbprint")>]
         member _.IssuerCertificateThumbprint((n, args), issuerCertificateThumbprint) =
@@ -1879,7 +1882,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("validateCertificateChain")>]
         member _.ValidateCertificateChain((n, args), validateCertificateChain) =
@@ -1935,7 +1938,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("instrumentationKey")>]
         member _.InstrumentationKey((n, args), instrumentationKey) =
@@ -1974,7 +1977,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -2030,7 +2033,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("gatewayRegionalUrl")>]
         member _.GatewayRegionalUrl((n, args), gatewayRegionalUrl) =
@@ -2095,7 +2098,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificatePassword")>]
         member _.CertificatePassword((n, args), certificatePassword) =
@@ -2168,7 +2171,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("developerPortals")>]
         member _.DeveloperPortals((n, args), developerPortals) =
@@ -2235,7 +2238,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificate")>]
         member _.Certificate((n, args), certificate) =
@@ -2343,7 +2346,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificate")>]
         member _.Certificate((n, args), certificate) =
@@ -2451,7 +2454,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificate")>]
         member _.Certificate((n, args), certificate) =
@@ -2559,7 +2562,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificate")>]
         member _.Certificate((n, args), certificate) =
@@ -2684,7 +2687,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificate")>]
         member _.Certificate((n, args), certificate) =
@@ -2791,7 +2794,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -2873,7 +2876,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("xmlContent")>]
         member _.XmlContent((n, args), xmlContent) =
@@ -2929,7 +2932,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enableHttp2")>]
         member _.EnableHttp2((n, args), enableHttp2) =
@@ -2968,7 +2971,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enableBackendSsl30")>]
         member _.EnableBackendSsl30((n, args), enableBackendSsl30) =
@@ -3109,7 +3112,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -3148,7 +3151,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -3197,7 +3200,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consentRequired")>]
         member _.ConsentRequired((n, args), consentRequired) =
@@ -3270,7 +3273,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("subnetId")>]
         member _.SubnetId((n, args), subnetId) =
@@ -3310,7 +3313,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -3568,7 +3571,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -3757,7 +3760,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -3884,7 +3887,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -3994,7 +3997,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -4121,7 +4124,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -4282,7 +4285,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -4590,7 +4593,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -4791,7 +4794,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -4901,7 +4904,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5011,7 +5014,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5155,7 +5158,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5248,7 +5251,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5350,7 +5353,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5443,7 +5446,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5536,7 +5539,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5629,7 +5632,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5722,7 +5725,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5852,7 +5855,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -5988,7 +5991,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6149,7 +6152,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6344,7 +6347,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6437,7 +6440,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6530,7 +6533,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6640,7 +6643,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -6776,7 +6779,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -7044,7 +7047,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -7222,7 +7225,7 @@ module ApiManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -7421,7 +7424,7 @@ module AppConfiguration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -7495,7 +7498,7 @@ module AppConfiguration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -7569,7 +7572,7 @@ module AppConfiguration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -7643,7 +7646,7 @@ module AppConfiguration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -7717,7 +7720,7 @@ module AppConfiguration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -7823,7 +7826,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -7918,7 +7921,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -7975,7 +7978,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -8087,7 +8090,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -8144,7 +8147,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hostKey")>]
         member _.HostKey((n, args), hostKey) =
@@ -8235,7 +8238,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hostKey")>]
         member _.HostKey((n, args), hostKey) =
@@ -8326,7 +8329,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -8402,7 +8405,7 @@ module AppPlatform =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -8501,7 +8504,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -8710,7 +8713,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedAudiences")>]
         member _.AllowedAudiences((n, args), allowedAudiences) =
@@ -8776,7 +8779,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("appId")>]
         member _.AppId((n, args), appId) =
@@ -8841,7 +8844,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -8906,7 +8909,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -8971,7 +8974,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consumerKey")>]
         member _.ConsumerKey((n, args), consumerKey) =
@@ -9027,7 +9030,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -9110,7 +9113,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("frequencyInterval")>]
         member _.FrequencyInterval((n, args), frequencyInterval) =
@@ -9217,7 +9220,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -9290,7 +9293,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -9372,7 +9375,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -9414,7 +9417,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -9446,7 +9449,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("level")>]
         member _.Level((n, args), level) =
@@ -9520,7 +9523,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -9562,7 +9565,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -9619,7 +9622,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -9676,7 +9679,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("alwaysOn")>]
         member _.AlwaysOn((n, args), alwaysOn) =
@@ -10126,7 +10129,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedOrigins")>]
         member _.AllowedOrigins((n, args), allowedOrigins) =
@@ -10174,7 +10177,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -10282,7 +10285,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -10390,7 +10393,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -10446,7 +10449,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("branch")>]
         member _.Branch((n, args), branch) =
@@ -10502,7 +10505,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("accessKey")>]
         member _.AccessKey((n, args), accessKey) =
@@ -10626,7 +10629,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateName")>]
         member _.CertificateName((n, args), certificateName) =
@@ -10716,7 +10719,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -10925,7 +10928,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedAudiences")>]
         member _.AllowedAudiences((n, args), allowedAudiences) =
@@ -10991,7 +10994,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("appId")>]
         member _.AppId((n, args), appId) =
@@ -11056,7 +11059,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -11121,7 +11124,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -11187,7 +11190,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consumerKey")>]
         member _.ConsumerKey((n, args), consumerKey) =
@@ -11243,7 +11246,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -11316,7 +11319,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -11398,7 +11401,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("alwaysOn")>]
         member _.AlwaysOn((n, args), alwaysOn) =
@@ -11575,7 +11578,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedOrigins")>]
         member _.AllowedOrigins((n, args), allowedOrigins) =
@@ -11623,7 +11626,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ipAddress")>]
         member _.IpAddress((n, args), ipAddress) =
@@ -11680,7 +11683,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -11736,7 +11739,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -11945,7 +11948,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedAudiences")>]
         member _.AllowedAudiences((n, args), allowedAudiences) =
@@ -12011,7 +12014,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("appId")>]
         member _.AppId((n, args), appId) =
@@ -12077,7 +12080,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -12143,7 +12146,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -12209,7 +12212,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consumerKey")>]
         member _.ConsumerKey((n, args), consumerKey) =
@@ -12266,7 +12269,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -12339,7 +12342,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -12421,7 +12424,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("alwaysOn")>]
         member _.AlwaysOn((n, args), alwaysOn) =
@@ -12598,7 +12601,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedOrigins")>]
         member _.AllowedOrigins((n, args), allowedOrigins) =
@@ -12646,7 +12649,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ipAddress")>]
         member _.IpAddress((n, args), ipAddress) =
@@ -12703,7 +12706,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -12759,7 +12762,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -12832,7 +12835,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -13041,7 +13044,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedAudiences")>]
         member _.AllowedAudiences((n, args), allowedAudiences) =
@@ -13106,7 +13109,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("appId")>]
         member _.AppId((n, args), appId) =
@@ -13171,7 +13174,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -13236,7 +13239,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -13301,7 +13304,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consumerKey")>]
         member _.ConsumerKey((n, args), consumerKey) =
@@ -13357,7 +13360,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -13430,7 +13433,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -13512,7 +13515,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -13554,7 +13557,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -13586,7 +13589,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("level")>]
         member _.Level((n, args), level) =
@@ -13660,7 +13663,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -13702,7 +13705,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -13759,7 +13762,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -13815,7 +13818,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("alwaysOn")>]
         member _.AlwaysOn((n, args), alwaysOn) =
@@ -14265,7 +14268,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedOrigins")>]
         member _.AllowedOrigins((n, args), allowedOrigins) =
@@ -14313,7 +14316,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -14420,7 +14423,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -14527,7 +14530,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -14583,7 +14586,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -14659,7 +14662,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -14906,7 +14909,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -15059,7 +15062,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -15246,7 +15249,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -15356,7 +15359,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -15501,7 +15504,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -15821,7 +15824,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16141,7 +16144,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16268,7 +16271,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16465,7 +16468,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16693,7 +16696,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16769,7 +16772,7 @@ module AppService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -16832,7 +16835,7 @@ module Authorization =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actions")>]
         member _.Actions((n, args), actions) =
@@ -16890,7 +16893,7 @@ module Authorization =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17017,7 +17020,7 @@ module Authorization =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17128,7 +17131,7 @@ module Authorization =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17217,7 +17220,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -17266,7 +17269,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("algorithm")>]
         member _.Algorithm((n, args), algorithm) =
@@ -17322,7 +17325,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -17388,7 +17391,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("algorithm")>]
         member _.Algorithm((n, args), algorithm) =
@@ -17444,7 +17447,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("day")>]
         member _.Day((n, args), day) =
@@ -17500,7 +17503,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17602,7 +17605,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17729,7 +17732,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17839,7 +17842,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -17966,7 +17969,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18093,7 +18096,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18246,7 +18249,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18339,7 +18342,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18466,7 +18469,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18602,7 +18605,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18688,7 +18691,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -18885,7 +18888,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -19090,7 +19093,7 @@ module Automation =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -19221,7 +19224,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("frequency")>]
         member _.Frequency((n, args), frequency) =
@@ -19277,7 +19280,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -19316,7 +19319,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("frequency")>]
         member _.Frequency((n, args), frequency) =
@@ -19381,7 +19384,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -19420,7 +19423,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -19477,7 +19480,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -19525,7 +19528,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -19591,7 +19594,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -19667,7 +19670,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -19780,7 +19783,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -19932,7 +19935,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -20042,7 +20045,7 @@ module Backup =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -20148,7 +20151,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -20204,7 +20207,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("evaluationInterval")>]
         member _.EvaluationInterval((n, args), evaluationInterval) =
@@ -20260,7 +20263,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -20342,7 +20345,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("containerImageNames")>]
         member _.ContainerImageNames((n, args), containerImageNames) =
@@ -20399,7 +20402,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -20473,7 +20476,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("resizeTimeout")>]
         member _.ResizeTimeout((n, args), resizeTimeout) =
@@ -20546,7 +20549,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endpointConfigurations")>]
         member _.EndpointConfigurations((n, args), endpointConfigurations) =
@@ -20603,7 +20606,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendPort")>]
         member _.BackendPort((n, args), backendPort) =
@@ -20703,7 +20706,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("access")>]
         member _.Access((n, args), access) =
@@ -20777,7 +20780,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("commandLine")>]
         member _.CommandLine((n, args), commandLine) =
@@ -20878,7 +20881,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("autoStorageContainerName")>]
         member _.AutoStorageContainerName((n, args), autoStorageContainerName) =
@@ -21002,7 +21005,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -21051,7 +21054,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("elevationLevel")>]
         member _.ElevationLevel((n, args), elevationLevel) =
@@ -21108,7 +21111,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -21215,7 +21218,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -21344,7 +21347,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -21471,7 +21474,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -21615,7 +21618,7 @@ module Batch =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -21858,7 +21861,7 @@ module Blueprint =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -21940,7 +21943,7 @@ module Blueprint =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22107,7 +22110,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -22274,7 +22277,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22359,7 +22362,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22469,7 +22472,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22613,7 +22616,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22723,7 +22726,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -22927,7 +22930,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -23106,7 +23109,7 @@ module Bot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -23340,7 +23343,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -23583,7 +23586,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("behavior")>]
         member _.Behavior((n, args), behavior) =
@@ -23640,7 +23643,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("behavior")>]
         member _.Behavior((n, args), behavior) =
@@ -23697,7 +23700,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -23789,7 +23792,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -23855,7 +23858,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -23921,7 +23924,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -23995,7 +23998,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -24069,7 +24072,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24161,7 +24164,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24236,7 +24239,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24302,7 +24305,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24377,7 +24380,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24469,7 +24472,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24535,7 +24538,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24601,7 +24604,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24676,7 +24679,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24751,7 +24754,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24826,7 +24829,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -24901,7 +24904,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("fragment")>]
         member _.Fragment((n, args), fragment) =
@@ -25026,7 +25029,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("destination")>]
         member _.Destination((n, args), destination) =
@@ -25100,7 +25103,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -25165,7 +25168,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -25245,7 +25248,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("behavior")>]
         member _.Behavior((n, args), behavior) =
@@ -25302,7 +25305,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("behavior")>]
         member _.Behavior((n, args), behavior) =
@@ -25359,7 +25362,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -25433,7 +25436,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -25507,7 +25510,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("fragment")>]
         member _.Fragment((n, args), fragment) =
@@ -25632,7 +25635,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("destination")>]
         member _.Destination((n, args), destination) =
@@ -25706,7 +25709,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hostName")>]
         member _.HostName((n, args), hostName) =
@@ -25796,7 +25799,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -26080,7 +26083,7 @@ module Cdn =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -26186,7 +26189,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -26259,7 +26262,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -26332,7 +26335,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("blobUri")>]
         member _.BlobUri((n, args), blobUri) =
@@ -26439,7 +26442,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("blobUri")>]
         member _.BlobUri((n, args), blobUri) =
@@ -26563,7 +26566,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ultraSsdEnabled")>]
         member _.UltraSsdEnabled((n, args), ultraSsdEnabled) =
@@ -26603,7 +26606,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("publicKey")>]
         member _.PublicKey((n, args), publicKey) =
@@ -26659,7 +26662,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountUri")>]
         member _.StorageAccountUri((n, args), storageAccountUri) =
@@ -26699,7 +26702,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -26781,7 +26784,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -26915,7 +26918,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("option")>]
         member _.Option((n, args), option) =
@@ -26955,7 +26958,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -27028,7 +27031,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ultraSsdEnabled")>]
         member _.UltraSsdEnabled((n, args), ultraSsdEnabled) =
@@ -27068,7 +27071,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("publicKey")>]
         member _.PublicKey((n, args), publicKey) =
@@ -27125,7 +27128,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -27182,7 +27185,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disableAutomaticRollback")>]
         member _.DisableAutomaticRollback((n, args), disableAutomaticRollback) =
@@ -27239,7 +27242,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountUri")>]
         member _.StorageAccountUri((n, args), storageAccountUri) =
@@ -27279,7 +27282,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -27421,7 +27424,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -27487,7 +27490,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsServers")>]
         member _.DnsServers((n, args), dnsServers) =
@@ -27613,7 +27616,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("applicationGatewayBackendAddressPoolIds")>]
         member _.ApplicationGatewayBackendAddressPoolIds((n, args), applicationGatewayBackendAddressPoolIds) =
@@ -27749,7 +27752,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("domainNameLabel")>]
         member _.DomainNameLabel((n, args), domainNameLabel) =
@@ -27849,7 +27852,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("tag")>]
         member _.Tag((n, args), tag) =
@@ -27906,7 +27909,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -28024,7 +28027,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("option")>]
         member _.Option((n, args), option) =
@@ -28064,7 +28067,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -28137,7 +28140,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("maxBatchInstancePercent")>]
         member _.MaxBatchInstancePercent((n, args), maxBatchInstancePercent) =
@@ -28228,7 +28231,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificates")>]
         member _.Certificates((n, args), certificates) =
@@ -28277,7 +28280,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("url")>]
         member _.Url((n, args), url) =
@@ -28317,7 +28320,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -28408,7 +28411,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -28465,7 +28468,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificates")>]
         member _.Certificates((n, args), certificates) =
@@ -28513,7 +28516,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("url")>]
         member _.Url((n, args), url) =
@@ -28553,7 +28556,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -28644,7 +28647,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -28703,7 +28706,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("secretUrl")>]
         member _.SecretUrl((n, args), secretUrl) =
@@ -28760,7 +28763,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyUrl")>]
         member _.KeyUrl((n, args), keyUrl) =
@@ -28817,7 +28820,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -28873,7 +28876,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("autoUpgradeMinorVersion")>]
         member _.AutoUpgradeMinorVersion((n, args), autoUpgradeMinorVersion) =
@@ -29023,7 +29026,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -29088,7 +29091,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("acceleratedNetworking")>]
         member _.AcceleratedNetworking((n, args), acceleratedNetworking) =
@@ -29214,7 +29217,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsServers")>]
         member _.DnsServers((n, args), dnsServers) =
@@ -29246,7 +29249,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("applicationGatewayBackendAddressPoolIds")>]
         member _.ApplicationGatewayBackendAddressPoolIds((n, args), applicationGatewayBackendAddressPoolIds) =
@@ -29366,7 +29369,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("domainNameLabel")>]
         member _.DomainNameLabel((n, args), domainNameLabel) =
@@ -29440,7 +29443,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("adminPassword")>]
         member _.AdminPassword((n, args), adminPassword) =
@@ -29530,7 +29533,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disablePasswordAuthentication")>]
         member _.DisablePasswordAuthentication((n, args), disablePasswordAuthentication) =
@@ -29578,7 +29581,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyData")>]
         member _.KeyData((n, args), keyData) =
@@ -29635,7 +29638,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("sourceVaultId")>]
         member _.SourceVaultId((n, args), sourceVaultId) =
@@ -29683,7 +29686,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateStore")>]
         member _.CertificateStore((n, args), certificateStore) =
@@ -29740,7 +29743,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("additionalUnattendConfigs")>]
         member _.AdditionalUnattendConfigs((n, args), additionalUnattendConfigs) =
@@ -29814,7 +29817,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("component")>]
         member _.Component((n, args), ``component``) =
@@ -29905,7 +29908,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateUrl")>]
         member _.CertificateUrl((n, args), certificateUrl) =
@@ -29962,7 +29965,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -30035,7 +30038,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("maxBatchInstancePercent")>]
         member _.MaxBatchInstancePercent((n, args), maxBatchInstancePercent) =
@@ -30125,7 +30128,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -30198,7 +30201,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -30305,7 +30308,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -30413,7 +30416,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -30546,7 +30549,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -30619,7 +30622,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -30692,7 +30695,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -30751,7 +30754,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("secretUrl")>]
         member _.SecretUrl((n, args), secretUrl) =
@@ -30808,7 +30811,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyUrl")>]
         member _.KeyUrl((n, args), keyUrl) =
@@ -30865,7 +30868,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ultraSsdEnabled")>]
         member _.UltraSsdEnabled((n, args), ultraSsdEnabled) =
@@ -30905,7 +30908,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -30961,7 +30964,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -31026,7 +31029,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("adminPassword")>]
         member _.AdminPassword((n, args), adminPassword) =
@@ -31116,7 +31119,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disablePasswordAuthentication")>]
         member _.DisablePasswordAuthentication((n, args), disablePasswordAuthentication) =
@@ -31165,7 +31168,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyData")>]
         member _.KeyData((n, args), keyData) =
@@ -31222,7 +31225,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("sourceVaultId")>]
         member _.SourceVaultId((n, args), sourceVaultId) =
@@ -31270,7 +31273,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateStore")>]
         member _.CertificateStore((n, args), certificateStore) =
@@ -31327,7 +31330,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("additionalUnattendConfigs")>]
         member _.AdditionalUnattendConfigs((n, args), additionalUnattendConfigs) =
@@ -31419,7 +31422,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("component")>]
         member _.Component((n, args), ``component``) =
@@ -31510,7 +31513,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateUrl")>]
         member _.CertificateUrl((n, args), certificateUrl) =
@@ -31567,7 +31570,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -31640,7 +31643,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -31815,7 +31818,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -31923,7 +31926,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -32115,7 +32118,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ultraSsdEnabled")>]
         member _.UltraSsdEnabled((n, args), ultraSsdEnabled) =
@@ -32155,7 +32158,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("content")>]
         member _.Content((n, args), content) =
@@ -32212,7 +32215,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountUri")>]
         member _.StorageAccountUri((n, args), storageAccountUri) =
@@ -32252,7 +32255,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -32334,7 +32337,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -32468,7 +32471,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("option")>]
         member _.Option((n, args), option) =
@@ -32508,7 +32511,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -32581,7 +32584,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ultraSsdEnabled")>]
         member _.UltraSsdEnabled((n, args), ultraSsdEnabled) =
@@ -32621,7 +32624,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("content")>]
         member _.Content((n, args), content) =
@@ -32678,7 +32681,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -32735,7 +32738,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disableAutomaticRollback")>]
         member _.DisableAutomaticRollback((n, args), disableAutomaticRollback) =
@@ -32792,7 +32795,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountUri")>]
         member _.StorageAccountUri((n, args), storageAccountUri) =
@@ -32832,7 +32835,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -32974,7 +32977,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -33040,7 +33043,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsServers")>]
         member _.DnsServers((n, args), dnsServers) =
@@ -33166,7 +33169,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("applicationGatewayBackendAddressPoolIds")>]
         member _.ApplicationGatewayBackendAddressPoolIds((n, args), applicationGatewayBackendAddressPoolIds) =
@@ -33302,7 +33305,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("domainNameLabel")>]
         member _.DomainNameLabel((n, args), domainNameLabel) =
@@ -33402,7 +33405,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("tag")>]
         member _.Tag((n, args), tag) =
@@ -33459,7 +33462,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caching")>]
         member _.Caching((n, args), caching) =
@@ -33577,7 +33580,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("option")>]
         member _.Option((n, args), option) =
@@ -33617,7 +33620,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -33691,7 +33694,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("maxBatchInstancePercent")>]
         member _.MaxBatchInstancePercent((n, args), maxBatchInstancePercent) =
@@ -33782,7 +33785,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificates")>]
         member _.Certificates((n, args), certificates) =
@@ -33831,7 +33834,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("store")>]
         member _.Store((n, args), store) =
@@ -33888,7 +33891,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -33979,7 +33982,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -34036,7 +34039,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateUrl")>]
         member _.CertificateUrl((n, args), certificateUrl) =
@@ -34093,7 +34096,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificates")>]
         member _.Certificates((n, args), certificates) =
@@ -34141,7 +34144,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("store")>]
         member _.Store((n, args), store) =
@@ -34198,7 +34201,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -34289,7 +34292,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateUrl")>]
         member _.CertificateUrl((n, args), certificateUrl) =
@@ -34346,7 +34349,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -34499,7 +34502,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -34594,7 +34597,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -34721,7 +34724,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -34874,7 +34877,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -34993,7 +34996,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -35105,7 +35108,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -35275,7 +35278,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -35430,7 +35433,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -35891,7 +35894,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -36461,7 +36464,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -36760,7 +36763,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -36897,7 +36900,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -37280,7 +37283,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -37494,7 +37497,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -37596,7 +37599,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -37758,7 +37761,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -37938,7 +37941,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -38276,7 +38279,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -38463,7 +38466,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -38967,7 +38970,7 @@ module Compute =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -39584,7 +39587,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("commands")>]
         member _.Commands((n, args), commands) =
@@ -39749,7 +39752,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("count")>]
         member _.Count((n, args), count) =
@@ -39805,7 +39808,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("execs")>]
         member _.Execs((n, args), execs) =
@@ -39930,7 +39933,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("path")>]
         member _.Path((n, args), path) =
@@ -40004,7 +40007,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("port")>]
         member _.Port((n, args), port) =
@@ -40060,7 +40063,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("execs")>]
         member _.Execs((n, args), execs) =
@@ -40185,7 +40188,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("path")>]
         member _.Path((n, args), path) =
@@ -40259,7 +40262,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("mountPath")>]
         member _.MountPath((n, args), mountPath) =
@@ -40383,7 +40386,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -40415,7 +40418,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("logType")>]
         member _.LogType((n, args), logType) =
@@ -40497,7 +40500,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -40562,7 +40565,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -40635,7 +40638,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -40707,7 +40710,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -40764,7 +40767,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -40804,7 +40807,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -40861,7 +40864,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -40901,7 +40904,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -40967,7 +40970,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -41041,7 +41044,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("balanceSimilarNodeGroups")>]
         member _.BalanceSimilarNodeGroups((n, args), balanceSimilarNodeGroups) =
@@ -41217,7 +41220,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("availabilityZones")>]
         member _.AvailabilityZones((n, args), availabilityZones) =
@@ -41480,7 +41483,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -41553,7 +41556,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientCertificate")>]
         member _.ClientCertificate((n, args), clientCertificate) =
@@ -41678,7 +41681,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientCertificate")>]
         member _.ClientCertificate((n, args), clientCertificate) =
@@ -41802,7 +41805,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -41876,7 +41879,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("adminUsername")>]
         member _.AdminUsername((n, args), adminUsername) =
@@ -41925,7 +41928,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyData")>]
         member _.KeyData((n, args), keyData) =
@@ -41965,7 +41968,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsServiceIp")>]
         member _.DnsServiceIp((n, args), dnsServiceIp) =
@@ -42133,7 +42136,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("effectiveOutboundIps")>]
         member _.EffectiveOutboundIps((n, args), effectiveOutboundIps) =
@@ -42234,7 +42237,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -42284,7 +42287,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("adminGroupObjectIds")>]
         member _.AdminGroupObjectIds((n, args), adminGroupObjectIds) =
@@ -42401,7 +42404,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientId")>]
         member _.ClientId((n, args), clientId) =
@@ -42458,7 +42461,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("adminPassword")>]
         member _.AdminPassword((n, args), adminPassword) =
@@ -42514,7 +42517,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultAction")>]
         member _.DefaultAction((n, args), defaultAction) =
@@ -42571,7 +42574,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -42627,7 +42630,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -42684,7 +42687,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -42892,7 +42895,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -43212,7 +43215,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -43562,7 +43565,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -43717,7 +43720,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -43888,7 +43891,7 @@ module ContainerService =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -44063,7 +44066,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endpoint")>]
         member _.Endpoint((n, args), endpoint) =
@@ -44119,7 +44122,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endpoint")>]
         member _.Endpoint((n, args), endpoint) =
@@ -44192,7 +44195,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("specification")>]
         member _.Specification((n, args), specification) =
@@ -44231,7 +44234,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -44343,7 +44346,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -44411,7 +44414,7 @@ module Core =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -44534,7 +44537,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -44573,7 +44576,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("consistencyLevel")>]
         member _.ConsistencyLevel((n, args), consistencyLevel) =
@@ -44646,7 +44649,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("failoverPriority")>]
         member _.FailoverPriority((n, args), failoverPriority) =
@@ -44736,7 +44739,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -44775,7 +44778,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("conflictResolutionPath")>]
         member _.ConflictResolutionPath((n, args), conflictResolutionPath) =
@@ -44849,7 +44852,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("automatic")>]
         member _.Automatic((n, args), automatic) =
@@ -44923,7 +44926,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("paths")>]
         member _.Paths((n, args), paths) =
@@ -44954,7 +44957,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keys")>]
         member _.Keys((n, args), keys) =
@@ -45002,7 +45005,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keys")>]
         member _.Keys((n, args), keys) =
@@ -45050,7 +45053,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("paths")>]
         member _.Paths((n, args), paths) =
@@ -45081,7 +45084,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45305,7 +45308,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45398,7 +45401,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45491,7 +45494,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45645,7 +45648,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45798,7 +45801,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -45891,7 +45894,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -46044,7 +46047,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -46137,7 +46140,7 @@ module CosmosDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -46234,7 +46237,7 @@ module CostManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("containerName")>]
         member _.ContainerName((n, args), containerName) =
@@ -46307,7 +46310,7 @@ module CostManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("timeFrame")>]
         member _.TimeFrame((n, args), timeFrame) =
@@ -46363,7 +46366,7 @@ module CostManagement =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -46514,7 +46517,7 @@ module DataBricks =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("noPublicIp")>]
         member _.NoPublicIp((n, args), noPublicIp) =
@@ -46604,7 +46607,7 @@ module DataBricks =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -46737,7 +46740,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -46810,7 +46813,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -46883,7 +46886,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -46957,7 +46960,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("accountName")>]
         member _.AccountName((n, args), accountName) =
@@ -47064,7 +47067,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -47137,7 +47140,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("accountName")>]
         member _.AccountName((n, args), accountName) =
@@ -47261,7 +47264,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("administratorLogin")>]
         member _.AdministratorLogin((n, args), administratorLogin) =
@@ -47352,7 +47355,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("blobContainerUri")>]
         member _.BlobContainerUri((n, args), blobContainerUri) =
@@ -47409,7 +47412,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("subnetName")>]
         member _.SubnetName((n, args), subnetName) =
@@ -47466,7 +47469,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("resourceId")>]
         member _.ResourceId((n, args), resourceId) =
@@ -47506,7 +47509,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -47686,7 +47689,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -47866,7 +47869,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48046,7 +48049,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48161,7 +48164,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48386,7 +48389,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48488,7 +48491,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48694,7 +48697,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -48848,7 +48851,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49002,7 +49005,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49156,7 +49159,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49310,7 +49313,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49447,7 +49450,7 @@ module DataFactory =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49630,7 +49633,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -49703,7 +49706,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -49777,7 +49780,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -49850,7 +49853,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -49945,7 +49948,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -50065,7 +50068,7 @@ module DataShare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -50189,7 +50192,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -50263,7 +50266,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -50354,7 +50357,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendPort")>]
         member _.BackendPort((n, args), backendPort) =
@@ -50428,7 +50431,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("time")>]
         member _.Time((n, args), time) =
@@ -50467,7 +50470,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minute")>]
         member _.Minute((n, args), minute) =
@@ -50506,7 +50509,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("status")>]
         member _.Status((n, args), status) =
@@ -50579,7 +50582,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("time")>]
         member _.Time((n, args), time) =
@@ -50627,7 +50630,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -50700,7 +50703,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("offer")>]
         member _.Offer((n, args), offer) =
@@ -50791,7 +50794,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendPort")>]
         member _.BackendPort((n, args), backendPort) =
@@ -50865,7 +50868,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -50994,7 +50997,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -51096,7 +51099,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -51387,7 +51390,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -51557,7 +51560,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -51750,7 +51753,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -51862,7 +51865,7 @@ module DevTest =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -52140,7 +52143,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("flags")>]
         member _.Flags((n, args), flags) =
@@ -52213,7 +52216,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exchange")>]
         member _.Exchange((n, args), exchange) =
@@ -52269,7 +52272,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("port")>]
         member _.Port((n, args), port) =
@@ -52359,7 +52362,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("value")>]
         member _.Value((n, args), value) =
@@ -52398,7 +52401,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -52526,7 +52529,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -52654,7 +52657,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -52790,7 +52793,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -52901,7 +52904,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53012,7 +53015,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53123,7 +53126,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53234,7 +53237,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53345,7 +53348,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53456,7 +53459,7 @@ module Dns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -53528,7 +53531,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -53601,7 +53604,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -53725,7 +53728,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("boolEquals")>]
         member _.BoolEquals((n, args), boolEquals) =
@@ -53855,7 +53858,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -53912,7 +53915,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -53969,7 +53972,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54026,7 +54029,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54075,7 +54078,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54132,7 +54135,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54189,7 +54192,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54238,7 +54241,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54287,7 +54290,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54336,7 +54339,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54385,7 +54388,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54434,7 +54437,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -54483,7 +54486,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("functionId")>]
         member _.FunctionId((n, args), functionId) =
@@ -54557,7 +54560,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("eventhubId")>]
         member _.EventhubId((n, args), eventhubId) =
@@ -54597,7 +54600,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hybridConnectionId")>]
         member _.HybridConnectionId((n, args), hybridConnectionId) =
@@ -54637,7 +54640,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("eventTimeToLive")>]
         member _.EventTimeToLive((n, args), eventTimeToLive) =
@@ -54693,7 +54696,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountId")>]
         member _.StorageAccountId((n, args), storageAccountId) =
@@ -54750,7 +54753,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("queueName")>]
         member _.QueueName((n, args), queueName) =
@@ -54807,7 +54810,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caseSensitive")>]
         member _.CaseSensitive((n, args), caseSensitive) =
@@ -54880,7 +54883,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("activeDirectoryAppIdOrUri")>]
         member _.ActiveDirectoryAppIdOrUri((n, args), activeDirectoryAppIdOrUri) =
@@ -55005,7 +55008,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -55078,7 +55081,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -55202,7 +55205,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -55324,7 +55327,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -55400,7 +55403,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -55686,7 +55689,7 @@ module EventGrid =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -55812,7 +55815,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -55885,7 +55888,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -56009,7 +56012,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -56083,7 +56086,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataVersion")>]
         member _.DataVersion((n, args), dataVersion) =
@@ -56208,7 +56211,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -56325,7 +56328,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("archiveNameFormat")>]
         member _.ArchiveNameFormat((n, args), archiveNameFormat) =
@@ -56416,7 +56419,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultAction")>]
         member _.DefaultAction((n, args), defaultAction) =
@@ -56474,7 +56477,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -56531,7 +56534,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ignoreMissingVirtualNetworkServiceEndpoint")>]
         member _.IgnoreMissingVirtualNetworkServiceEndpoint((n, args), ignoreMissingVirtualNetworkServiceEndpoint) =
@@ -56588,7 +56591,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("boolEquals")>]
         member _.BoolEquals((n, args), boolEquals) =
@@ -56718,7 +56721,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -56775,7 +56778,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -56832,7 +56835,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -56889,7 +56892,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -56938,7 +56941,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -56995,7 +56998,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57052,7 +57055,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57101,7 +57104,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57150,7 +57153,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57199,7 +57202,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57248,7 +57251,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57297,7 +57300,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -57346,7 +57349,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("functionId")>]
         member _.FunctionId((n, args), functionId) =
@@ -57420,7 +57423,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("eventhubId")>]
         member _.EventhubId((n, args), eventhubId) =
@@ -57460,7 +57463,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hybridConnectionId")>]
         member _.HybridConnectionId((n, args), hybridConnectionId) =
@@ -57500,7 +57503,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("eventTimeToLive")>]
         member _.EventTimeToLive((n, args), eventTimeToLive) =
@@ -57556,7 +57559,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storageAccountId")>]
         member _.StorageAccountId((n, args), storageAccountId) =
@@ -57613,7 +57616,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("queueName")>]
         member _.QueueName((n, args), queueName) =
@@ -57670,7 +57673,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caseSensitive")>]
         member _.CaseSensitive((n, args), caseSensitive) =
@@ -57743,7 +57746,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("activeDirectoryAppIdOrUri")>]
         member _.ActiveDirectoryAppIdOrUri((n, args), activeDirectoryAppIdOrUri) =
@@ -57868,7 +57871,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -58027,7 +58030,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58171,7 +58174,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58273,7 +58276,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58383,7 +58386,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58505,7 +58508,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58627,7 +58630,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58747,7 +58750,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -58891,7 +58894,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59001,7 +59004,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59164,7 +59167,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59292,7 +59295,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59579,7 +59582,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59690,7 +59693,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59826,7 +59829,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -59953,7 +59956,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -60216,7 +60219,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -60360,7 +60363,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -60606,7 +60609,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -60777,7 +60780,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -61023,7 +61026,7 @@ module EventHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -61171,7 +61174,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -61321,7 +61324,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -61430,7 +61433,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exclusions")>]
         member _.Exclusions((n, args), exclusions) =
@@ -61504,7 +61507,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchVariable")>]
         member _.MatchVariable((n, args), matchVariable) =
@@ -61578,7 +61581,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exclusions")>]
         member _.Exclusions((n, args), exclusions) =
@@ -61636,7 +61639,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchVariable")>]
         member _.MatchVariable((n, args), matchVariable) =
@@ -61710,7 +61713,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -61793,7 +61796,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchVariable")>]
         member _.MatchVariable((n, args), matchVariable) =
@@ -61867,7 +61870,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backends")>]
         member _.Backends((n, args), backends) =
@@ -61966,7 +61969,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("address")>]
         member _.Address((n, args), address) =
@@ -62107,7 +62110,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -62248,7 +62251,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("additionalLatencyMilliseconds")>]
         member _.AdditionalLatencyMilliseconds((n, args), additionalLatencyMilliseconds) =
@@ -62356,7 +62359,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -62507,7 +62510,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("azureKeyVaultCertificateSecretName")>]
         member _.AzureKeyVaultCertificateSecretName((n, args), azureKeyVaultCertificateSecretName) =
@@ -62649,7 +62652,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("acceptedProtocols")>]
         member _.AcceptedProtocols((n, args), acceptedProtocols) =
@@ -62769,7 +62772,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendPoolName")>]
         member _.BackendPoolName((n, args), backendPoolName) =
@@ -62894,7 +62897,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customFragment")>]
         member _.CustomFragment((n, args), customFragment) =
@@ -63019,7 +63022,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -63190,7 +63193,7 @@ module FrontDoor =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -63392,7 +63395,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hbase")>]
         member _.Hbase((n, args), hbase) =
@@ -63431,7 +63434,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -63504,7 +63507,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -63556,7 +63559,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -63672,7 +63675,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -63822,7 +63825,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -63938,7 +63941,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -64011,7 +64014,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filesystemId")>]
         member _.FilesystemId((n, args), filesystemId) =
@@ -64101,7 +64104,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("hadoop")>]
         member _.Hadoop((n, args), hadoop) =
@@ -64140,7 +64143,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -64213,7 +64216,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -64265,7 +64268,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("databaseName")>]
         member _.DatabaseName((n, args), databaseName) =
@@ -64355,7 +64358,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("databaseName")>]
         member _.DatabaseName((n, args), databaseName) =
@@ -64445,7 +64448,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("databaseName")>]
         member _.DatabaseName((n, args), databaseName) =
@@ -64535,7 +64538,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -64597,7 +64600,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("installScriptActions")>]
         member _.InstallScriptActions((n, args), installScriptActions) =
@@ -64662,7 +64665,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -64719,7 +64722,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -64835,7 +64838,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -64985,7 +64988,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -65101,7 +65104,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -65174,7 +65177,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filesystemId")>]
         member _.FilesystemId((n, args), filesystemId) =
@@ -65264,7 +65267,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("interactiveHive")>]
         member _.InteractiveHive((n, args), interactiveHive) =
@@ -65304,7 +65307,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -65377,7 +65380,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -65429,7 +65432,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -65546,7 +65549,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -65697,7 +65700,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -65814,7 +65817,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -65888,7 +65891,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filesystemId")>]
         member _.FilesystemId((n, args), filesystemId) =
@@ -65979,7 +65982,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("kafka")>]
         member _.Kafka((n, args), kafka) =
@@ -66018,7 +66021,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -66091,7 +66094,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -66143,7 +66146,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -66259,7 +66262,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -66426,7 +66429,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -66542,7 +66545,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -66615,7 +66618,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filesystemId")>]
         member _.FilesystemId((n, args), filesystemId) =
@@ -66705,7 +66708,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -66778,7 +66781,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -66840,7 +66843,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -66956,7 +66959,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -67072,7 +67075,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -67223,7 +67226,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -67340,7 +67343,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -67413,7 +67416,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -67486,7 +67489,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -67548,7 +67551,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -67664,7 +67667,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -67780,7 +67783,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -67930,7 +67933,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -68047,7 +68050,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -68120,7 +68123,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("spark")>]
         member _.Spark((n, args), spark) =
@@ -68159,7 +68162,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -68232,7 +68235,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -68284,7 +68287,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -68400,7 +68403,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -68550,7 +68553,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -68666,7 +68669,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -68739,7 +68742,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filesystemId")>]
         member _.FilesystemId((n, args), filesystemId) =
@@ -68829,7 +68832,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("storm")>]
         member _.Storm((n, args), storm) =
@@ -68868,7 +68871,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -68941,7 +68944,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -68993,7 +68996,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -69109,7 +69112,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("minInstanceCount")>]
         member _.MinInstanceCount((n, args), minInstanceCount) =
@@ -69259,7 +69262,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("password")>]
         member _.Password((n, args), password) =
@@ -69375,7 +69378,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isDefault")>]
         member _.IsDefault((n, args), isDefault) =
@@ -69448,7 +69451,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -69633,7 +69636,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -69828,7 +69831,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70013,7 +70016,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70198,7 +70201,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70380,7 +70383,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70562,7 +70565,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70747,7 +70750,7 @@ module HDInsight =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -70926,7 +70929,7 @@ module Healthcare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("audience")>]
         member _.Audience((n, args), audience) =
@@ -71000,7 +71003,7 @@ module Healthcare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowCredentials")>]
         member _.AllowCredentials((n, args), allowCredentials) =
@@ -71083,7 +71086,7 @@ module Healthcare =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -71235,7 +71238,7 @@ module Hpc =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("namespacePath")>]
         member _.NamespacePath((n, args), namespacePath) =
@@ -71308,7 +71311,7 @@ module Hpc =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -71435,7 +71438,7 @@ module Hpc =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -71545,7 +71548,7 @@ module Hpc =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -71668,7 +71671,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("batchFrequencyInSeconds")>]
         member _.BatchFrequencyInSeconds((n, args), batchFrequencyInSeconds) =
@@ -71826,7 +71829,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("condition")>]
         member _.Condition((n, args), condition) =
@@ -71908,7 +71911,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionString")>]
         member _.ConnectionString((n, args), connectionString) =
@@ -72049,7 +72052,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -72122,7 +72125,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("condition")>]
         member _.Condition((n, args), condition) =
@@ -72221,7 +72224,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyName")>]
         member _.KeyName((n, args), keyName) =
@@ -72311,7 +72314,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -72367,7 +72370,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allocationWeight")>]
         member _.AllocationWeight((n, args), allocationWeight) =
@@ -72474,7 +72477,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -72530,7 +72533,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -72587,7 +72590,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -72680,7 +72683,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -72841,7 +72844,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -72934,7 +72937,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73027,7 +73030,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73120,7 +73123,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73298,7 +73301,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73408,7 +73411,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73584,7 +73587,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73677,7 +73680,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73781,7 +73784,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -73925,7 +73928,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -74069,7 +74072,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -74171,7 +74174,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -74284,7 +74287,7 @@ module Iot =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -74442,7 +74445,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contents")>]
         member _.Contents((n, args), contents) =
@@ -74498,7 +74501,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -74569,7 +74572,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -74609,7 +74612,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exportable")>]
         member _.Exportable((n, args), exportable) =
@@ -74700,7 +74703,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -74743,7 +74746,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionType")>]
         member _.ActionType((n, args), actionType) =
@@ -74783,7 +74786,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("daysBeforeExpiry")>]
         member _.DaysBeforeExpiry((n, args), daysBeforeExpiry) =
@@ -74840,7 +74843,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -74880,7 +74883,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("extendedKeyUsages")>]
         member _.ExtendedKeyUsages((n, args), extendedKeyUsages) =
@@ -74965,7 +74968,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsNames")>]
         member _.DnsNames((n, args), dnsNames) =
@@ -75015,7 +75018,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contents")>]
         member _.Contents((n, args), contents) =
@@ -75071,7 +75074,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -75142,7 +75145,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -75182,7 +75185,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exportable")>]
         member _.Exportable((n, args), exportable) =
@@ -75273,7 +75276,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -75316,7 +75319,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionType")>]
         member _.ActionType((n, args), actionType) =
@@ -75356,7 +75359,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("daysBeforeExpiry")>]
         member _.DaysBeforeExpiry((n, args), daysBeforeExpiry) =
@@ -75413,7 +75416,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -75453,7 +75456,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("extendedKeyUsages")>]
         member _.ExtendedKeyUsages((n, args), extendedKeyUsages) =
@@ -75538,7 +75541,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsNames")>]
         member _.DnsNames((n, args), dnsNames) =
@@ -75588,7 +75591,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("applicationId")>]
         member _.ApplicationId((n, args), applicationId) =
@@ -75697,7 +75700,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("bypass")>]
         member _.Bypass((n, args), bypass) =
@@ -75771,7 +75774,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -75900,7 +75903,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -75988,7 +75991,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -76076,7 +76079,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -76238,7 +76241,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -76461,7 +76464,7 @@ module KeyVault =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -76601,7 +76604,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -76683,7 +76686,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -76739,7 +76742,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dataManagementPublicIpId")>]
         member _.DataManagementPublicIpId((n, args), dataManagementPublicIpId) =
@@ -76813,7 +76816,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -76988,7 +76991,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -77115,7 +77118,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -77259,7 +77262,7 @@ module Kusto =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -77458,7 +77461,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -77661,7 +77664,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -77718,7 +77721,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -77794,7 +77797,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -77905,7 +77908,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78066,7 +78069,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78261,7 +78264,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78431,7 +78434,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78592,7 +78595,7 @@ module Lb =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78859,7 +78862,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionName")>]
         member _.ActionName((n, args), actionName) =
@@ -78915,7 +78918,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -78991,7 +78994,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79119,7 +79122,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79221,7 +79224,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79297,7 +79300,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79407,7 +79410,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79517,7 +79520,7 @@ module LogicApps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79666,7 +79669,7 @@ module MachineLearning =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -79739,7 +79742,7 @@ module MachineLearning =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -79957,7 +79960,7 @@ module ManagedApplication =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -80064,7 +80067,7 @@ module ManagedApplication =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("roleDefinitionId")>]
         member _.RoleDefinitionId((n, args), roleDefinitionId) =
@@ -80120,7 +80123,7 @@ module ManagedApplication =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -80275,7 +80278,7 @@ module ManagedApplication =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -80492,7 +80495,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("autoGrow")>]
         member _.AutoGrow((n, args), autoGrow) =
@@ -80582,7 +80585,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -80675,7 +80678,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -80785,7 +80788,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -80895,7 +80898,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -81228,7 +81231,7 @@ module MariaDB =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -81325,7 +81328,7 @@ module MediaServices =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -81381,7 +81384,7 @@ module MediaServices =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -81470,7 +81473,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -81543,7 +81546,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("automationAccountId")>]
         member _.AutomationAccountId((n, args), automationAccountId) =
@@ -81685,7 +81688,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("emailAddress")>]
         member _.EmailAddress((n, args), emailAddress) =
@@ -81741,7 +81744,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("functionAppResourceId")>]
         member _.FunctionAppResourceId((n, args), functionAppResourceId) =
@@ -81849,7 +81852,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("emailAddress")>]
         member _.EmailAddress((n, args), emailAddress) =
@@ -81922,7 +81925,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("connectionId")>]
         member _.ConnectionId((n, args), connectionId) =
@@ -82029,7 +82032,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("callbackUrl")>]
         member _.CallbackUrl((n, args), callbackUrl) =
@@ -82119,7 +82122,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("countryCode")>]
         member _.CountryCode((n, args), countryCode) =
@@ -82192,7 +82195,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("countryCode")>]
         member _.CountryCode((n, args), countryCode) =
@@ -82265,7 +82268,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -82338,7 +82341,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -82430,7 +82433,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82479,7 +82482,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82528,7 +82531,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82577,7 +82580,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82626,7 +82629,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82675,7 +82678,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82724,7 +82727,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82773,7 +82776,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("resourceIds")>]
         member _.ResourceIds((n, args), resourceIds) =
@@ -82821,7 +82824,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -82913,7 +82916,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -82962,7 +82965,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83011,7 +83014,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83060,7 +83063,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83109,7 +83112,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83158,7 +83161,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83207,7 +83210,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("operator")>]
         member _.Operator((n, args), operator) =
@@ -83256,7 +83259,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("resourceIds")>]
         member _.ResourceIds((n, args), resourceIds) =
@@ -83304,7 +83307,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("recurrenceType")>]
         member _.RecurrenceType((n, args), recurrenceType) =
@@ -83354,7 +83357,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endDateUtc")>]
         member _.EndDateUtc((n, args), endDateUtc) =
@@ -83429,7 +83432,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionGroupId")>]
         member _.ActionGroupId((n, args), actionGroupId) =
@@ -83477,7 +83480,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("caller")>]
         member _.Caller((n, args), caller) =
@@ -83720,7 +83723,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -83761,7 +83764,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customEmails")>]
         member _.CustomEmails((n, args), customEmails) =
@@ -83827,7 +83830,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("properties")>]
         member _.Properties((n, args), properties) =
@@ -83876,7 +83879,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -83954,7 +83957,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("default")>]
         member _.Default((n, args), ``default``) =
@@ -84027,7 +84030,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("end")>]
         member _.End((n, args), ``end``) =
@@ -84101,7 +84104,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -84184,7 +84187,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -84226,7 +84229,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("metricName")>]
         member _.MetricName((n, args), metricName) =
@@ -84385,7 +84388,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("cooldown")>]
         member _.Cooldown((n, args), cooldown) =
@@ -84476,7 +84479,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("category")>]
         member _.Category((n, args), category) =
@@ -84542,7 +84545,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -84599,7 +84602,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("category")>]
         member _.Category((n, args), category) =
@@ -84665,7 +84668,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -84722,7 +84725,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -84778,7 +84781,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionGroupId")>]
         member _.ActionGroupId((n, args), actionGroupId) =
@@ -84826,7 +84829,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("aggregation")>]
         member _.Aggregation((n, args), aggregation) =
@@ -84942,7 +84945,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -85007,7 +85010,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actionGroups")>]
         member _.ActionGroups((n, args), actionGroups) =
@@ -85072,7 +85075,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -85138,7 +85141,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("metricColumn")>]
         member _.MetricColumn((n, args), metricColumn) =
@@ -85229,7 +85232,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dimensions")>]
         member _.Dimensions((n, args), dimensions) =
@@ -85277,7 +85280,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -85343,7 +85346,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -85535,7 +85538,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -85674,7 +85677,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -85806,7 +85809,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -85936,7 +85939,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86074,7 +86077,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86236,7 +86239,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86340,7 +86343,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86545,7 +86548,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86812,7 +86815,7 @@ module Monitoring =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -86971,7 +86974,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -87061,7 +87064,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disabledAlerts")>]
         member _.DisabledAlerts((n, args), disabledAlerts) =
@@ -87203,7 +87206,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("results")>]
         member _.Results((n, args), results) =
@@ -87235,7 +87238,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("maxCapacity")>]
         member _.MaxCapacity((n, args), maxCapacity) =
@@ -87291,7 +87294,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -87381,7 +87384,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("loginUsername")>]
         member _.LoginUsername((n, args), loginUsername) =
@@ -87454,7 +87457,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -87544,7 +87547,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -87617,7 +87620,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("emailSubscriptionAdmins")>]
         member _.EmailSubscriptionAdmins((n, args), emailSubscriptionAdmins) =
@@ -87683,7 +87686,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dayOfWeek")>]
         member _.DayOfWeek((n, args), dayOfWeek) =
@@ -87756,7 +87759,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("keyVaultUrl")>]
         member _.KeyVaultUrl((n, args), keyVaultUrl) =
@@ -87847,7 +87850,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88174,7 +88177,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88277,7 +88280,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88467,7 +88470,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88667,7 +88670,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88829,7 +88832,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -88932,7 +88935,7 @@ module MSSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89109,7 +89112,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("autoGrow")>]
         member _.AutoGrow((n, args), autoGrow) =
@@ -89199,7 +89202,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89292,7 +89295,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89402,7 +89405,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89512,7 +89515,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89879,7 +89882,7 @@ module MySql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -89976,7 +89979,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dnsServers")>]
         member _.DnsServers((n, args), dnsServers) =
@@ -90092,7 +90095,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedClients")>]
         member _.AllowedClients((n, args), allowedClients) =
@@ -90242,7 +90245,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -90337,7 +90340,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -90473,7 +90476,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -90609,7 +90612,7 @@ module NetApp =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -90818,7 +90821,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("data")>]
         member _.Data((n, args), data) =
@@ -90892,7 +90895,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("maxCapacity")>]
         member _.MaxCapacity((n, args), maxCapacity) =
@@ -90949,7 +90952,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("fqdns")>]
         member _.Fqdns((n, args), fqdns) =
@@ -91024,7 +91027,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("affinityCookieName")>]
         member _.AffinityCookieName((n, args), affinityCookieName) =
@@ -91279,7 +91282,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -91336,7 +91339,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("drainTimeoutSec")>]
         member _.DrainTimeoutSec((n, args), drainTimeoutSec) =
@@ -91393,7 +91396,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customErrorPageUrl")>]
         member _.CustomErrorPageUrl((n, args), customErrorPageUrl) =
@@ -91467,7 +91470,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -91592,7 +91595,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -91665,7 +91668,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -91739,7 +91742,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customErrorConfigurations")>]
         member _.CustomErrorConfigurations((n, args), customErrorConfigurations) =
@@ -91966,7 +91969,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customErrorPageUrl")>]
         member _.CustomErrorPageUrl((n, args), customErrorPageUrl) =
@@ -92040,7 +92043,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("identityIds")>]
         member _.IdentityIds((n, args), identityIds) =
@@ -92096,7 +92099,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("host")>]
         member _.Host((n, args), host) =
@@ -92298,7 +92301,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("body")>]
         member _.Body((n, args), body) =
@@ -92346,7 +92349,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -92505,7 +92508,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendAddressPoolId")>]
         member _.BackendAddressPoolId((n, args), backendAddressPoolId) =
@@ -92783,7 +92786,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -92849,7 +92852,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("conditions")>]
         member _.Conditions((n, args), conditions) =
@@ -92933,7 +92936,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ignoreCase")>]
         member _.IgnoreCase((n, args), ignoreCase) =
@@ -93024,7 +93027,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("headerName")>]
         member _.HeaderName((n, args), headerName) =
@@ -93081,7 +93084,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("headerName")>]
         member _.HeaderName((n, args), headerName) =
@@ -93138,7 +93141,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -93211,7 +93214,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("data")>]
         member _.Data((n, args), data) =
@@ -93336,7 +93339,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("cipherSuites")>]
         member _.CipherSuites((n, args), cipherSuites) =
@@ -93427,7 +93430,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("data")>]
         member _.Data((n, args), data) =
@@ -93501,7 +93504,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("defaultBackendAddressPoolId")>]
         member _.DefaultBackendAddressPoolId((n, args), defaultBackendAddressPoolId) =
@@ -93702,7 +93705,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("backendAddressPoolId")>]
         member _.BackendAddressPoolId((n, args), backendAddressPoolId) =
@@ -93904,7 +93907,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disabledRuleGroups")>]
         member _.DisabledRuleGroups((n, args), disabledRuleGroups) =
@@ -94064,7 +94067,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ruleGroupName")>]
         member _.RuleGroupName((n, args), ruleGroupName) =
@@ -94113,7 +94116,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchVariable")>]
         member _.MatchVariable((n, args), matchVariable) =
@@ -94187,7 +94190,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("advertisedPublicPrefixes")>]
         member _.AdvertisedPublicPrefixes((n, args), advertisedPublicPrefixes) =
@@ -94253,7 +94256,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("family")>]
         member _.Family((n, args), family) =
@@ -94309,7 +94312,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -94402,7 +94405,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("port")>]
         member _.Port((n, args), port) =
@@ -94459,7 +94462,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -94549,7 +94552,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -94675,7 +94678,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("description")>]
         member _.Description((n, args), description) =
@@ -94768,7 +94771,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("asn")>]
         member _.Asn((n, args), asn) =
@@ -94841,7 +94844,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("address")>]
         member _.Address((n, args), address) =
@@ -94915,7 +94918,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("port")>]
         member _.Port((n, args), port) =
@@ -94971,7 +94974,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -95112,7 +95115,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("localIpAddress")>]
         member _.LocalIpAddress((n, args), localIpAddress) =
@@ -95219,7 +95222,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filePath")>]
         member _.FilePath((n, args), filePath) =
@@ -95293,7 +95296,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("access")>]
         member _.Access((n, args), access) =
@@ -95540,7 +95543,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -95597,7 +95600,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -95705,7 +95708,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("localIpAddress")>]
         member _.LocalIpAddress((n, args), localIpAddress) =
@@ -95812,7 +95815,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("filePath")>]
         member _.FilePath((n, args), filePath) =
@@ -95885,7 +95888,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -95935,7 +95938,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("addressPrefixes")>]
         member _.AddressPrefixes((n, args), addressPrefixes) =
@@ -95967,7 +95970,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ipConfigurations")>]
         member _.IpConfigurations((n, args), ipConfigurations) =
@@ -96016,7 +96019,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -96073,7 +96076,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("addressPrefix")>]
         member _.AddressPrefix((n, args), addressPrefix) =
@@ -96163,7 +96166,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -96212,7 +96215,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actions")>]
         member _.Actions((n, args), actions) =
@@ -96261,7 +96264,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -96318,7 +96321,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("first")>]
         member _.First((n, args), first) =
@@ -96391,7 +96394,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("relativeName")>]
         member _.RelativeName((n, args), relativeName) =
@@ -96447,7 +96450,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customHeaders")>]
         member _.CustomHeaders((n, args), customHeaders) =
@@ -96590,7 +96593,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -96647,7 +96650,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("addressPrefixes")>]
         member _.AddressPrefixes((n, args), addressPrefixes) =
@@ -96695,7 +96698,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enable")>]
         member _.Enable((n, args), enable) =
@@ -96752,7 +96755,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("asn")>]
         member _.Asn((n, args), asn) =
@@ -96826,7 +96829,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dhGroup")>]
         member _.DhGroup((n, args), dhGroup) =
@@ -96985,7 +96988,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97076,7 +97079,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("addressSpaces")>]
         member _.AddressSpaces((n, args), addressSpaces) =
@@ -97169,7 +97172,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97226,7 +97229,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97283,7 +97286,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("addressPrefix")>]
         member _.AddressPrefix((n, args), addressPrefix) =
@@ -97373,7 +97376,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("asn")>]
         member _.Asn((n, args), asn) =
@@ -97446,7 +97449,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("audience")>]
         member _.Audience((n, args), audience) =
@@ -97520,7 +97523,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97577,7 +97580,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97634,7 +97637,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dhGroup")>]
         member _.DhGroup((n, args), dhGroup) =
@@ -97793,7 +97796,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("address")>]
         member _.Address((n, args), address) =
@@ -97868,7 +97871,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97925,7 +97928,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -97982,7 +97985,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98294,7 +98297,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98379,7 +98382,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98464,7 +98467,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98627,7 +98630,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98704,7 +98707,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98875,7 +98878,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -98994,7 +98997,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99114,7 +99117,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99234,7 +99237,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99353,7 +99356,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99472,7 +99475,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99593,7 +99596,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99644,6 +99647,15 @@ module Network =
         member _.ResourceName((name, args), resourceName) =
             let apply (args: NatGatewayArgs) =
                 args.Name <- io resourceName
+                args
+
+            ()
+            name, List.Cons(apply, args)
+
+        [<CustomOperation("publicIpAddressIds")>]
+        member _.PublicIpAddressIds((name, args), publicIpAddressIds) =
+            let apply (args: NatGatewayArgs) =
+                args.PublicIpAddressIds <- inputList publicIpAddressIds
                 args
 
             ()
@@ -99730,7 +99742,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99789,7 +99801,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -99945,7 +99957,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100100,7 +100112,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100178,7 +100190,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100239,7 +100251,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100316,7 +100328,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100394,7 +100406,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100454,7 +100466,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100617,7 +100629,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -100711,7 +100723,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101010,7 +101022,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101095,7 +101107,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101242,7 +101254,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101405,7 +101417,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101551,7 +101563,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101646,7 +101658,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -101867,7 +101879,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102003,7 +102015,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102130,7 +102142,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102241,7 +102253,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102395,7 +102407,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102455,7 +102467,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102515,7 +102527,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102574,7 +102586,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102813,7 +102825,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -102935,7 +102947,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -103063,7 +103075,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -103190,7 +103202,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -103312,7 +103324,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -103545,7 +103557,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -103844,7 +103856,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104005,7 +104017,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104175,7 +104187,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104303,7 +104315,7 @@ module Network =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104465,7 +104477,7 @@ module NotificationHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("applicationMode")>]
         member _.ApplicationMode((n, args), applicationMode) =
@@ -104572,7 +104584,7 @@ module NotificationHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("apiKey")>]
         member _.ApiKey((n, args), apiKey) =
@@ -104611,7 +104623,7 @@ module NotificationHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104755,7 +104767,7 @@ module NotificationHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -104877,7 +104889,7 @@ module NotificationHub =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105017,7 +105029,7 @@ module OperationalInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -105107,7 +105119,7 @@ module OperationalInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105227,7 +105239,7 @@ module OperationalInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105350,7 +105362,7 @@ module Policy =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -105423,7 +105435,7 @@ module Policy =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105603,7 +105615,7 @@ module Policy =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105798,7 +105810,7 @@ module Policy =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -105959,7 +105971,7 @@ module Policy =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -106065,7 +106077,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("autoGrow")>]
         member _.AutoGrow((n, args), autoGrow) =
@@ -106155,7 +106167,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disabledAlerts")>]
         member _.DisabledAlerts((n, args), disabledAlerts) =
@@ -106280,7 +106292,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -106390,7 +106402,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -106483,7 +106495,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -106593,7 +106605,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -106703,7 +106715,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107080,7 +107092,7 @@ module PostgreSql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107194,7 +107206,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -107301,7 +107313,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exchange")>]
         member _.Exchange((n, args), exchange) =
@@ -107357,7 +107369,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("port")>]
         member _.Port((n, args), port) =
@@ -107447,7 +107459,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("value")>]
         member _.Value((n, args), value) =
@@ -107486,7 +107498,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107597,7 +107609,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107708,7 +107720,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107827,7 +107839,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -107965,7 +107977,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108076,7 +108088,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108187,7 +108199,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108298,7 +108310,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108409,7 +108421,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108477,7 +108489,7 @@ module PrivateDns =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -108600,7 +108612,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("fqdn")>]
         member _.Fqdn((n, args), fqdn) =
@@ -108648,7 +108660,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -108730,7 +108742,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("fqdn")>]
         member _.Fqdn((n, args), fqdn) =
@@ -108830,7 +108842,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -108895,7 +108907,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isManualConnection")>]
         member _.IsManualConnection((n, args), isManualConnection) =
@@ -109012,7 +109024,7 @@ module PrivateLink =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -109138,7 +109150,7 @@ module Redis =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("dayOfWeek")>]
         member _.DayOfWeek((n, args), dayOfWeek) =
@@ -109194,7 +109206,7 @@ module Redis =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("aofBackupEnabled")>]
         member _.AofBackupEnabled((n, args), aofBackupEnabled) =
@@ -109454,7 +109466,7 @@ module Redis =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -109711,7 +109723,7 @@ module Redis =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -109825,7 +109837,7 @@ module Role =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("actions")>]
         member _.Actions((n, args), actions) =
@@ -109883,7 +109895,7 @@ module Role =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110010,7 +110022,7 @@ module Role =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110125,7 +110137,7 @@ module Search =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("key")>]
         member _.Key((n, args), key) =
@@ -110181,7 +110193,7 @@ module Search =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110321,7 +110333,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ignoreMissingVnetServiceEndpoint")>]
         member _.IgnoreMissingVnetServiceEndpoint((n, args), ignoreMissingVnetServiceEndpoint) =
@@ -110378,7 +110390,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("contentType")>]
         member _.ContentType((n, args), contentType) =
@@ -110537,7 +110549,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110673,7 +110685,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110800,7 +110812,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -110894,7 +110906,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -111157,7 +111169,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -111301,7 +111313,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -111547,7 +111559,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -111718,7 +111730,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -111964,7 +111976,7 @@ module ServiceBus =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -112112,7 +112124,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("clientApplicationId")>]
         member _.ClientApplicationId((n, args), clientApplicationId) =
@@ -112185,7 +112197,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("thumbprint")>]
         member _.Thumbprint((n, args), thumbprint) =
@@ -112258,7 +112270,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("commonNames")>]
         member _.CommonNames((n, args), commonNames) =
@@ -112306,7 +112318,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("certificateCommonName")>]
         member _.CertificateCommonName((n, args), certificateCommonName) =
@@ -112363,7 +112375,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("commonName")>]
         member _.CommonName((n, args), commonName) =
@@ -112437,7 +112449,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("isAdmin")>]
         member _.IsAdmin((n, args), isAdmin) =
@@ -112494,7 +112506,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("blobEndpoint")>]
         member _.BlobEndpoint((n, args), blobEndpoint) =
@@ -112601,7 +112613,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -112649,7 +112661,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -112828,7 +112840,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endPort")>]
         member _.EndPort((n, args), endPort) =
@@ -112884,7 +112896,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("endPort")>]
         member _.EndPort((n, args), endPort) =
@@ -112940,7 +112952,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("thumbprint")>]
         member _.Thumbprint((n, args), thumbprint) =
@@ -113013,7 +113025,7 @@ module ServiceFabric =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -113282,7 +113294,7 @@ module SignalR =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedOrigins")>]
         member _.AllowedOrigins((n, args), allowedOrigins) =
@@ -113313,7 +113325,7 @@ module SignalR =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("flag")>]
         member _.Flag((n, args), flag) =
@@ -113369,7 +113381,7 @@ module SignalR =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("capacity")>]
         member _.Capacity((n, args), capacity) =
@@ -113425,7 +113437,7 @@ module SignalR =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -113542,7 +113554,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("diskId")>]
         member _.DiskId((n, args), diskId) =
@@ -113649,7 +113661,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -113742,7 +113754,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -113886,7 +113898,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -113979,7 +113991,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -114123,7 +114135,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -114344,7 +114356,7 @@ module SiteRecovery =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -114468,7 +114480,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -114558,7 +114570,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("administratorLogin")>]
         member _.AdministratorLogin((n, args), administratorLogin) =
@@ -114699,7 +114711,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disabledAlerts")>]
         member _.DisabledAlerts((n, args), disabledAlerts) =
@@ -114841,7 +114853,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("id")>]
         member _.Id((n, args), id) =
@@ -114914,7 +114926,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("graceMinutes")>]
         member _.GraceMinutes((n, args), graceMinutes) =
@@ -114971,7 +114983,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("mode")>]
         member _.Mode((n, args), mode) =
@@ -115011,7 +115023,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("retentionInDays")>]
         member _.RetentionInDays((n, args), retentionInDays) =
@@ -115101,7 +115113,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -115174,7 +115186,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -115284,7 +115296,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -115637,7 +115649,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -115824,7 +115836,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -115947,7 +115959,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -116057,7 +116069,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -116230,7 +116242,7 @@ module Sql =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -116344,7 +116356,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("corsRules")>]
         member _.CorsRules((n, args), corsRules) =
@@ -116385,7 +116397,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedHeaders")>]
         member _.AllowedHeaders((n, args), allowedHeaders) =
@@ -116460,7 +116472,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("days")>]
         member _.Days((n, args), days) =
@@ -116500,7 +116512,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -116556,7 +116568,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("principalId")>]
         member _.PrincipalId((n, args), principalId) =
@@ -116629,7 +116641,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("corsRules")>]
         member _.CorsRules((n, args), corsRules) =
@@ -116690,7 +116702,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("allowedHeaders")>]
         member _.AllowedHeaders((n, args), allowedHeaders) =
@@ -116765,7 +116777,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -116856,7 +116868,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("delete")>]
         member _.Delete((n, args), delete) =
@@ -116963,7 +116975,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -117054,7 +117066,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("error404Document")>]
         member _.Error404Document((n, args), error404Document) =
@@ -117110,7 +117122,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -117186,7 +117198,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         member _.Yield arg =
             null,
@@ -117228,7 +117240,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("deleteAfterDaysSinceModificationGreaterThan")>]
         member _.DeleteAfterDaysSinceModificationGreaterThan((n, args), deleteAfterDaysSinceModificationGreaterThan) =
@@ -117322,7 +117334,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("deleteAfterDaysSinceCreationGreaterThan")>]
         member _.DeleteAfterDaysSinceCreationGreaterThan((n, args), deleteAfterDaysSinceCreationGreaterThan) =
@@ -117362,7 +117374,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("blobTypes")>]
         member _.BlobTypes((n, args), blobTypes) =
@@ -117402,7 +117414,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("accessPolicies")>]
         member _.AccessPolicies((n, args), accessPolicies) =
@@ -117450,7 +117462,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("expiry")>]
         member _.Expiry((n, args), expiry) =
@@ -117523,7 +117535,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("accessPolicies")>]
         member _.AccessPolicies((n, args), accessPolicies) =
@@ -117571,7 +117583,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("expiry")>]
         member _.Expiry((n, args), expiry) =
@@ -117644,7 +117656,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -117891,7 +117903,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118104,7 +118116,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118189,7 +118201,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118282,7 +118294,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118350,7 +118362,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118401,7 +118413,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118469,7 +118481,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118563,7 +118575,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118648,7 +118660,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118716,7 +118728,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -118818,7 +118830,7 @@ module Storage =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -119035,7 +119047,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("type")>]
         member _.Type((n, args), ``type``) =
@@ -119074,7 +119086,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("type")>]
         member _.Type((n, args), ``type``) =
@@ -119113,7 +119125,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119203,7 +119215,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119293,7 +119305,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119384,7 +119396,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119475,7 +119487,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119548,7 +119560,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119621,7 +119633,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119695,7 +119707,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("encoding")>]
         member _.Encoding((n, args), encoding) =
@@ -119768,7 +119780,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -119880,7 +119892,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120101,7 +120113,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120289,7 +120301,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120443,7 +120455,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120604,7 +120616,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120758,7 +120770,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -120912,7 +120924,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -121100,7 +121112,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -121288,7 +121300,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -121459,7 +121471,7 @@ module StreamAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -121634,7 +121646,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -121690,7 +121702,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("first")>]
         member _.First((n, args), first) =
@@ -121763,7 +121775,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("relativeName")>]
         member _.RelativeName((n, args), relativeName) =
@@ -121819,7 +121831,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("customHeaders")>]
         member _.CustomHeaders((n, args), customHeaders) =
@@ -121961,7 +121973,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((n, args), name) =
@@ -122018,7 +122030,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -122257,7 +122269,7 @@ module TrafficManager =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -122383,7 +122395,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("action")>]
         member _.Action((n, args), action) =
@@ -122482,7 +122494,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchValues")>]
         member _.MatchValues((n, args), matchValues) =
@@ -122556,7 +122568,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("selector")>]
         member _.Selector((n, args), selector) =
@@ -122613,7 +122625,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("exclusions")>]
         member _.Exclusions((n, args), exclusions) =
@@ -122653,7 +122665,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("matchVariable")>]
         member _.MatchVariable((n, args), matchVariable) =
@@ -122726,7 +122738,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("ruleGroupOverrides")>]
         member _.RuleGroupOverrides((n, args), ruleGroupOverrides) =
@@ -122792,7 +122804,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("disabledRules")>]
         member _.DisabledRules((n, args), disabledRules) =
@@ -122841,7 +122853,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("enabled")>]
         member _.Enabled((n, args), enabled) =
@@ -122897,7 +122909,7 @@ module Waf =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123014,7 +123026,7 @@ module AppInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123141,7 +123153,7 @@ module AppInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123218,7 +123230,7 @@ module AppInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123405,7 +123417,7 @@ module AppInsights =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123638,7 +123650,7 @@ module Cognitive =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123777,7 +123789,7 @@ module Dashboard =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -123882,7 +123894,7 @@ module DatabaseMigration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124018,7 +124030,7 @@ module DatabaseMigration =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124140,7 +124152,7 @@ module DataLake =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124259,7 +124271,7 @@ module DataLake =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124369,7 +124381,7 @@ module DataLake =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124539,7 +124551,7 @@ module DataLake =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124615,7 +124627,7 @@ module DataLake =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124728,7 +124740,7 @@ module DevSpace =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -124867,7 +124879,7 @@ module IotCentral =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125023,7 +125035,7 @@ module LogAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125125,7 +125137,7 @@ module LogAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125270,7 +125282,7 @@ module LogAnalytics =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125375,7 +125387,7 @@ module Maintenance =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125451,7 +125463,7 @@ module Maintenance =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125527,7 +125539,7 @@ module Maintenance =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125632,7 +125644,7 @@ module Management =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125734,7 +125746,7 @@ module Management =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125830,7 +125842,7 @@ module ManagementGroups =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -125935,7 +125947,7 @@ module ManagementResource =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126031,7 +126043,7 @@ module Maps =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126119,7 +126131,7 @@ module Marketplace =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126198,7 +126210,7 @@ module MixedReality =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126286,7 +126298,7 @@ module Msi =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126374,7 +126386,7 @@ module PowerBI =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126488,7 +126500,7 @@ module Proximity =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126576,7 +126588,7 @@ module RecoveryServices =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126698,7 +126710,7 @@ module Relay =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126808,7 +126820,7 @@ module Relay =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126913,7 +126925,7 @@ module SecurityCenter =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -126972,7 +126984,7 @@ module SecurityCenter =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -127065,7 +127077,7 @@ module SecurityCenter =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -127107,7 +127119,7 @@ module SecurityCenter =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -127169,7 +127181,7 @@ module Sentinel =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args
@@ -127314,7 +127326,7 @@ module Sentinel =
 
         member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
         member _.Delay f = f ()
-        member _.Zero = ()
+        member _.Zero _ = ()
 
         [<CustomOperation("name")>]
         member _.Name((_, args), newName) = newName, args

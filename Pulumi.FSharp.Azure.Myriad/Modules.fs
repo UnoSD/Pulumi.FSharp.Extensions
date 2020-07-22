@@ -4,7 +4,6 @@ open System.IO
 open System.Text.RegularExpressions
 open AstHelpers
 open FSharp.Data
-open AstType
 open FSharp.Compiler.SyntaxTree
 open AstBuilder
 open AstLet
@@ -13,7 +12,7 @@ open AstInstance
 open FSharp.Text.RegexProvider
 open FsAst
 
-let private createModuleContent isType (typeName, properties, nameAndType) =
+let private createModuleContent properties typeName isType nameAndType =
     [|
         createAzureBuilderClass isType typeName (properties |> Array.map (nameAndType))
         
@@ -79,10 +78,63 @@ let createPulumiModules schemaUrl =
         Array.map (fun (p, jv) -> (p, jv.AsString())) |>
         Map.ofArray              
     
-    let createBuilders (typeInfo, jsonValue) =
+//open FSharp.Text.RegexProvider
+//
+//type PossibleValues =
+//    Regex<"Possible values are `(?<Value>[\w])`(?:, `(?<Value>[\w])`)? and `(?<Value>[\w])`.">
+//
+//let x (jValue : JsonValue) =
+//    jValue.Properties() |>
+//    Array.tryFind (fun (p, _) -> p = "description") |>
+//    Option.map (snd >> (fun x -> x.AsString() |> PossibleValues().TypedMatches) >> (fun x -> x))
+    
+    let ctypes =
+        types |>
+        // Remove the inexisting type match
+        Array.map (fst >> (function | Type x -> x | _ -> failwith "Not happening"))
+    
+    let getComplexType typeFullPath =
+        ctypes |>
+        Array.tryFind (fun t -> ("#/types/" + t.ResourceType.Value) = typeFullPath) |>
+        Option.map (fun x -> "complex:" + x.ResourceType.Value) |>
+        Option.defaultValue "complex" // Should be only "pulumi.json#/" type
+
+    let nameAndType (name, (properties : (string * JsonValue) [])) =
+        let tName =
+            match properties |>
+                  Array.tryFind (fun (p, _) -> p = "language") |>
+                  Option.bind (fun (_, v) -> v.Properties() |>
+                                             Array.tryFind (fun (p, _) -> p = "csharp") |>
+                                             Option.map snd) |>
+                  Option.map (fun v -> v.GetProperty("name").AsString()) with
+            | Some name -> name
+            | None      -> name
+        
+        let pType =
+            properties |>
+            Array.choose (fun (p, v) -> match p with
+                                        | "type" -> v.AsString() |> Some // Array type has also "items"
+                                        | "$ref" -> v.AsString() |> getComplexType |> Some
+                                        (*| "description"*)
+                                        | _ -> None) |>
+            Array.head
+        
+        (tName, pType)
+    
+    let createType =
+        (fun (x, y : JsonValue) -> nameAndType (x, y.Properties()))
+    
+    let create (jsonValue : JsonValue) (propertyName : string) typeName isType =
+        let properties =
+            jsonValue.[propertyName].Properties()
+            
+        createType |>
+        createModuleContent properties typeName isType
+    
+    let createBuilders (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
-        | Type t     -> createType true schema (t.Value, jsonValue) |> createModuleContent true
-        | Resource r -> createType false schema (r.Value, jsonValue) |> createModuleContent false
+        | Type t     -> create jsonValue "properties" t.ResourceType.Value true
+        | Resource r -> create jsonValue "inputProperties" r.ResourceTypePascalCase.Value false
     
     let createProviderModule (providerName, builders) =
         let moduleName =
@@ -104,7 +156,7 @@ let createPulumiModules schemaUrl =
         
         let hasTypes =
             builders |>
-            Array.exists (fst >> (function | Type _ -> true | _ -> false))
+            Array.exists (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get") |> not -> true | _ -> false))
         
         let openInputs =
             match hasTypes with
