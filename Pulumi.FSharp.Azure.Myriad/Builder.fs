@@ -1,8 +1,7 @@
 module AstBuilder
 
-open FSharp.Compiler.SyntaxTree
-open FSharp.Compiler.Range
 open AstOperations
+open FSharp.Data
 open AstInstance
 open AstHelpers
 open AstMember
@@ -11,19 +10,42 @@ open AstRun
 open FsAst
 open Core
 
-let private implicitCtor () =
-    SynMemberDefn.CreateImplicitCtor()
+open System.Text.RegularExpressions
+open FSharp.Text.RegexProvider
 
-let createAzureBuilderClass isType name props =
-    let typeName =
-        name + "Builder" |>
-        Ident.CreateLong
-        
+// "azure:compute/virtualMachine:VirtualMachine"
+// CloudProvider - Always the same for each schema (azure here)
+type ResourceInfoProvider =
+    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>\w+)/(?<ResourceTypeCamelCase>\w+):(?<ResourceTypePascalCase>\w+)">
+
+type TypeInfoProvider =
+    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>\w+)/(?<ResourceType>\w+):(?<ResourceType2>\w+)">
+
+let resourceInfo =
+    ResourceInfoProvider(RegexOptions.Compiled)
+
+let typeInfo =
+    TypeInfoProvider(RegexOptions.Compiled)
+    
+type BuilderType =
+    | Type of TypeInfoProvider.MatchType
+    | Resource of ResourceInfoProvider.MatchType
+
+let private argIdent =
+    Pat.ident("arg")
+    
+let private argToInput =
+    Expr.func("input", "arg")
+    
+let private args =
+    Expr.ident("args")
+    
+let private funcIdent =
+    Expr.ident("func")
+    
+let createAzureBuilderClass isType name properties (types : (TypeInfoProvider.MatchType * JsonValue) []) =
     let argsType =
         name + "Args"
-       
-    let func =
-        "List.fold"
        
     //let lambdaArg =
     //    SynSimplePats.SimplePats([ SynSimplePat.CreateTyped(Ident.Create("args"), SynType.Bool())
@@ -32,48 +54,22 @@ let createAzureBuilderClass isType name props =
     //let lambdaArg =
     //    SynSimplePats.SimplePats([], range.Zero)
     
-    let arg name =
-        SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), [])
-    
-    let letExpr =
-        SynExpr.CreateApp(SynExpr.CreateIdentString("f"), SynExpr.CreateIdentString("args"))
-    
-    let letFunc =
-        SynExpr.LetOrUse(false,
-                         false,
-                         [
-                             { SynBindingRcd.Let with
-                                  Pattern = SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString("func"),
-                                                                      [ arg "args"; arg "f" ])
-                                  Expr = letExpr }.FromRcd
-                         ],
-                         SynExpr.CreateUnit,
-                         range.Zero)
-        
-    let arg1 =
-        SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("func"))
-    
-    let arg2 =
-        SynExpr.CreateParen(createInstance argsType SynExpr.CreateUnit)
-        
-    let arg3 =
-        SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("args"))
-    
     let apply =
-        SynExpr.CreateApp(SynExpr.CreateLongIdent(LongIdentWithDots.CreateString(func)),
-                                                  SynExpr.CreateApp(arg1, SynExpr.CreateApp(arg2, arg3)))
+        Expr.func("List.fold", [
+            Expr.ident("func")
+            Expr.paren(createInstance argsType Expr.unit)
+            Expr.ident("args")
+        ])
        
     let runArgs =
         if isType then
             apply
-        else 
-            SynExpr.CreateParenedTuple([
-                SynExpr.CreateLongIdent(LongIdentWithDots.CreateString ("name"))
-                SynExpr.CreateParen(apply)
-            ])
-        
-    let listCons =
-        Expr.funcTuple("List.Cons", [ "apply"; "args" ])
+        else
+            Expr.paren(
+                Expr.tuple(
+                    Expr.ident("name"),
+                    Expr.paren(apply)
+                ))
         
     // Infix: apply :: args, but produces: apply ``::`` args
     //let listCons =
@@ -81,12 +77,74 @@ let createAzureBuilderClass isType name props =
     //                                             SynExpr.CreateIdentString("apply")),
     //                      SynExpr.CreateIdentString("args"))
         
-    let opTupleArgs fst =
-        [fst; listCons]
+    let createOperations propName (propType : string) =
+        match propType with
+        | "string"
+        | "integer"
+        | "number"
+        | "boolean"
+        | "array"
+        | "object" ->
+            createOperationsFor' isType propName propType argsType
+        | _ -> // Complex
+            let setExpr =
+                Expr.sequential([
+                    Expr.set("args." + propName, argToInput)
+                    args
+                ])
+            
+            let expr =
+                Expr.list([
+                    Expr.paren(
+                        Expr.sequential([
+                            Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
+                            funcIdent
+                        ])
+                    )
+                ])
+            
+            [| createYield' argIdent expr |]
+        
+    let ctypes =
+        types |>
+        // Remove the inexisting type match
+        Array.map fst
+    
+    let getComplexType typeFullPath =
+        ctypes |>
+        Array.tryFind (fun t -> ("#/types/" + t.ResourceType.Value) = typeFullPath) |>
+        Option.map (fun x -> "complex:" + x.ResourceType.Value) |>
+        Option.defaultValue "complex" // Should be only "pulumi.json#/" type
+    
+    let nameAndType name (properties : (string * JsonValue) []) =
+        let tName =
+            match properties |>
+                  Array.tryFind (fun (p, _) -> p = "language") |>
+                  Option.bind (fun (_, v) -> v.Properties() |>
+                                             Array.tryFind (fun (p, _) -> p = "csharp") |>
+                                             Option.map snd) |>
+                  Option.map (fun v -> v.GetProperty("name").AsString()) with
+            | Some name -> name
+            | None      -> name
+        
+        let pType =
+            properties |>
+            Array.choose (fun (p, v) -> match p with
+                                        | "type" -> v.AsString() |> Some // Array type has also "items"
+                                        | "$ref" -> v.AsString() |> getComplexType |> Some
+                                        (*| "description"*)
+                                        | _ -> None) |>
+            Array.head
+        
+        (tName |> toPascalCase, pType)
+    
+    let props =
+        properties |>
+        Array.map (fun (x, y : JsonValue) -> nameAndType x (y.Properties()))
         
     let operations =
         props |>
-        Array.collect (fun (prop, t) -> createOperationsFor isType (prop |> toPascalCase) t argsType opTupleArgs) |>
+        Array.collect (fun (propName, propType) -> createOperations propName propType) |>
         List.ofArray
     
     let newNameExpr =
@@ -95,7 +153,7 @@ let createAzureBuilderClass isType name props =
     
     let runReturnExpr =
         Expr.sequential([
-            letFunc
+            Expr.let'("func", [ "args"; "f" ], Expr.func("f", "args"))
             if isType then runArgs else createInstance name runArgs
         ])
     
@@ -126,8 +184,9 @@ let createAzureBuilderClass isType name props =
         Pat.paren (Pat.tuple ("args", "delayedArgs"))
     
     let forExpr =
-        SynExpr.CreateInstanceMethodCall(LongIdentWithDots.CreateString("this.Combine"),
-                                         Expr.paren(Expr.tuple(Expr.ident("args"), Expr.func("delayedArgs", Expr.unit))))
+        Expr.methodCall("this.Combine",
+                        [ Expr.ident("args")
+                          Expr.func("delayedArgs", Expr.unit) ])
     
     let createFor() =
         createMember' "this" "For" [forArgs.ToRcd] [] forExpr
@@ -138,15 +197,17 @@ let createAzureBuilderClass isType name props =
     let createZero() =
         createMember "Zero" [Pat.wild.ToRcd] [] (Expr.unit)
     
-    SynModuleDecl.CreateType(SynComponentInfoRcd.Create(typeName),
-                             [
-                                 implicitCtor ()
-                                 
-                                 createYield yieldReturnExpr
-                                 createRun (if isType then null else "name") runReturnExpr
-                                 createCombine()
-                                 createFor()
-                                 createDelay()
-                                 createZero()
-                                 yield! if isType then [] else [ createNameOperation newNameExpr ]
-                             ] @ operations)
+    Module.type'(name + "Builder", [
+        Type.ctor()
+        
+        createYield yieldReturnExpr
+        createRun (if isType then null else "name") runReturnExpr
+        createCombine()
+        createFor()
+        createDelay()
+        createZero()
+        
+        yield! if isType then [] else [ createNameOperation newNameExpr ]
+        
+        yield! operations
+    ])

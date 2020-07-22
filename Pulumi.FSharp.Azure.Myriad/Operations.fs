@@ -1,13 +1,12 @@
 module AstOperations
 
-open FSharp.Compiler.Range
 open FSharp.Compiler.SyntaxTree
-open Core
-open AstMember
+open FSharp.Compiler.Range
 open AstAttribute
-open FsAst
-open AstYield
 open AstHelpers
+open AstMember
+open FsAst
+open Core
     
 let private createPatternTyped name args (typeName : string) =
     SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
@@ -62,7 +61,10 @@ let private createOperation' nameArgName isType name typeName hasAttribute =
 let createNameOperation newNameExpr =
     createOperation'' null "Name" "name" "newName" true newNameExpr    
 
-let createOperationsFor' isType name pType (argsType : string) tupleArgs =
+let private listCons =
+    Expr.funcTuple("List.Cons", [ "apply"; "args" ])
+
+let createOperationsFor' isType name pType (argsType : string) =
     let setRights =
         match pType with
         | "string"
@@ -93,9 +95,9 @@ let createOperationsFor' isType name pType (argsType : string) tupleArgs =
             "name"
     
     let expr setExpr =
-        SynExpr.CreateSequential([
+        Expr.sequential([
             setExpr
-            SynExpr.CreateTuple(tupleArgs (SynExpr.CreateIdentString(nameArgName)))
+            Expr.tuple(Expr.ident(nameArgName), listCons)
         ])
         
     setRights |>
@@ -103,37 +105,3 @@ let createOperationsFor' isType name pType (argsType : string) tupleArgs =
     List.map (letExpr >> expr) |>
     List.mapi (fun i e -> createOperation' nameArgName isType name (i = 0) e) |>
     Array.ofList
-    
-let private argIdent =
-    Pat.ident("arg")
-    
-let private argToInput =
-    Expr.func("input", "arg")
-    
-let private args =
-    Expr.ident("args")
-    
-let private funcIdent =
-    Expr.ident("func")
-    
-let createOperationsFor isType name (pType : string) argsType tupleArgs =
-    let setExpr =
-        Expr.sequential([
-            Expr.set("args." + name, argToInput)
-            args
-        ])
-    
-    let expr =
-        Expr.list([
-            Expr.paren(
-                Expr.sequential([
-                    Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
-                    funcIdent
-                ])
-            )
-        ])
-    
-    if pType.StartsWith("complex:") then
-        [| createYield' argIdent expr |]
-    else 
-        createOperationsFor' isType name pType argsType tupleArgs

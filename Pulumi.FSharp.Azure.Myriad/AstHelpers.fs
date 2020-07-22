@@ -82,26 +82,35 @@ type Expr =
         SynExpr.CreateSequential(exps)
         
     static member func(name, exp) =
-        SynExpr.CreateApp(Expr.ident(name),
+        SynExpr.CreateApp(Expr.longIdent(name),
                           exp)
 
-    static member func(name) =
+    static member func(name : string) =
         Expr.func(name, Expr.unit)
     
-    static member funcTuple(name, exps) =
+    static member funcTuple(name : string, exps) =
         Expr.func(name,
                   Expr.paren(Expr.tuple(exps)))
         
-    static member funcTuple(name, names) =
+    static member funcTuple(name : string, names) =
         Expr.func(name,
                   Expr.paren(Expr.tuple(names |> List.map Expr.ident)))
 
-    static member func(name, args : string list) =
+    static member func(name : string, args : string list) =
+        Expr.func(Expr.longIdent(name), args |> List.map Expr.ident)
+
+    static member func(name : SynExpr, arg : SynExpr) =
+        SynExpr.CreateApp(name, arg)
+    
+    static member func(name : SynExpr, args : SynExpr list) =
         match args with
-        | [x]     -> Expr.func(name, Expr.ident(x))
+        | [x]     -> Expr.func(name, x)
         | x :: xs -> Expr.func(name, Expr.func(x, xs))
         | []      -> failwith "Empty arguments"
         
+    static member func(name : string, args : SynExpr list) =
+        Expr.func(Expr.longIdent(name), args)
+            
     static member func(name, arg : string) =
         Expr.func(name, [arg])
         
@@ -150,6 +159,10 @@ type Expr =
                      exp,
                      range.Zero)
 
+    static member methodCall(identString, exps) =
+        SynExpr.CreateInstanceMethodCall(LongIdentWithDots.CreateString(identString),
+                                         Expr.paren(Expr.tuple(exps)))
+
 type Match =
     static member clause(pat, expr) =
         SynMatchClause.Clause(pat,
@@ -183,3 +196,11 @@ type Module =
     static member open'(namespaceOrModule) =
         LongIdentWithDots.CreateString(namespaceOrModule) |>
         SynModuleDecl.CreateOpen
+        
+    static member type'(name, content) =
+        SynModuleDecl.CreateType(SynComponentInfoRcd.Create(Ident.CreateLong(name)),
+                                 content)
+        
+type Type =
+    static member ctor() =
+        SynMemberDefn.CreateImplicitCtor()
