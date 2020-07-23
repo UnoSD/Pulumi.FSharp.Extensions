@@ -10,3 +10,18 @@ let x (jValue : JsonValue) =
     jValue.Properties() |>
     Array.tryFind (fun (p, _) -> p = "description") |>
     Option.map (snd >> (fun x -> x.AsString() |> PossibleValues().TypedMatches) >> (fun x -> x))
+
+       
+// Infix: apply :: args, but produces: apply ``::`` args
+let listCons =
+    SynExpr.CreateApp(SynExpr.CreateAppInfix(SynExpr.CreateLongIdent(LongIdentWithDots.CreateString("::")),
+                                             SynExpr.CreateIdentString("apply")),
+                      SynExpr.CreateIdentString("args"))
+
+    
+let lambdaArg =
+    SynSimplePats.SimplePats([ SynSimplePat.CreateTyped(Ident.Create("args"), SynType.Bool())
+                               SynSimplePat.CreateTyped(Ident.Create("f"), SynType.Bool()) ], range.Zero)
+    
+let lambdaArg =
+    SynSimplePats.SimplePats([], range.Zero)

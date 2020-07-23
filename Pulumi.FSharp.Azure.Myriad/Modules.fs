@@ -12,9 +12,9 @@ open Debug
 open FsAst
 open Core
 
-let private createModuleContent (properties : (string * JsonValue) []) typeName isType types =
+let private createModuleContent (properties : (string * JsonValue) []) typeName isType =
     [|
-        createAzureBuilderClass isType typeName properties types
+        createAzureBuilderClass isType typeName properties
         
         createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
     |]
@@ -69,7 +69,7 @@ let createPulumiModules schemaUrl =
         let properties =
             jsonValue.[propertyName].Properties()
             
-        createModuleContent properties typeName isType typeMatches
+        createModuleContent properties typeName isType
     
     let createBuilders (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
