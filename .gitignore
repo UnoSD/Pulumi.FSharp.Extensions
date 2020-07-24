@@ -351,9 +351,4 @@ MigrationBackup/
 
 .idea/
 
-/Generated.fs
-/Pulumi.FSharp.Azure.Myriad/schema.json
-/schema.json
-/PulumiTest
-/PerformanceSampling
-/Examples
+/TODO
