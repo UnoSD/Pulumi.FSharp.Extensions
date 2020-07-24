@@ -37,6 +37,14 @@ let private getSchemaFromCacheOrUrl schemaUrl providerName =
 
         json
     
+let private createModule name namespace' openInputs types =
+    Module.module'(name, [
+        yield  Module.open'("Pulumi." + namespace' + "." + name)
+        yield! openInputs
+
+        yield! types
+    ])
+    
 let createPulumiModules schemaUrl providerName =
     let schema =
         getSchemaFromCacheOrUrl schemaUrl providerName |>
@@ -98,9 +106,14 @@ let createPulumiModules schemaUrl providerName =
                                            | _ -> true)) |>
             Array.Parallel.collect createBuilders
         
+        let isGet =
+            function
+            | Type t when not <| t.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) -> true
+            | _                                                                                   -> false
+        
         let hasTypes =
             builders |>
-            Array.exists (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) |> not -> true | _ -> false))
+            Array.exists (fst >> isGet)
         
         let openInputs =
             if hasTypes then
@@ -108,11 +121,7 @@ let createPulumiModules schemaUrl providerName =
             else
                 []
             
-        Module.module'(moduleName, [
-            yield  Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName)
-            yield! openInputs
-            yield! types
-        ])
+        createModule moduleName namespaces.[pulumiProviderName] openInputs types
     
     Array.concat [ types; resources ] |>
     Array.groupBy resourceProvider |>

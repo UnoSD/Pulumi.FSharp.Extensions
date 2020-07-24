@@ -356,3 +356,4 @@ MigrationBackup/
 /Aws.json
 /Kubernetes.json
 /Generated.fs
+/Pulumi.FSharp.NuGet.Test/Azure.json
