@@ -19,22 +19,24 @@ let private createModuleContent (properties : (string * JsonValue) []) typeName 
         createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
     |]
 
-let private getSchemaFromCacheOrUrl schemaUrl =
-    if File.Exists("schema.json") then
-        File.ReadAllText("schema.json")
+let private getSchemaFromCacheOrUrl schemaUrl providerName =
+    let fileName = providerName + ".json"
+    
+    if File.Exists(fileName) then
+        File.ReadAllText(fileName)
     else
         let json =
             Http.RequestString(schemaUrl)
         
         #if DEBUG
-        File.WriteAllText("schema.json", json)
+        File.WriteAllText(fileName, json)
         #endif
 
         json
     
-let createPulumiModules schemaUrl =
+let createPulumiModules schemaUrl providerName =
     let schema =
-        getSchemaFromCacheOrUrl schemaUrl |>
+        getSchemaFromCacheOrUrl schemaUrl providerName |>
         JsonValue.Parse
     
     let pulumiProviderName =

@@ -5,8 +5,8 @@ open AstModules
 open Myriad.Core
 
 // Parameterize these:
-let private provider = "Azure"
-let private version = "3.11.0" // Version needs to match NuGet package
+let private provider = "Kubernetes"
+let private version = "2.4.0" // Version needs to match NuGet package
     
 //https://github.com/pulumi/pulumi-aws/blob/v2.13.1/provider/cmd/pulumi-resource-aws/schema.json?raw=true
 //https://github.com/pulumi/pulumi-kubernetes/blob/v2.4.0/provider/cmd/pulumi-resource-kubernetes/schema.json?raw=true
@@ -27,5 +27,5 @@ type PulumiFSharpGenerator() =
             Namespace.namespace'("Pulumi.FSharp." + provider, [
                 yield  Module.open'("Pulumi.FSharp")
                 
-                yield! createPulumiModules pulumiSchemaUrl
+                yield! createPulumiModules pulumiSchemaUrl provider
             ])
