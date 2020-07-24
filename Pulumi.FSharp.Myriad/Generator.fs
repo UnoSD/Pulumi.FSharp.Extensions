@@ -25,10 +25,11 @@ type PulumiFSharpGenerator() =
             let (SynModuleOrNamespace(ident::_,_,_,let'::_,_,_,_,_)) = module'
             let (SynModuleDecl.Let(_,binding::_,_)) = let'
             let (SynBinding.Binding(_,_,_,_,_,_,_,_,_,expr,_,_)) = binding
-            let (SynExpr.Const(const',_)) = expr
-            let (SynConst.String(version,_)) = const'
+            let (SynExpr.AnonRecd(_,_,kvps,_)) = expr
+            let getValue = function | SynConst.String(str,_) -> str | SynConst.Bool(b) -> b.ToString() | x -> x.ToString()
+            let config = kvps |> List.map (fun (key, SynExpr.Const(const', _)) -> (key.idText, getValue const')) |> Map.ofList
             let provider = ident.idText            
-            let url = pulumiSchemaUrl provider version
+            let url = pulumiSchemaUrl provider config.["Version"]
             
             Namespace.namespace'(namespace', [
                 yield  Module.open'("Pulumi.FSharp")
