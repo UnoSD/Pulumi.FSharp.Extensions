@@ -352,5 +352,7 @@ MigrationBackup/
 .idea/
 
 /TODO
+/Azure.json
+/Aws.json
 /Kubernetes.json
 /Generated.fs
