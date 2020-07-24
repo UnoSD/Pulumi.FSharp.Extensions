@@ -5,9 +5,9 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
         <Copyright>Copyright 2020</Copyright>
-        <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Azure</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
         <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Azure</RepositoryUrl>
+        <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
         <PackageTags>fsharp pulumi aws</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>

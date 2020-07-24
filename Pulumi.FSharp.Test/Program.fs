@@ -2,51 +2,29 @@
 
 open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Azure.Network
 
 let infra () =
-    let vm =
-        virtualMachine {
-            networkInterfaceIds [ input "/id" ]
-            name "myvm"
-            vmSize "D12v3"
-            virtualMachineStorageOsDisk {
-                name "diskName"
-                createOption "option"
-            }
-            resourceGroup "pippo"
-            virtualMachineOsProfile {
-                computerName "cname"
-                adminUsername "unosd"
-                adminPassword "strongpassword"
-            }
+    let nic =
+        networkInterface {
+            name "vmnic"
         }
-
-    let _ =
-        virtualMachine {
-            vmSize "size1"
-            virtualMachineStorageOsDisk {
-                name "disk1"
-            }
-            name "name1"
+    
+    virtualMachine {
+        networkInterfaceIds nic.Id
+        name "myvm"
+        vmSize "D12v3"
+        virtualMachineStorageOsDisk {
+            name "diskName"
+            createOption "option"
         }
-        
-    let _ =
-        virtualMachine {
-            virtualMachineStorageOsDisk {
-                name "disk2"
-            }
-            vmSize "size2"
-            name "name2"
+        resourceGroup "pippo"
+        virtualMachineOsProfile {
+            computerName "cname"
+            adminUsername "unosd"
+            adminPassword "strongpassword"
         }
-        
-    let _ =
-        virtualMachine {
-            name "name3"
-            vmSize "size3"
-            virtualMachineStorageOsDisk {
-                name "disk3"
-            }
-        }
+    } |> ignore
     
     dict []
 
