@@ -1,7 +1,6 @@
 module AstOperations
 
 open FSharp.Compiler.SyntaxTree
-open FSharp.Compiler.Range
 open AstAttribute
 open AstHelpers
 open AstMember
@@ -115,6 +114,9 @@ let private inputMapIdent =
 let private resourceNameIdent =
     Expr.ident("resourceName")
 
+let private inputListFromSeq =
+    Expr.paren(Expr.func(Expr.paren(Expr.ident("op_ComposeRight")), [ Expr.paren(Expr.func(Expr.longIdent("Seq.map"), inputIdent)); inputListIdent ]))
+
 let createOperationsFor' isType name pType (argsType : string) =
     let setRights =
         match pType with
@@ -122,7 +124,7 @@ let createOperationsFor' isType name pType (argsType : string) =
         | "integer"
         | "number"
         | "boolean" -> [ inputIdent; ioIdent ]
-        | "array"   -> [ inputListIdent ]
+        | "array"   -> [ inputListIdent; inputListFromSeq ]
         | "object"  -> [ inputMapIdent ]
         // What to do here? // I don't think complex exists at all... check and delete
         | "complex" -> [ inputIdent ]

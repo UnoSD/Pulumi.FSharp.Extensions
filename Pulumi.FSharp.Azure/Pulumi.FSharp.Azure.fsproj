@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>2.0.1</Version>
+        <Version>3.12.1.1</Version>
         <NoWarn>NU1605,FS0058</NoWarn>
     </PropertyGroup>
 
