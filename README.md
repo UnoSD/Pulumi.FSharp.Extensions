@@ -1,5 +1,7 @@
-# Pulumi.FSharp.Azure
+# Pulumi.FSharp.Extensions
 F# computational expressions to reduce boilerplate in Pulumi code
+
+# Pulumi.FSharp.Azure
 
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Azure)](https://www.nuget.org/packages/Pulumi.FSharp.Azure)
 

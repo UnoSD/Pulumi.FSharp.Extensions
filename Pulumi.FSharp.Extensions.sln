@@ -14,6 +14,11 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Aws", "Pulumi
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Kubernetes", "Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj", "{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{DA33B8DE-E8FB-49FB-B79A-D156179C56CA}"
+ProjectSection(SolutionItems) = preProject
+	README.md = README.md
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
