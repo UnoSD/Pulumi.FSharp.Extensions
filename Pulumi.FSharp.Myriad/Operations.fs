@@ -114,8 +114,31 @@ let private inputMapIdent =
 let private resourceNameIdent =
     Expr.ident("resourceName")
 
+let private compose =
+    Expr.paren(Expr.ident("op_ComposeRight"))
+
+let private inputListFromSeqOf (expr : SynExpr) =
+    Expr.paren(
+        Expr.func(compose, [
+            Expr.paren(Expr.func(Expr.longIdent("Seq.map"), expr))
+            inputListIdent
+        ])
+    )
+
 let private inputListFromSeq =
-    Expr.paren(Expr.func(Expr.paren(Expr.ident("op_ComposeRight")), [ Expr.paren(Expr.func(Expr.longIdent("Seq.map"), inputIdent)); inputListIdent ]))
+    inputListFromSeqOf inputIdent
+
+let private inputListFromOutputSeq =
+    inputListFromSeqOf ioIdent
+
+let private inputListFromItemOf (expr : SynExpr) =
+    Expr.paren(Expr.func(compose, (Expr.func(Expr.paren(Expr.func(compose, [ expr; Expr.longIdent("Seq.singleton") ])), inputListIdent))))
+
+let private inputListFromItem =
+    inputListFromItemOf inputIdent
+    
+let private inputListFromOutput =
+    inputListFromItemOf ioIdent
 
 let createOperationsFor' isType name pType (argsType : string) =
     let setRights =
@@ -124,7 +147,7 @@ let createOperationsFor' isType name pType (argsType : string) =
         | "integer"
         | "number"
         | "boolean" -> [ inputIdent; ioIdent ]
-        | "array"   -> [ inputListIdent; inputListFromSeq ]
+        | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ]
         | "object"  -> [ inputMapIdent ]
         // What to do here? // I don't think complex exists at all... check and delete
         | "complex" -> [ inputIdent ]
