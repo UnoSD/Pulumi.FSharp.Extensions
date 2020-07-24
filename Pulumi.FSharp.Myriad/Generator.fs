@@ -2,11 +2,10 @@
 
 open AstHelpers
 open AstModules
-open FSharp.Compiler.SyntaxTree
 open Myriad.Core
 
 // Parameterize these:
-let private provider = "Kubernetes" //Azure, Aws, Kubernetes
+let private provider = "Azure" // Azure, Aws, Kubernetes
 let private version = "3.11.0" // Version needs to match NuGet package 3.11.0, 2.13.1, 2.4.0
     
 let private pulumiSchemaUrl =
@@ -23,5 +22,7 @@ type PulumiFSharpGenerator() =
     interface IMyriadGenerator with
         member _.Generate(_, _) =
             Namespace.namespace'("Pulumi.FSharp." + provider, [
+                yield  Module.open'("Pulumi.FSharp")
+                
                 yield! createPulumiModules pulumiSchemaUrl provider
             ])
