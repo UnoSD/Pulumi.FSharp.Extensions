@@ -69,7 +69,9 @@ let createPulumiModules schemaUrl providerName =
     
     let create (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
-            jsonValue.[propertyName].Properties()
+            match jsonValue.TryGetProperty(propertyName) with
+            | Some value -> value.Properties()
+            | None       -> [||]
             
         createModuleContent properties typeName isType
     
@@ -113,5 +115,5 @@ let createPulumiModules schemaUrl providerName =
     Array.groupBy resourceProvider |>
     debugFilterProvider |>
     Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
-    Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index" ]) |>
+    Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index"; "" ]) |>
     Array.Parallel.map createProviderModule
