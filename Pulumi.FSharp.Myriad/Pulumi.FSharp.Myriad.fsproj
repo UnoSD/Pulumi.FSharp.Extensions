@@ -38,8 +38,8 @@
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="FSharp.Data" Version="3.3.3" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
-        <PackageReference Include="Myriad.Core" Version="0.2.8" />
-        <PackageReference Include="Myriad.Sdk" Version="0.2.8" />
+        <PackageReference Include="Myriad.Core" Version="0.4.0" />
+        <PackageReference Include="Myriad.Sdk" Version="0.4.0" />
     </ItemGroup>
     
 </Project>
