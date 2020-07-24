@@ -1,6 +1,5 @@
 module AstModules
 
-open System
 open FSharp.Compiler.SyntaxTree
 open AstInstance
 open FSharp.Data
@@ -44,26 +43,42 @@ let private createModule name namespace' openInputs types =
 
         yield! types
     ])
-    
+
 let createPulumiModules schemaUrl providerName =
     let schema =
         getSchemaFromCacheOrUrl schemaUrl providerName |>
         JsonValue.Parse
     
+    let allNestedTypes =
+        let getType (jsonValue : JsonValue) =
+            jsonValue.Properties() |>
+            Array.choose (function
+                          | ("type", JsonValue.String("array")) -> jsonValue.GetProperty("items").TryGetProperty("$ref") |>
+                                                                   Option.map (fun v -> v.AsString())
+                          | ("$ref", JsonValue.String(s))       -> Some s
+                          | _                                   -> None)
+        
+        schema.["resources"].Properties() |>
+        Array.collect (fun (_, jv) -> jv.Properties() |> Array.filter (fun (p, _) -> p = "inputProperties")) |>
+        Array.collect (snd >> (fun x -> x.Properties())) |>
+        Array.collect (snd >> getType) |>
+        Array.map (fun x -> x.Substring(8))
+    
     let pulumiProviderName =
         schema.["name"].AsString()
     
-    let typeMatches =
-        schema.["types"].Properties() |>
-        Array.map (fun (type', jv) -> typeInfo.TypedMatch(type'), jv)
-    
+    let inline typedMatches (property : string) (regex : ^a) builderType filter =
+        let getTypedMatch type' = (^a : (member TypedMatch : string -> 'b) (regex, type'))
+        
+        schema.[property].Properties() |>
+        filter |>
+        Array.map (fun (type', jsonValue) -> getTypedMatch type' |> builderType, jsonValue)
+        
     let types =
-        typeMatches |>
-        Array.map (fun (typedMatch, jsonValue) -> (Type typedMatch, jsonValue))
+        typedMatches "types" typeInfo Type <| Array.filter (fun (n, _) -> allNestedTypes |> Array.contains n)
     
     let resources =
-        schema.["resources"].Properties() |>
-        Array.map (fun (type', jv) -> resourceInfo.TypedMatch(type') |> Resource, jv)
+        typedMatches "resources" resourceInfo Resource id
     
     let resourceProvider (builder, _) =
         match builder with
@@ -100,20 +115,19 @@ let createPulumiModules schemaUrl providerName =
         let types =
             builders |>
             debugFilterTypes |>
-            Array.filter (fst >> (function | Type x when x.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) ||
-                                                         // Fix this
+            Array.filter (fst >> (function | Type x when // Fix this
                                                          x.ResourceType.Value = "AccountNetworkRules" -> false
                                            | _ -> true)) |>
             Array.Parallel.collect createBuilders
         
-        let isGet =
+        let anyType =
             function
-            | Type t when not <| t.ResourceType.Value.StartsWith("get", StringComparison.Ordinal) -> true
-            | _                                                                                   -> false
+            | Type _ -> true
+            | _      -> false
         
         let hasTypes =
             builders |>
-            Array.exists (fst >> isGet)
+            Array.exists (fst >> anyType)
         
         let openInputs =
             if hasTypes then
