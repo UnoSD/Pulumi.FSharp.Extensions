@@ -4,7 +4,7 @@ open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
 
 let infra () =
-    let vm =
+    let _ =
         virtualMachine {
             networkInterfaceIds [ input "/id" ]
             name "myvm"
