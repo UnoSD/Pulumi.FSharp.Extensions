@@ -141,6 +141,9 @@ let createBuilderClass isType name properties =
                 ])
             
             [ createYield' argIdent expr ]
+            // When creating a Yield, we could also create a
+            // let storageOsDisk = virtualMachineStorageOsDisk
+            // to simplify the name
 
     let nameAndType name (properties : (string * JsonValue) []) =
         let tName =

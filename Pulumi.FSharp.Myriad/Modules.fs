@@ -16,7 +16,10 @@ let private createModuleContent (properties : (string * JsonValue) []) typeName 
     [|
         createBuilderClass isType typeName properties
         
-        createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
+        createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)     
+        
+        // Create also shortcut lets:
+        // let storageOsDisk = virtualMachineStorageOsDisk        
     |]
 
 let private getSchemaFromCacheOrUrl schemaUrl providerName =
