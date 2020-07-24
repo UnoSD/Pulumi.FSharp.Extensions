@@ -3,7 +3,7 @@ module Debug
 open AstBuilder
 open Core
 
-let private isDebug = true
+let private isDebug = false
 
 let debugFilterTypes x =
     x |>
