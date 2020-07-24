@@ -34,7 +34,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="FsAst" Version="0.5.0" />
+        <PackageReference Include="FsAst" Version="0.6.0" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="FSharp.Data" Version="3.3.3" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
