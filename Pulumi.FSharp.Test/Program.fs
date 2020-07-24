@@ -3,11 +3,18 @@
 open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
 open Pulumi.FSharp.Azure.Network
+open Pulumi.FSharp.Output
+open Pulumi
 
 let infra () =
     let nic =
         networkInterface {
             name "vmnic"
+        }
+        
+    let pwd =
+        secretOutput {
+            return "strongpassword"
         }
     
     virtualMachine {
@@ -22,9 +29,15 @@ let infra () =
         virtualMachineOsProfile {
             computerName "cname"
             adminUsername "unosd"
-            adminPassword "strongpassword"
+            adminPassword pwd
         }
     } |> ignore
+    
+    let out =
+        secretOutput {
+            let! x = Output.Create("x")
+            return x
+        }
     
     dict []
 

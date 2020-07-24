@@ -2,11 +2,18 @@
 
 open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Output
+open Pulumi
 
 let infra () =
+    let pwd =
+        secretOutput {
+            return "strongPassword"
+        }
+
     let _ =
         virtualMachine {
-            networkInterfaceIds [ input "/id" ]
+            networkInterfaceIds [ "/id" ]
             name "myvm"
             vmSize "D12v3"
             virtualMachineStorageOsDisk {
@@ -17,36 +24,10 @@ let infra () =
             virtualMachineOsProfile {
                 computerName "cname"
                 adminUsername "unosd"
-                adminPassword "strongpassword"
+                adminPassword pwd
             }
         }
-
-    let _ =
-        virtualMachine {
-            vmSize "size1"
-            virtualMachineStorageOsDisk {
-                name "disk1"
-            }
-            name "name1"
-        }
-        
-    let _ =
-        virtualMachine {
-            virtualMachineStorageOsDisk {
-                name "disk2"
-            }
-            vmSize "size2"
-            name "name2"
-        }
-        
-    let _ =
-        virtualMachine {
-            name "name3"
-            vmSize "size3"
-            virtualMachineStorageOsDisk {
-                name "disk3"
-            }
-        }
+   
     
     dict []
 
