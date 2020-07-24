@@ -14,7 +14,7 @@ open Core
 
 let private createModuleContent (properties : (string * JsonValue) []) typeName isType =
     [|
-        createAzureBuilderClass isType typeName properties
+        createBuilderClass isType typeName properties
         
         createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)             
     |]

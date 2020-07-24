@@ -1,14 +1,12 @@
-﻿module Pulumi.FSharp.Azure.Myriad
+﻿module Pulumi.FSharp.Myriad
 
 open AstHelpers
 open AstModules
 open Myriad.Core
 
+// Parameterize these:
 let private provider = "Azure"
-
-// Version needs to match NuGet package
-let private version =
-    "3.11.0"
+let private version = "3.11.0" // Version needs to match NuGet package
     
 //https://github.com/pulumi/pulumi-aws/blob/v2.13.1/provider/cmd/pulumi-resource-aws/schema.json?raw=true
 //https://github.com/pulumi/pulumi-kubernetes/blob/v2.4.0/provider/cmd/pulumi-resource-kubernetes/schema.json?raw=true

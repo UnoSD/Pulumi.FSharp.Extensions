@@ -93,7 +93,7 @@ let private newNameExpr =
 let private nameMember =
     createNameOperation newNameExpr
     
-let createAzureBuilderClass isType name properties =
+let createBuilderClass isType name properties =
     let argsType =
         name + "Args"
 
