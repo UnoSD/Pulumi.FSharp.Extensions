@@ -90,6 +90,12 @@ let private inputListIdent =
 let private inputMapIdent =
     Expr.ident("inputMap")
 
+let private inputUnion1Of2 =
+    SynExpr.CreateIdentString("inputUnion1Of2")
+
+let private inputUnion2Of2 =
+    SynExpr.CreateIdentString("inputUnion2Of2")
+
 let private resourceNameIdent =
     Expr.ident("resourceName")
 
@@ -118,12 +124,6 @@ let private inputListFromItem =
     
 let private inputListFromOutput =
     inputListFromItemOf ioIdent
-
-let private inputUnion1Of2 =
-    Expr.ident("inputUnion1Of2")
-
-let private inputUnion2Of2 =
-    Expr.ident("inputUnion2Of2")
 
 let private idIdent =
     Expr.ident("id")
