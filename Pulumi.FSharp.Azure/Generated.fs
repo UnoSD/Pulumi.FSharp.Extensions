@@ -13,6 +13,96 @@ module Compute =
     open Pulumi.Azure.Compute
     open Pulumi.Azure.Compute.Inputs
 
+    type VirtualMachineOsProfileBuilder() =
+        member _.Yield(_: unit) = null, [ id ]
+
+        member _.Run(_, args) =
+            let func args f = f args
+            ()
+            List.fold func (VirtualMachineOsProfileArgs()) args
+
+        member this.Combine((lName, lArgs), (rName, rArgs)) =
+            (match lName, rName with
+             | null, null -> null
+             | null, name -> name
+             | name, null -> name
+             | _ -> failwith "Duplicate name"),
+            (List.concat [ lArgs; rArgs ])
+
+        member this.For(args, delayedArgs) = this.Combine(args, delayedArgs ())
+        member _.Delay f = f ()
+        member _.Zero _ = ()
+
+        [<CustomOperation("adminPassword")>]
+        member _.AdminPassword((n, args), adminPassword) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.AdminPassword <- input adminPassword
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        member _.AdminPassword((n, args), adminPassword) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.AdminPassword <- io adminPassword
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        [<CustomOperation("adminUsername")>]
+        member _.AdminUsername((n, args), adminUsername) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.AdminUsername <- input adminUsername
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        member _.AdminUsername((n, args), adminUsername) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.AdminUsername <- io adminUsername
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        [<CustomOperation("computerName")>]
+        member _.ComputerName((n, args), computerName) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.ComputerName <- input computerName
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        member _.ComputerName((n, args), computerName) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.ComputerName <- io computerName
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        [<CustomOperation("customData")>]
+        member _.CustomData((n, args), customData) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.CustomData <- input customData
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+        member _.CustomData((n, args), customData) =
+            let apply (args: VirtualMachineOsProfileArgs) =
+                args.CustomData <- io customData
+                args
+
+            ()
+            n, List.Cons(apply, args)
+
+    let virtualMachineOsProfile = VirtualMachineOsProfileBuilder()
+
     type VirtualMachineStorageOsDiskBuilder() =
         member _.Yield(_: unit) = null, [ id ]
 
@@ -542,3 +632,7 @@ module Compute =
             name, List.Cons(apply, args)
 
     let virtualMachine = VirtualMachineBuilder()
+
+module Storage =
+    open Pulumi.Azure.Storage
+    open Pulumi.Azure.Storage.Inputs

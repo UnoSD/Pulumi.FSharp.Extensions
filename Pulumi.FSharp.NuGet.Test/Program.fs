@@ -1,8 +1,26 @@
-module private Test
+﻿module Program
 
+open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
 
-let private test =
+let infra () =
+    let vm =
+        virtualMachine {
+            networkInterfaceIds [ input "/id" ]
+            name "myvm"
+            vmSize "D12v3"
+            virtualMachineStorageOsDisk {
+                name "diskName"
+                createOption "option"
+            }
+            resourceGroup "pippo"
+            virtualMachineOsProfile {
+                computerName "cname"
+                adminUsername "unosd"
+                adminPassword "strongpassword"
+            }
+        }
+
     let _ =
         virtualMachine {
             vmSize "size1"
@@ -30,4 +48,8 @@ let private test =
             }
         }
     
-    ()
+    dict []
+
+[<EntryPoint>]
+let main _ =
+  Deployment.run infra

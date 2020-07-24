@@ -1,0 +1,3 @@
+name: temp
+runtime: dotnet
+description: A minimal Azure F# Pulumi program

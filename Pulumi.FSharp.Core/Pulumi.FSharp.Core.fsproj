@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <NoWarn>NU1605</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pulumi.FSharp" Version="2.5.0" />
+        <PackageReference Include="FSharp.Core" Version="4.7.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Include="OutputBuilder.fs" />
+    </ItemGroup>
+
+</Project>

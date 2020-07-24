@@ -32,7 +32,6 @@
             <Visible>true</Visible>
         </Content>
         <Content Include="build\Pulumi.FSharp.Myriad.InTest.props" />
-        <None Include="CommentedCode.fs" />
     </ItemGroup>
     
     <ItemGroup>

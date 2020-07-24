@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <NoWarn>NU1605</NoWarn>
+    <RootNamespace>temp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pulumi.Azure" Version="3.*" />
+    <PackageReference Include="Pulumi.FSharp" Version="2.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
+  </ItemGroup>
+
+</Project>
