@@ -5,12 +5,9 @@ open AstModules
 open Myriad.Core
 
 // Parameterize these:
-let private provider = "Kubernetes"
-let private version = "2.4.0" // Version needs to match NuGet package
+let private provider = "Aws" //Azure, Aws, Kubernetes
+let private version = "2.13.1" // Version needs to match NuGet package 3.11.0, 2.13.1, 2.4.0
     
-//https://github.com/pulumi/pulumi-aws/blob/v2.13.1/provider/cmd/pulumi-resource-aws/schema.json?raw=true
-//https://github.com/pulumi/pulumi-kubernetes/blob/v2.4.0/provider/cmd/pulumi-resource-kubernetes/schema.json?raw=true
-
 let private pulumiSchemaUrl =
     "https://raw.githubusercontent.com/pulumi/pulumi-"+
     provider.ToLower() +
