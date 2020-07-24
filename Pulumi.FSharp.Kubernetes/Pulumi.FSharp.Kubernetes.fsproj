@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
+        <Copyright>Copyright 2020</Copyright>
+        <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Azure</PackageProjectUrl>
+        <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Azure</RepositoryUrl>
+        <PackageTags>fsharp pulumi kubernetes</PackageTags>
+        <Company>Stefano d'Antonio (UnoSD)</Company>
+        <Authors>Stefano d'Antonio (UnoSD)</Authors>
+        <Version>2.0.1</Version>
+        <NoWarn>NU1605,FS0058</NoWarn>
+        <RootNamespace>Pulumi.FSharp.Kubernetes</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="NuGetBuildPublish.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pulumi.Kubernetes" Version="2.4.0" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.5.0" />
+        <PackageReference Include="FSharp.Core" Version="4.7.2" />
+        <PackageReference Include="Myriad.Sdk" Version="0.2.8" PrivateAssets="All" />
+    </ItemGroup>
+    
+    <ItemGroup>
+
+        <Compile Include="Myriad.fs" />
+
+        <Compile Include="Generated.fs">
+            <MyriadFile>Myriad.fs</MyriadFile>
+        </Compile>
+        
+        <!-- This is required only to force build of the plugin -->
+        <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
+        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
+        
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
+    </ItemGroup>
+
+    <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
+    
+</Project>

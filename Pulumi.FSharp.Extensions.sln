@@ -12,6 +12,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.NuGet.Test", 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Aws", "Pulumi.FSharp.Aws\Pulumi.FSharp.Aws.fsproj", "{570555D8-4272-47CD-96F7-40817A67B41E}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Kubernetes", "Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj", "{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{570555D8-4272-47CD-96F7-40817A67B41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{570555D8-4272-47CD-96F7-40817A67B41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{570555D8-4272-47CD-96F7-40817A67B41E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
