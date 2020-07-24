@@ -22,6 +22,7 @@
     
     <ItemGroup>
         <Compile Include="OutputBuilder.fs" />
+        <Compile Include="Config.fs" />
     </ItemGroup>
 
 </Project>

@@ -1,33 +1,30 @@
 ﻿module Program
 
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
 
 let infra () =
-    let config name =
-        Pulumi.Config().Require(name)
-    
-    let pwd =
-        secretOutput {
-            return config "vmPass"
-        }
-
     // Add XML documentation of the properties available
     let vm =
         windowsVirtualMachine {
             name "development"
             resourceName "development"
+            
             resourceGroup "Development"
-            networkInterfaceIds [ config "vmNicId" ]
+            networkInterfaceIds [ config.["vmNicId"] ]
             size "Standard_D4s_v3"
+            
             windowsVirtualMachineOsDisk {
-                name (config "vmDiskName")
+                name config.["vmDiskName"]
                 caching "ReadWrite"
                 storageAccountType "Standard_LRS"
             }
-            adminUsername (config "vmUser")
-            adminPassword pwd
+            
+            adminUsername config.["vmUser"]
+            adminPassword secret.["vmPass"]
+            
             windowsVirtualMachineSourceImageReference {
                 offer "visualstudio2019latest"
                 publisher "microsoftvisualstudio"
@@ -35,8 +32,13 @@ let infra () =
                 version "latest"
             }
         }
-
-    dict [ "Secrets", vm.Secrets :> obj ]
+    
+    let secretValue =
+        secretOutput {
+            return vm.PublicIpAddress
+        }
+    
+    dict [ "SecretPublicIP", secretValue :> obj ]
 
 [<EntryPoint>]
 let main _ =
