@@ -1,9 +1,12 @@
 # Pulumi.FSharp.Extensions
 F# computational expressions to reduce boilerplate in Pulumi code
 
-# Pulumi.FSharp.Azure
-
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Azure)](https://www.nuget.org/packages/Pulumi.FSharp.Azure)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Aws)](https://www.nuget.org/packages/Pulumi.FSharp.Aws)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Kubernetes)](https://www.nuget.org/packages/Pulumi.FSharp.Kubernetes)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Core)](https://www.nuget.org/packages/Pulumi.FSharp.Core)
+
+# Pulumi.FSharp.Azure
 
 # Example usage
 
