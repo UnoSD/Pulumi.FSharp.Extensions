@@ -146,5 +146,5 @@ let createPulumiModules schemaUrl providerName =
     Array.groupBy resourceProvider |>
     debugFilterProvider |>
     Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
-    Array.filter (fun (provider, _) -> not <| List.contains provider [ "config"; "index"; "" ]) |>
+    Array.filter (fun (provider, _) -> [ "config"; "index"; "" ] |> (not << List.contains provider)) |>
     Array.Parallel.map createProviderModule
