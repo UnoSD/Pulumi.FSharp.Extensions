@@ -50,19 +50,21 @@ let createPulumiModules schemaUrl providerName =
         JsonValue.Parse
     
     let allNestedTypes =
-        let getType (jsonValue : JsonValue) =
-            jsonValue.Properties() |>
-            Array.choose (function
-                          | ("type", JsonValue.String("array")) -> jsonValue.GetProperty("items").TryGetProperty("$ref") |>
-                                                                   Option.map (fun v -> v.AsString())
-                          | ("$ref", JsonValue.String(s))       -> Some s
-                          | _                                   -> None)
-        
-        schema.["resources"].Properties() |>
-        Array.collect (fun (_, jv) -> jv.Properties() |> Array.filter (fun (p, _) -> p = "inputProperties")) |>
-        Array.collect (snd >> (fun x -> x.Properties())) |>
-        Array.collect (snd >> getType) |>
-        Array.map (fun x -> x.Substring(8))
+        [
+            for (_, jsonValue) in schema.["resources"].Properties() do
+                for (property, jsonValue) in jsonValue.Properties() do
+                    if property = "inputProperties" then
+                        for (_, jsonValue) in jsonValue.Properties() do
+                            for tuple in jsonValue.Properties() do
+                                 match tuple with 
+                                 | ("type", JsonValue.String("array")) -> match jsonValue.["items"]
+                                                                                         .TryGetProperty("$ref") with
+                                                                          | Some jsonValue -> yield jsonValue.AsString()
+                                                                                                             .Substring(8)
+                                                                          | _      -> ()
+                                 | ("$ref", JsonValue.String(type'))   -> yield type'.Substring(8)
+                                 | _                                   -> ()
+        ]
     
     let pulumiProviderName =
         schema.["name"].AsString()
@@ -75,7 +77,7 @@ let createPulumiModules schemaUrl providerName =
         Array.map (fun (type', jsonValue) -> getTypedMatch type' |> builderType, jsonValue)
         
     let types =
-        typedMatches "types" typeInfo Type <| Array.filter (fun (n, _) -> allNestedTypes |> Array.contains n)
+        typedMatches "types" typeInfo Type <| Array.filter (fun (n, _) -> allNestedTypes |> List.contains n)
     
     let resources =
         typedMatches "resources" resourceInfo Resource id
