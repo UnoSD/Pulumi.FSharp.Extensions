@@ -142,9 +142,18 @@ let createPulumiModules schemaUrl providerName =
             
         createModule moduleName namespaces.[pulumiProviderName] openInputs types
     
+    let invalidProvidersList =
+        [ "config"; "index"; "" ]
+    
+    let doesNot =
+        not
+    
+    let contain =
+        List.contains
+    
     Array.concat [ types; resources ] |>
     Array.groupBy resourceProvider |>
     debugFilterProvider |>
     Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
-    Array.filter (fun (provider, _) -> [ "config"; "index"; "" ] |> (not << List.contains provider)) |>
+    Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider)) |>
     Array.Parallel.map createProviderModule
