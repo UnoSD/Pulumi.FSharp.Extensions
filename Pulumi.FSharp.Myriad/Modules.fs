@@ -76,8 +76,11 @@ let createPulumiModules schemaUrl providerName =
         filter |>
         Array.map (fun (type', jsonValue) -> getTypedMatch type' |> builderType, jsonValue)
         
+    let inline flip f x y =
+        f y x
+        
     let types =
-        typedMatches "types" typeInfo Type <| Array.filter (fun (n, _) -> allNestedTypes |> List.contains n)
+        typedMatches "types" typeInfo Type <| Array.filter (fst >> (flip List.contains) allNestedTypes)
     
     let resources =
         typedMatches "resources" resourceInfo Resource id
