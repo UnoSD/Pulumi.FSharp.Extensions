@@ -1,7 +1,7 @@
 ﻿module Program
 
-open Pulumi.FSharp.Azure.Compute
 open Pulumi.FSharp.Azure.Compute.Inputs
+open Pulumi.FSharp.Azure.Compute
 open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
