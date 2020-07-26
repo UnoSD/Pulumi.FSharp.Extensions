@@ -18,6 +18,7 @@ steps:
     displayName: Build
     inputs:
       command: build
+      projects: '**/Pulumi.FSharp.Kubernetes.fsproj'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
