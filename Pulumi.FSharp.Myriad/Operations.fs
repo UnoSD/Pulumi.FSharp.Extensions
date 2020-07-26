@@ -57,27 +57,6 @@ let private createOperation'' nameVarName name coName argName hasAttribute =
     
     createMember name patterns attributes
 
-let private createOperation' isType name typeName hasAttribute =
-    let nameArgName =
-        if isType then
-            "n"
-        else
-            "name"
-    
-    let snakeCaseName =
-        if name = "Name" && (not isType) then
-            "resourceName"
-        else 
-            toCamelCase name
-    
-    let coName =
-        match snakeCaseName with
-        | "resourceGroupName" -> "resourceGroup"
-        | "name" when not isType -> "resourceName"
-        | x -> x
-    
-    createOperation'' nameArgName (coName |> toPascalCase) coName snakeCaseName typeName hasAttribute
-
 let createNameOperation newNameExpr =
     createOperation'' null "Name" "name" "newName" true newNameExpr    
 
@@ -140,6 +119,15 @@ let private inputListFromItem =
 let private inputListFromOutput =
     inputListFromItemOf ioIdent
 
+let private inputUnion1Of2 =
+    Expr.ident("inputUnion1Of2")
+
+let private inputUnion2Of2 =
+    Expr.ident("inputUnion2Of2")
+
+let private idIdent =
+    Expr.ident("id")
+
 let createOperationsFor' isType name pType (argsType : string) =
     let setRights =
         match pType with
@@ -149,6 +137,7 @@ let createOperationsFor' isType name pType (argsType : string) =
         | "boolean" -> [ inputIdent; ioIdent ]
         | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ]
         | "object"  -> [ inputMapIdent ]
+        | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ]
         // What to do here? // I don't think complex exists at all... check and delete
         | "complex" -> [ inputIdent ]
         | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
@@ -165,12 +154,39 @@ let createOperationsFor' isType name pType (argsType : string) =
             setExpr
             returnTupleCache isType
         ])
+
+    let snakeCaseName =
+        if name = "Name" && (not isType) then
+            "resourceName"
+        else 
+            toCamelCase name
+    
+    let argName =
+        match snakeCaseName with
+        | "input"
+        | "args" -> snakeCaseName + "\'"
+        | _      -> snakeCaseName
     
     let operationName =
         match name with
         | "Name" when not isType -> resourceNameIdent
-        | _                      -> Expr.ident(name |> toCamelCase)
-
+        | _                      -> Expr.ident(argName)
+    
+    let nameArgName =
+        if isType then
+            "n"
+        else
+            "name"
+    
+    let coName =
+        match snakeCaseName with
+        | "resourceGroupName" -> "resourceGroup"
+        | "name" when not isType -> "resourceName"
+        | x -> x
+    
+    let memberName =
+        coName |> toPascalCase
+    
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation' isType name (i = 0) e)
+    List.mapi (fun i e -> createOperation'' nameArgName memberName coName argName (i = 0) e)

@@ -4,9 +4,13 @@ open Pulumi.FSharp.Azure.Compute
 open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
+open Pulumi.Random
 
 let infra () =
     // Add XML documentation of the properties available
+    let pet =
+        RandomPet("pippo", RandomPetArgs())
+    
     let vm =
         windowsVirtualMachine {
             name "development"

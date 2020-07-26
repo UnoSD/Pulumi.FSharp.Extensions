@@ -93,6 +93,9 @@ let private newNameExpr =
 let private nameMember =
     createNameOperation newNameExpr
     
+let private identArgExpr =
+    Expr.ident("arg")
+    
 let createBuilderClass isType name properties =
     let argsType =
         name + "Args"
@@ -121,9 +124,10 @@ let createBuilderClass isType name properties =
         | "number"
         | "boolean"
         | "array"
+        | "union"
         | "object" ->
             createOperationsFor' isType propName propType argsType
-        | _ -> // Complex
+        | _ -> // "complex:XXXX"
             let setExpr =
                 Expr.sequential([
                     Expr.set("args." + propName, argToInput)
@@ -159,16 +163,18 @@ let createBuilderClass isType name properties =
         let pType =
             properties |>
             Array.choose (fun (p, v) -> match p with
-                                        | "type" -> v.AsString() |> Some // Array type has also "items"
-                                        | "$ref" -> let t = v.AsString()
-                                                    // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
-                                                    if t.StartsWith("pulumi.json#/") then
-                                                        "complex"
-                                                    else
-                                                        "complex:" + v.AsString().Substring(8)
-                                                    |> Some
+                                        | "type"  -> v.AsString() |> Some // Array type has also "items"
+                                        | "$ref"  -> let t = v.AsString()
+                                                     // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
+                                                     if t.StartsWith("pulumi.json#/") then
+                                                         "complex"
+                                                     else
+                                                         "complex:" + v.AsString().Substring(8)
+                                                     |> Some
+                                        | "oneOf" -> Some "union"
                                         (*| "description"*)
                                         | _ -> None) |>
+            Array.sortBy (fun t -> match t with | "union" -> 0 | _ -> 1) |>
             Array.head
         
         (tName, pType)
