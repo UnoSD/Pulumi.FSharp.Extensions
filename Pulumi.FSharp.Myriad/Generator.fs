@@ -18,5 +18,5 @@ type PulumiFSharpGenerator() =
             Namespace.namespace'(namespace', [
                 yield  Module.open'("Pulumi.FSharp")
                 
-                yield! createPulumiModules url config.["Provider"]
+                yield! createPulumiModules url config.["Provider"] config.["Version"]
             ])

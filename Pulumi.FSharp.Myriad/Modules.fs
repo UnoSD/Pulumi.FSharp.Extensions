@@ -30,8 +30,8 @@ let private createModuleContent (properties : (string * JsonValue) []) typeName 
         // let storageOsDisk = virtualMachineStorageOsDisk        
     |]
 
-let private getSchemaFromCacheOrUrl schemaUrl providerName =
-    let fileName = providerName + ".json"
+let private getSchemaFromCacheOrUrl schemaUrl providerName version =
+    let fileName = providerName + "." + version + ".json"
     
     if File.Exists(fileName) then
         File.ReadAllText(fileName)
@@ -52,9 +52,9 @@ let private createModule name namespace' types =
         yield! types
     ])
 
-let createPulumiModules schemaUrl providerName =
+let createPulumiModules schemaUrl providerName version =
     let schema =
-        getSchemaFromCacheOrUrl schemaUrl providerName |>
+        getSchemaFromCacheOrUrl schemaUrl providerName version |>
         JsonValue.Parse
     
     let allNestedTypes =

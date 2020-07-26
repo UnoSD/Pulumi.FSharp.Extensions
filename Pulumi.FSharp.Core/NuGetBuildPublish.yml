@@ -1,7 +1,12 @@
 name: 2.0.$(Rev:r)
 
 trigger:
-  - master
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - Pulumi.FSharp.Core/*
 
 pool:
   vmImage: ubuntu-latest
