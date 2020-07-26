@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Pulumi.Kubernetes" Version="2.4.0" />
+        <PackageReference Include="Pulumi.Kubernetes" Version="2.4.1" />
         <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.4.0" PrivateAssets="All" />

@@ -1,16 +1,13 @@
 ﻿module Program
 
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Azure.Compute.Inputs
 open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
-open Pulumi.Random
 
 let infra () =
-    // Add XML documentation of the properties available
-    let pet =
-        RandomPet("pippo", RandomPetArgs())
-    
+    // Add XML documentation of the properties available    
     let vm =
         windowsVirtualMachine {
             name "development"
