@@ -160,6 +160,14 @@ let createBuilderClass isType name properties =
             | Some n -> n
             | None   -> name |> toPascalCase
         
+        let (|SameType|_|) (jvs : JsonValue []) =
+            List.distinct >>
+            function
+            | [type'] -> Some type'
+            | _       -> None
+            <| [ for jv in jvs do
+                     yield jv.["type"].AsString() ]
+        
         let pType =
             properties |>
             Array.choose (fun (p, v) -> match p with
@@ -171,7 +179,9 @@ let createBuilderClass isType name properties =
                                                      else
                                                          "complex:" + v.AsString().Substring(8)
                                                      |> Some
-                                        | "oneOf" -> Some "union"
+                                        | "oneOf" -> match v with
+                                                     | JsonValue.Array(SameType(type')) -> Some type'
+                                                     | _                                -> Some "union"
                                         (*| "description"*)
                                         | _ -> None) |>
             Array.sortBy (fun t -> match t with | "union" -> 0 | _ -> 1) |>
