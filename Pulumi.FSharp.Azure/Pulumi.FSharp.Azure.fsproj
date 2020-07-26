@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>3.12.1.1</Version>
+        <Version>3.13.0.1</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
@@ -25,6 +25,7 @@
         <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.4.0" PrivateAssets="All" />
+        <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.2" />
     </ItemGroup>
     
     <ItemGroup>
@@ -63,7 +64,6 @@
         
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
-        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
     </ItemGroup>
 
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />

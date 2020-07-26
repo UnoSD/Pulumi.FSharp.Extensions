@@ -1,4 +1,4 @@
-name: 2.4.0.$(Rev:r)
+name: 2.4.1.$(Rev:r)
 
 trigger:
   - master
@@ -31,6 +31,6 @@ steps:
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Kubernetes.2.4.0.*.nupkg'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Kubernetes.2.4.1.*.nupkg'
       nuGetFeedType: external
       publishFeedCredentials: NuGet
