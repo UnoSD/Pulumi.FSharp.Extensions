@@ -21,6 +21,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Content Include="NuGetBuildPublish.yml" />
         <Compile Include="OutputBuilder.fs" />
         <Compile Include="Config.fs" />
     </ItemGroup>
