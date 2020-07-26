@@ -12,7 +12,7 @@
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <Version>3.12.1.1</Version>
-        <NoWarn>NU1605,FS0058</NoWarn>
+        <NoWarn>NU1605,FS0058,FS0044</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

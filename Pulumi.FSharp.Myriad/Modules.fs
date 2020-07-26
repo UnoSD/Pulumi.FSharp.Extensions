@@ -36,19 +36,9 @@ let private getSchemaFromCacheOrUrl schemaUrl providerName =
 
         json
     
-let private createModule subNamespace name namespace' types =
-    let moduleName =
-        subNamespace |>
-        Option.map ((+) name) |>
-        Option.defaultValue name
-    
-    let subNamespaceIdent =
-        subNamespace |>
-        Option.map ((+) ".") |>
-        Option.defaultValue ""
-    
-    Module.module'(moduleName, [
-        yield  Module.open'("Pulumi." + namespace' + "." + name + subNamespaceIdent)
+let private createModule name namespace' types =
+    Module.module'(name, [
+        yield  Module.open'("Pulumi." + namespace' + "." + name)
 
         yield! types
     ])
@@ -120,19 +110,6 @@ let createPulumiModules schemaUrl providerName =
         | Type t     -> create jsonValue "properties" t.ResourceType.Value true
         | Resource r -> create jsonValue "inputProperties" r.ResourceTypePascalCase.Value false
     
-    let createProviderModule subNamespace (providerName, builders) =
-        let moduleName =
-            match namespaces |> Map.tryFind providerName with
-            | Some ns -> ns
-            | None    -> sprintf "Unable to find namespace %s" providerName |> failwith
-        
-        let types =
-            builders |>
-            debugFilterTypes |>
-            Array.Parallel.collect createBuilders
-        
-        createModule subNamespace moduleName namespaces.[pulumiProviderName] types
-    
     let invalidProvidersList =
         [ "config"; "index"; "" ]
     
@@ -142,15 +119,36 @@ let createPulumiModules schemaUrl providerName =
     let contain =
         List.contains
     
-    let createModules subNamespace =
-        Array.groupBy resourceProvider >>
+    let filters =
         debugFilterProvider >>
         Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
-        Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider)) >>
-        Array.Parallel.map (createProviderModule subNamespace)
+        Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
-    [|
-        yield! createModules None resources 
+    let createBuildersParallelFiltered typesOrResources =
+        Array.groupBy resourceProvider typesOrResources |>
+        filters |>
+        Map.ofArray |>
+        Map.map (fun _ typesOrResources -> typesOrResources |>
+                                            debugFilterTypes |>
+                                            Array.Parallel.collect createBuilders)
         
-        yield! createModules (Some "Inputs") types  
-    |]
+    let typeBuilders =
+        createBuildersParallelFiltered types
+        
+    let resourceBuilders =
+        createBuildersParallelFiltered resources
+    
+    Map.fold (fun acc provider resourceBuilders ->
+                    let typesModule =
+                        typeBuilders |>
+                        Map.tryFind provider |>
+                        Option.bind (fun providerTypeBuilders -> if Array.isEmpty providerTypeBuilders then None else Some providerTypeBuilders) |>
+                        Option.map (fun providerTypeBuilders -> [|createModule "Inputs" (namespaces.[pulumiProviderName] + "." + namespaces.[provider]) providerTypeBuilders|]) |>
+                        Option.defaultValue [||]
+                    
+                    let moduleContent =
+                        Array.append typesModule resourceBuilders
+                    
+                    (createModule namespaces.[provider] namespaces.[pulumiProviderName] moduleContent) :: acc)
+             []
+             resourceBuilders
