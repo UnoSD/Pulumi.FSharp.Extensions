@@ -129,8 +129,8 @@ let createPulumiModules schemaUrl providerName =
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
-                                            debugFilterTypes |>
-                                            Array.Parallel.collect createBuilders)
+                                           debugFilterTypes |>
+                                           Array.Parallel.collect createBuilders)
         
     let typeBuilders =
         createBuildersParallelFiltered types
