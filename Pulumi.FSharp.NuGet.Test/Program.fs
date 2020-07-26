@@ -32,13 +32,21 @@ let infra () =
                 version "latest"
             }
         }
-    
+
     let secretValue =
         secretOutput {
             return vm.PublicIpAddress
         }
-    
-    dict [ "SecretPublicIP", secretValue :> obj ]
+
+    let pipCird =
+        output {
+            let! pip = vm.PublicIpAddress
+            
+            return pip + "/32"
+        }
+
+    dict [ "SecretPublicIP",      secretValue :> obj
+           "VisiblePublicIPCIDR", pipCird     :> obj ]
 
 [<EntryPoint>]
 let main _ =

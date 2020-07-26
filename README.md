@@ -10,6 +10,70 @@ F# computational expressions to reduce boilerplate in Pulumi code
 
 # Example usage
 
+Create a Pulumi F# project using `pulumi new azure-fsharp` and add the NuGet packages above.
+
+Edit the Program.fs similarly to the example below.
+
+Run `pulumi up` and create the infrastructure using a readable strongly-typed DSL.
+
+To discover available properties for each resource, examine the code documentation of the builders (E.G. hover over a `Pulumi.FSharp.Azure.Compute.windowsVirtualMachine` computational expression)
+
+```fsharp
+module Program
+
+open Pulumi.FSharp.Azure.Compute.Inputs
+open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Config
+open Pulumi.FSharp.Output
+open Pulumi.FSharp
+
+let infra () =
+    let vm =
+        windowsVirtualMachine {
+            name "PulumiVmName"
+            resourceName "AzureNameForVm"
+            
+            resourceGroup "ResourceGroupName"
+            networkInterfaceIds [ config.["nicResourceIdFromConfig"] ]
+            size "Standard_D4s_v3"
+            
+            windowsVirtualMachineOsDisk {
+                name config.["vmDiskName"]
+                caching "ReadWrite"
+                storageAccountType "Standard_LRS"
+            }
+            
+            adminUsername config.["vmUser"]
+            adminPassword secret.["encryptedPasswordFromPulumiConfig"]
+            
+            windowsVirtualMachineSourceImageReference {
+                offer "visualstudio2019latest"
+                publisher "microsoftvisualstudio"
+                sku "vs-2019-comm-latest-win10-n"
+                version "latest"
+            }
+        }
+    
+    let secretValue =
+        secretOutput {
+            return vm.PublicIpAddress
+        }
+    
+    let pipCird =
+        output {
+            let! pip = vm.PublicIpAddress
+            
+            return pip + "/32"
+        }
+    
+    dict [ "SecretPublicIP",      secretValue :> obj
+           "VisiblePublicIPCIDR", pipCird     :> obj ]
+           
+[<EntryPoint>]
+let main _ =
+  Deployment.run infra
+```
+
 ```fsharp
 open Pulumi.FSharp.Azure
 

@@ -352,8 +352,4 @@ MigrationBackup/
 .idea/
 
 /TODO
-/Azure.json
-/Aws.json
-/Kubernetes.json
 /Generated.fs
-/Pulumi.FSharp.NuGet.Test/Azure.json
