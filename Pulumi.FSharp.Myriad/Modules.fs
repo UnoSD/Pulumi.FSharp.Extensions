@@ -15,7 +15,16 @@ let private createModuleContent (properties : (string * JsonValue) []) typeName 
     [|
         createBuilderClass isType typeName properties
         
-        createLet (toCamelCase (typeName)) (createInstance (typeName + "Builder") SynExpr.CreateUnit)     
+        createLet (toCamelCase (typeName))
+                  (createInstance (typeName + "Builder") SynExpr.CreateUnit)
+                  (seq { yield "*** Available properties ***"
+                         yield ""
+                         yield "When names are available on the resource,"
+                         yield "**resourceName** maps to the name of the"
+                         yield "provider resource, **name** maps to the"
+                         yield "Pulumi name"
+                         yield ""
+                         yield! properties |> Array.map fst })
         
         // Create also shortcut lets:
         // let storageOsDisk = virtualMachineStorageOsDisk        

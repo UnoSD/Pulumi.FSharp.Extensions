@@ -7,7 +7,6 @@ open Pulumi.FSharp.Output
 open Pulumi.FSharp
 
 let infra () =
-    // Add XML documentation of the properties available    
     let vm =
         windowsVirtualMachine {
             name "development"
