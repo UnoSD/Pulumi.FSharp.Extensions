@@ -2,6 +2,7 @@
 
 open Pulumi.FSharp
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Azure.ComputeInputs
 open Pulumi.FSharp.Azure.Network
 open Pulumi.FSharp.Output
 open Pulumi

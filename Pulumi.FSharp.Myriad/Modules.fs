@@ -36,10 +36,19 @@ let private getSchemaFromCacheOrUrl schemaUrl providerName =
 
         json
     
-let private createModule name namespace' openInputs types =
-    Module.module'(name, [
-        yield  Module.open'("Pulumi." + namespace' + "." + name)
-        yield! openInputs
+let private createModule subNamespace name namespace' types =
+    let moduleName =
+        subNamespace |>
+        Option.map ((+) name) |>
+        Option.defaultValue name
+    
+    let subNamespaceIdent =
+        subNamespace |>
+        Option.map ((+) ".") |>
+        Option.defaultValue ""
+    
+    Module.module'(moduleName, [
+        yield  Module.open'("Pulumi." + namespace' + "." + name + subNamespaceIdent)
 
         yield! types
     ])
@@ -111,7 +120,7 @@ let createPulumiModules schemaUrl providerName =
         | Type t     -> create jsonValue "properties" t.ResourceType.Value true
         | Resource r -> create jsonValue "inputProperties" r.ResourceTypePascalCase.Value false
     
-    let createProviderModule (providerName, builders) =
+    let createProviderModule subNamespace (providerName, builders) =
         let moduleName =
             match namespaces |> Map.tryFind providerName with
             | Some ns -> ns
@@ -120,27 +129,9 @@ let createPulumiModules schemaUrl providerName =
         let types =
             builders |>
             debugFilterTypes |>
-            Array.filter (fst >> (function | Type x when // Fix this
-                                                         x.ResourceType.Value = "AccountNetworkRules" -> false
-                                           | _ -> true)) |>
             Array.Parallel.collect createBuilders
         
-        let anyType =
-            function
-            | Type _ -> true
-            | _      -> false
-        
-        let hasTypes =
-            builders |>
-            Array.exists (fst >> anyType)
-        
-        let openInputs =
-            if hasTypes then
-                [ Module.open'("Pulumi." + namespaces.[pulumiProviderName] + "." + moduleName + ".Inputs") ]
-            else
-                []
-            
-        createModule moduleName namespaces.[pulumiProviderName] openInputs types
+        createModule subNamespace moduleName namespaces.[pulumiProviderName] types
     
     let invalidProvidersList =
         [ "config"; "index"; "" ]
@@ -151,9 +142,15 @@ let createPulumiModules schemaUrl providerName =
     let contain =
         List.contains
     
-    Array.concat [ types; resources ] |>
-    Array.groupBy resourceProvider |>
-    debugFilterProvider |>
-    Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) |>
-    Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider)) |>
-    Array.Parallel.map createProviderModule
+    let createModules subNamespace =
+        Array.groupBy resourceProvider >>
+        debugFilterProvider >>
+        Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
+        Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider)) >>
+        Array.Parallel.map (createProviderModule subNamespace)
+    
+    [|
+        yield! createModules None resources 
+        
+        yield! createModules (Some "Inputs") types  
+    |]
