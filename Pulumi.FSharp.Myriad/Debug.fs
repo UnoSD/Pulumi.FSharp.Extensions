@@ -8,8 +8,8 @@ let private isDebug = false
 let debugFilterTypes x =
     x |>
     if isDebug then
-        Array.filter (fst >> (function | Type x -> List.contains x.ResourceType.Value [ "VirtualMachineStorageOsDisk"; "VirtualMachineOsProfile"; "getAccountSASPermissions"; (*"AccountNetworkRules"*) ]
-                                       | Resource x -> List.contains x.ResourceTypePascalCase.Value [ "VirtualMachine"; (*"AccountNetworkRules"*) ]))
+        Array.filter (fst >> (function | Type x -> List.contains x.ResourceType.Value [ "VirtualMachineStorageOsDisk"; "VirtualMachineOsProfile"; "getAccountSASPermissions"; "AccountNetworkRules" ]
+                                       | Resource x -> List.contains x.ResourceTypePascalCase.Value [ "VirtualMachine"; "AccountNetworkRules" ]))
     else
         id
 
