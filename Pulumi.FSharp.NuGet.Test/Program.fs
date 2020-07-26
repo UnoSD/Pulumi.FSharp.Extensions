@@ -35,18 +35,18 @@ let infra () =
 
     let secretValue =
         secretOutput {
-            return vm.PublicIpAddress
+            return vm.PrivateIpAddress
         }
 
     let pipCird =
         output {
-            let! pip = vm.PublicIpAddress
+            let! pip = vm.PrivateIpAddress
             
             return pip + "/32"
         }
 
-    dict [ "SecretPublicIP",      secretValue :> obj
-           "VisiblePublicIPCIDR", pipCird     :> obj ]
+    dict [ "SecretPrivateIP",      secretValue :> obj
+           "VisiblePrivateIPCIDR", pipCird     :> obj ]
 
 [<EntryPoint>]
 let main _ =
