@@ -47,8 +47,8 @@ let typesToIgnorePerProvider =
             "Info"
 
             // Naming collission on args
-            "Container"
-            "EphemeralContainer"
+            // "Container"
+            // "EphemeralContainer"
 
             // Duplicate yield
             "MutatingWebhook"

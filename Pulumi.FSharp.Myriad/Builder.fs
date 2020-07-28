@@ -32,13 +32,13 @@ type BuilderType =
     | Resource of ResourceInfoProvider.MatchType
 
 let private argIdent =
-    Pat.ident("arg")
+    Pat.ident("_arg")
     
 let private argToInput =
-    Expr.func("input", "arg")
+    Expr.func("input", "_arg")
     
 let private args =
-    Expr.ident("args")
+    Expr.ident("_args")
     
 let private funcIdent =
     Expr.ident("func")
@@ -67,11 +67,11 @@ let private combineMember =
     createMember' "this" "Combine" [combineArgs.ToRcd] [] combineExpr
     
 let private forArgs =
-    Pat.paren (Pat.tuple ("args", "delayedArgs"))
+    Pat.paren (Pat.tuple ("_args", "delayedArgs"))
 
 let private forExpr =
     Expr.methodCall("this.Combine",
-                    [ Expr.ident("args")
+                    [ Expr.ident("_args")
                       Expr.func("delayedArgs", Expr.unit) ])
 
 let private forMember =
@@ -88,13 +88,10 @@ let private yieldMember =
     
 let private newNameExpr =
     Expr.tuple(Expr.ident("newName"),
-               Expr.ident("args"))
+               Expr.ident("_args"))
 
 let private nameMember =
     createNameOperation newNameExpr
-    
-let private identArgExpr =
-    Expr.ident("arg")
     
 let createBuilderClass isType name properties =
     let argsType =
@@ -104,7 +101,7 @@ let createBuilderClass isType name properties =
         Expr.func("List.fold", [
             Expr.ident("func")
             Expr.paren(createInstance argsType Expr.unit)
-            Expr.ident("args")
+            Expr.ident("_args")
         ])
        
     let runArgs =
@@ -130,7 +127,7 @@ let createBuilderClass isType name properties =
         | _ -> // "complex:XXXX"
             let setExpr =
                 Expr.sequential([
-                    Expr.set("args." + propName, argToInput)
+                    Expr.set("_args." + propName, argToInput)
                     args
                 ])
             
@@ -138,7 +135,7 @@ let createBuilderClass isType name properties =
                 Expr.list([
                     Expr.paren(
                         Expr.sequential([
-                            Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
+                            Expr.let'("func", [Pat.typed("_args", argsType)], setExpr)
                             funcIdent
                         ])
                     )
@@ -196,7 +193,7 @@ let createBuilderClass isType name properties =
         
     let runReturnExpr =
         Expr.sequential([
-            Expr.let'("func", [ "args"; "f" ], Expr.func("f", "args"))
+            Expr.let'("func", [ "_args"; "f" ], Expr.func("f", "_args"))
             if isType then runArgs else createInstance name runArgs
         ])
     

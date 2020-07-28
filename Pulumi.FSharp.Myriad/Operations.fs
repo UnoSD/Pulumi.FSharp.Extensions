@@ -6,7 +6,7 @@ open AstHelpers
 open AstMember
 open FsAst
 open Core
-    
+
 let private createPatternTyped name args (typeName : string) =
     SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
                           SynType.CreateLongIdent(typeName))
@@ -18,7 +18,7 @@ let private createTuple items withParen =
         SynPatRcd.CreateTuple(items)
 
 let private argsPattern =
-    createPattern "args" []
+    createPattern "_args" []
 
 let private nPattern =
     createPattern "n" []
@@ -61,7 +61,7 @@ let createNameOperation newNameExpr =
     createOperation'' null "Name" "name" "newName" true newNameExpr    
 
 let private listCons =
-    Expr.funcTuple("List.Cons", [ "apply"; "args" ])
+    Expr.funcTuple("List.Cons", [ "apply"; "_args" ])
 
 let private nReturnTuple =
     Expr.tuple(Expr.ident("n"), listCons)
@@ -76,7 +76,7 @@ let private returnTupleCache isType =
     | false -> nameReturnTuple
 
 let private argsIdent =
-    Expr.ident("args")
+    Expr.ident("_args")
 
 let private inputIdent =
     Expr.ident("input")
@@ -143,9 +143,9 @@ let createOperationsFor' isType name pType (argsType : string) =
         | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
     
     let letExpr setRight =
-        Expr.let'("apply", [ Pat.typed("args", argsType) ],
+        Expr.let'("apply", [ Pat.typed("_args", argsType) ],
                   Expr.sequential([
-                      Expr.set("args." + name, SynExpr.CreateApp(setRight))
+                      Expr.set("_args." + name, SynExpr.CreateApp(setRight))
                       argsIdent
                   ]))
     
