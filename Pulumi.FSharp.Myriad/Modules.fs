@@ -255,18 +255,6 @@ let createPulumiModules schemaUrl providerName version useSubNamespace =
                 typesOrResources |>
                 debugFilterTypes |>
                 Array.filter (snd >> fst >> filterOnBuilderType) |>
-                    // snd >> fst >> (
-                    //     fun bt ->
-                    //         match bt with 
-                    //         | Type x ->
-                    //             not (
-                    //                 x.ResourceType.Value |> ignoreBasedOnList typesToIgnore ||
-                    //                 x.CompleteMatch.Value |> ignoreBasedOnList definedTypes)
-                    //         | Resource x -> 
-                    //             not (
-                    //                 x.ResourceTypePascalCase.Value |> ignoreBasedOnList typesToIgnore ||
-                    //                 x.CompleteMatch.Value |> ignoreBasedOnList definedTypes)
-                    // )) |>             
                 Array.groupBy (fst >> snd) |>
                 Array.Parallel.map (createBuilders moduleName >> (fun ((_, subNs), builders) -> subNs, builders)) |>
                 Map.ofArray)
