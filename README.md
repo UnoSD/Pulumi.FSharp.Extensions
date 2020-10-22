@@ -181,3 +181,11 @@ let infra () =
 let main _ =
   Deployment.run infra
 ```
+
+# One language to rule them all (F# eXchange 2020)
+
+I had the pleasure of being invited to speak at the F# eXchange 2020 on the 21st of October and, as promised, I have created a repo to share the slides of the talk: https://github.com/UnoSD/FSharp-eXChange2020
+
+The talk goes through infrastructure as code in F# with Pulumi in general and explains the rationale and some of the technical details behind this repository.
+
+Link to the video: https://skillsmatter.com/skillscasts/14888-lightning-talk-one-language-to-rule-them-all-iac-in-f-sharp
