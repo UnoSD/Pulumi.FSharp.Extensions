@@ -21,3 +21,8 @@ let toPascalCase =
     
 let createPattern name args =
     SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
+    
+let getOrDefault key converter defaultValue =
+    Map.tryFind key >>
+    Option.map converter >>
+    Option.defaultValue defaultValue
