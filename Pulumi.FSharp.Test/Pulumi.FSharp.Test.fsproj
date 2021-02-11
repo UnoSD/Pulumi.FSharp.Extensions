@@ -9,20 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi.Azure" Version="3.13.0" />
+    <PackageReference Include="Pulumi.Azure" Version="3.46.0" />
     <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pulumi.FSharp.Aws\Pulumi.FSharp.Aws.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
-    <ProjectReference Include="..\Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\Pulumi.FSharp.NuGet.Test\Program.fs">
       <Link>Program.fs</Link>
     </Compile>
+    <Content Include="Pulumi.test.yaml" />
   </ItemGroup>
 
 </Project>

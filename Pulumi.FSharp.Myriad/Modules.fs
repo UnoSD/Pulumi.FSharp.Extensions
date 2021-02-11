@@ -91,7 +91,8 @@ let createPulumiModules schemaUrl providerName version =
         typedMatches "types" typeInfo Type <| Array.filter (fst >> (flip List.contains) allNestedTypes)
     
     let resources =
-        typedMatches "resources" resourceInfo Resource id
+        typedMatches "resources" resourceInfo Resource <|
+        Array.filter (fun (_, v) -> v.TryGetProperty("deprecationMessage").IsNone)
     
     let resourceProvider (builder, _) =
         match builder with
