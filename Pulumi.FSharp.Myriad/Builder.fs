@@ -166,7 +166,9 @@ let createBuilderClass isType name properties =
             | [type'] -> Some type'
             | _       -> None
             <| [ for jv in jvs do
-                     yield jv.["type"].AsString() ]
+                     yield jv.["type"].AsString()
+                     if jv.TryGetProperty("$ref").IsSome then
+                         yield jv.["$ref"].AsString() ]
         
         let pType =
             properties |>
