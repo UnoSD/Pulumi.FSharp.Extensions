@@ -251,12 +251,11 @@ let createPulumiModules schemaUrl providerName version useSubNamespace =
         filters |>
         Map.ofArray |>
         Map.map (
-            fun moduleName typesOrResources -> 
-                typesOrResources |>
-                debugFilterTypes |>
-                Array.filter (snd >> fst >> filterOnBuilderType) |>
-                Array.groupBy (fst >> snd) |>
-                Array.Parallel.map (createBuilders moduleName >> (fun ((_, subNs), builders) -> subNs, builders)) |>
+            fun moduleName -> 
+                debugFilterTypes >>
+                Array.filter (snd >> fst >> filterOnBuilderType) >>
+                Array.groupBy (fst >> snd) >>
+                Array.Parallel.map (createBuilders moduleName >> (fun ((_, subNs), builders) -> subNs, builders)) >>
                 Map.ofArray)
         
     let resourceBuilders =
