@@ -353,6 +353,3 @@ MigrationBackup/
 
 /TODO
 /Generated.fs
-
-# Ignore all tmp folders
-tmp/
