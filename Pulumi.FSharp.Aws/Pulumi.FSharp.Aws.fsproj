@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi aws</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>2.13.1.1</Version>
+        <Version>3.28.1.0</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Pulumi.Aws" Version="2.13.1" />
+        <PackageReference Include="Pulumi.Aws" Version="3.28.1" />
         <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.4.0" PrivateAssets="All" />
