@@ -11,9 +11,9 @@ open Debug
 open FsAst
 open Core
 
-let private createModuleContent (properties : (string * JsonValue) []) typeName isType =
+let private createModuleContent allTypes (properties : (string * JsonValue) []) typeName isType =
     [|
-        createBuilderClass isType typeName properties
+        createBuilderClass allTypes isType typeName properties
         
         createLet (toCamelCase (typeName))
                   (createInstance (typeName + "Builder") SynExpr.CreateUnit)
@@ -107,18 +107,18 @@ let createPulumiModules schemaUrl providerName version =
         Array.map (fun (p, jv) -> (p, jv.AsString())) |>
         Map.ofArray
     
-    let create (jsonValue : JsonValue) (propertyName : string) typeName isType =
+    let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
             match jsonValue.TryGetProperty(propertyName) with
             | Some value -> value.Properties()
             | None       -> [||]
             
-        createModuleContent properties typeName isType
+        createModuleContent allTypes properties typeName isType
     
-    let createBuilders (typeInfo, (jsonValue : JsonValue)) =
+    let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
-        | Type t     -> create jsonValue "properties" t.ResourceType.Value true
-        | Resource r -> create jsonValue "inputProperties" r.ResourceTypePascalCase.Value false
+        | Type t     -> create allTypes jsonValue "properties" t.ResourceType.Value true
+        | Resource r -> create allTypes jsonValue "inputProperties" r.ResourceTypePascalCase.Value false
     
     let invalidProvidersList =
         [ "config"; "index"; "" ]
@@ -134,19 +134,22 @@ let createPulumiModules schemaUrl providerName version =
         Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
         Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
-    let createBuildersParallelFiltered typesOrResources =
+    let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy resourceProvider typesOrResources |>
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
-                                           Array.Parallel.collect createBuilders)
+                                           Array.Parallel.collect (createBuilders allTypes))
+        
+    let allAvailableTypes =
+        schema.["types"].Properties() |> Array.map fst
         
     let typeBuilders =
-        createBuildersParallelFiltered types
+        createBuildersParallelFiltered allAvailableTypes types
         
     let resourceBuilders =
-        createBuildersParallelFiltered resources
+        createBuildersParallelFiltered allAvailableTypes resources
     
     Map.fold (fun acc provider resourceBuilders ->
                     let typesModule =

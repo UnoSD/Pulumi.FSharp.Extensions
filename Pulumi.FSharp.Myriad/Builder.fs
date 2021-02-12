@@ -96,7 +96,7 @@ let private nameMember =
 let private identArgExpr =
     Expr.ident("arg")
     
-let createBuilderClass isType name properties =
+let createBuilderClass allTypes isType name properties =
     let argsType =
         name + "Args"
 
@@ -166,9 +166,13 @@ let createBuilderClass isType name properties =
             | [type'] -> Some type'
             | _       -> None
             <| [ for jv in jvs do
+                     
                      yield jv.["type"].AsString()
-                     if jv.TryGetProperty("$ref").IsSome then
-                         yield jv.["$ref"].AsString() ]
+                     
+                     match jv.TryGetProperty("$ref") |>
+                           Option.map (fun x -> x.AsString()) with
+                     | Some x when allTypes |> Array.contains (x.Substring(8)) -> yield x
+                     | _                                                       -> () ]
         
         let pType =
             properties |>
