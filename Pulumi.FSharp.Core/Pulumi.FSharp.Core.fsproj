@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
         <Copyright>Copyright 2020</Copyright>
@@ -17,8 +17,8 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
-        <PackageReference Include="FSharp.Core" Version="4.7.2" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
+        <PackageReference Include="FSharp.Core" Version="5.0.1" />
     </ItemGroup>
     
     <ItemGroup>

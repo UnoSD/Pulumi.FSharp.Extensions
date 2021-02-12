@@ -194,7 +194,7 @@ type Module =
         Module.module'(name, content, [ Attribute.attribute("AutoOpen") ])
         
     static member open'(namespaceOrModule) =
-        LongIdentWithDots.CreateString(namespaceOrModule) |>
+        SynOpenDeclTarget.ModuleOrNamespace(LongIdentWithDots.CreateString(namespaceOrModule).Lid, range.Zero) |>
         SynModuleDecl.CreateOpen
         
     static member type'(name, content) =

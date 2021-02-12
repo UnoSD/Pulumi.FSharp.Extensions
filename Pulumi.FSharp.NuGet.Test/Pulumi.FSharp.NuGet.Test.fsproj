@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <NoWarn>NU1605;NU1603</NoWarn>
     <RootNamespace>temp</RootNamespace>
@@ -17,9 +17,9 @@
   <ItemGroup>
     <PackageReference Include="Pulumi.Azure" Version="3.46.0" />
     <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
-    <PackageReference Include="Pulumi.FSharp.Aws" Version="2.13.1.24" />
-    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.13.0.3" />
-    <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.2" />
+    <PackageReference Include="Pulumi.FSharp.Aws" Version="3.28.1.5" />
+    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.46.0.5" />
+    <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.13" />
     <PackageReference Include="Pulumi.Random" Version="3.0.2" />
   </ItemGroup>
 

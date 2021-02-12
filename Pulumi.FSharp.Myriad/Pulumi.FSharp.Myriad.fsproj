@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <NoWarn>NU1605</NoWarn>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RootNamespace>Pulumi.FSharp.Myriad</RootNamespace>
@@ -18,7 +18,6 @@
     
     <ItemGroup>
         <Compile Include="Core.fs" />
-        <Compile Include="Open.fs" />
         <Compile Include="AstHelpers.fs" />
         <Compile Include="Member.fs" />
         <Compile Include="Attribute.fs" />
@@ -35,12 +34,12 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="FsAst" Version="0.6.0" />
-        <PackageReference Include="FSharp.Core" Version="4.7.2" />
+        <PackageReference Include="FsAst" Version="0.7.0" />
+        <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="FSharp.Data" Version="3.3.3" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
-        <PackageReference Include="Myriad.Core" Version="0.4.0" />
-        <PackageReference Include="Myriad.Sdk" Version="0.4.0" />
+        <PackageReference Include="Myriad.Core" Version="0.5.0" />
+        <PackageReference Include="Myriad.Sdk" Version="0.5.0" />
     </ItemGroup>
     
 </Project>

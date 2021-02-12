@@ -1,22 +1,34 @@
 ﻿module Pulumi.FSharp.Myriad
 
-open AstHelpers
-open AstModules
 open AstConfiguration
 open Myriad.Core
+open AstHelpers
+open AstModules
 
 [<MyriadGenerator("Pulumi.FSharp")>]
 type PulumiFSharpGenerator() =
     interface IMyriadGenerator with
-        member _.Generate(namespace', fileInput) =
+        member _.Generate(context) =            
             let config =
-                readConfig fileInput
+                Ast.fromFilename context.InputFileName |>
+                Async.RunSynchronously |>
+                Array.head |>
+                fst |>
+                readConfig
+                
+            let provider =
+                config.["Provider"]
+                
+            let version =
+                config.["Version"]
                 
             let url =
-                getSchemaUrl config.["Provider"] config.["Version"]
+                getSchemaUrl provider version
             
-            Namespace.namespace'(namespace', [
+            [Namespace.namespace'($"Pulumi.FSharp.{provider}", [
                 yield  Module.open'("Pulumi.FSharp")
                 
-                yield! createPulumiModules url config.["Provider"] config.["Version"]
-            ])
+                yield! createPulumiModules url provider version
+            ])]
+
+        member this.ValidInputExtensions = seq { ".fs" }

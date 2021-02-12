@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <NoWarn>NU1605</NoWarn>
     <RootNamespace>temp</RootNamespace>
@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Pulumi.Azure" Version="3.46.0" />
-    <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
+    <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
   </ItemGroup>
 
   <ItemGroup>
