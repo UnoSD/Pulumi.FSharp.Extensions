@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi kubernetes</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>2.4.1-alpha</Version>
+        <Version>2.8.0.0-alpha</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreBuildEvent>sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
@@ -23,8 +23,8 @@
 
     <ItemGroup>
         <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.2" />
-        <PackageReference Include="Pulumi.Kubernetes" Version="2.4.1" />
-        <PackageReference Include="Pulumi.FSharp" Version="2.7.1" />
+        <PackageReference Include="Pulumi.Kubernetes" Version="2.8.0" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
         <PackageReference Include="FSharp.Core" Version="4.7.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.4.0" PrivateAssets="All" />
     </ItemGroup>

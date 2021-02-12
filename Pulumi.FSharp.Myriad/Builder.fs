@@ -16,10 +16,10 @@ open FSharp.Text.RegexProvider
 // "azure:compute/virtualMachine:VirtualMachine"
 // CloudProvider - Always the same for each schema (azure here)
 type ResourceInfoProvider =
-    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>\w+)/(?<ResourceTypeCamelCase>\w+):(?<ResourceTypePascalCase>\w+)">
+    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>[A-Za-z0-9.]+)/(?<SubNamespace>\w+):(?<ResourceType>\w+)">
 
 type TypeInfoProvider =
-    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>\w+)/(?<ResourceType>\w+):(?<ResourceType2>\w+)">
+    Regex<"(?<CloudProvider>\w+):(?<ResourceProviderNamespace>[A-Za-z0-9.]+)/(?<SubNamespace>\w+):(?<ResourceType>\w+)">
 
 let resourceInfo =
     ResourceInfoProvider(RegexOptions.Compiled)
@@ -167,8 +167,11 @@ let createBuilderClass allTypes isType name properties =
             | _       -> None
             <| [ for jv in jvs do
                      
-                     yield jv.["type"].AsString()
-                     
+                     match jv.TryGetProperty("type") |>
+                           Option.map (fun x -> x.AsString()) with
+                     | Some x -> yield x
+                     | _      -> ()
+                                          
                      match jv.TryGetProperty("$ref") |>
                            Option.map (fun x -> x.AsString()) with
                      | Some x when allTypes |> Array.contains (x.Substring(8)) -> yield x
