@@ -7,7 +7,13 @@ type private Filter<'a> =
     | Include of 'a list
     | Exclude of 'a list
 
-let private azureFilters = {|
+type private Filters = {
+        Providers: Filter<string>
+        Resources: Filter<string>
+        Types: Filter<string>
+    }
+
+let private azureFilters = {
         Types     = Include [
             "WindowsVirtualMachineOsDisk"
             "WindowsVirtualMachineSourceImageReference"
@@ -24,22 +30,38 @@ let private azureFilters = {|
             "storage"
             "network"
         ]                        
-    |}
+    }
 
-let private awsFilters = {|
+let private awsFilters = {
         Types     = Include [ "AccessPointVpcConfiguration" ]
         Resources = Include [ "Bucket" ]
         Providers = Include [ "s3" ]                        
-    |}
+    }
 
-let private kubernetesFilters = {|
+let private kubernetesFilters = {
         Types     = Include [ "VolumeAttachment" ]
         Resources = Include [ "VolumeAttachment" ]
         Providers = Include [ "storage" ]                        
-    |}
+    }
+
+let private merge left right =
+    match left, right with
+    | Include li, Include ri -> li @ ri |> Include
+    | Exclude le, Include re -> le @ re |> Exclude
+    | _                      -> failwith "Using include and exclude debug filters together is not supported"
+
+let private join filtersList =
+    let reduce select =
+        filtersList |> List.map select |> List.reduce merge
+    
+    {
+        Types     = reduce (fun f -> f.Types)
+        Resources = reduce (fun f -> f.Resources)
+        Providers = reduce (fun f -> f.Providers)
+    }
 
 let private isDebug = false
-let private filters = azureFilters
+let private filters = join [ azureFilters; awsFilters; kubernetesFilters ]
 
 let private typeSelector builderType =
     match (builderType, filters.Types, filters.Resources) with
