@@ -353,3 +353,4 @@ MigrationBackup/
 
 /Generated.fs
 /Aws.*.json
+/Generated.*.fs

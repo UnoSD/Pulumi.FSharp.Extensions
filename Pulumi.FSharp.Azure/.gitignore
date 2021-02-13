@@ -353,3 +353,4 @@ MigrationBackup/
 
 /Generated.fs
 /Azure.*.json
+/Generated.*.fs

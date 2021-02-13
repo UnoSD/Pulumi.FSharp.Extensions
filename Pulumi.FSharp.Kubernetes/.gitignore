@@ -353,3 +353,4 @@ MigrationBackup/
 
 /Generated.fs
 /Kubernetes.*.json
+/Generated.*.fs
