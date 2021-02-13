@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug AzureAD" type="RunExe" factoryName=".NET Executable">
+    <option name="EXE_PATH" value="$USER_HOME$/.nuget/packages/myriad.sdk/0.5.0/tools/net5.0/any/Myriad.dll" />
+    <option name="PROGRAM_PARAMETERS" value="--inputfile &quot;$PROJECT_DIR$/Pulumi.FSharp.AzureAD/Myriad.fs&quot; --outputfile &quot;$PROJECT_DIR$/Pulumi.FSharp.AzureAD/Generated.fs&quot; --plugin $PROJECT_DIR$/Pulumi.FSharp.Myriad/bin/Debug/net5.0/Pulumi.FSharp.Myriad.dll --wait-for-debugger" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pulumi.FSharp.AzureAD" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <option name="USE_MONO" value="0" />
+    <option name="RUNTIME_ARGUMENTS" value="" />
+    <method v="2">
+      <option name="Build" default="false" projectName="Pulumi.FSharp.Myriad" projectPath="$PROJECT_DIR$/Pulumi.FSharp.Myriad/Pulumi.FSharp.Myriad.fsproj" />
+    </method>
+  </configuration>
+</component>

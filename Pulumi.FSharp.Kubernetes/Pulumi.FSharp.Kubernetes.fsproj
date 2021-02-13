@@ -11,7 +11,6 @@
         <PackageTags>fsharp pulumi kubernetes</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>2.8.0.0-alpha</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And !exists('$(BUILD_BUILDNUMBER)')">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
@@ -28,9 +27,6 @@
         <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
-    </ItemGroup>
-    
-    <ItemGroup>
 
         <Compile Include="Myriad.fs" />
 
@@ -43,10 +39,7 @@
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
         
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
+        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
     </ItemGroup>
 
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
