@@ -189,3 +189,13 @@ I had the pleasure of being invited to speak at the F# eXchange 2020 on the 21st
 The talk goes through infrastructure as code in F# with Pulumi in general and explains the rationale and some of the technical details behind this repository.
 
 Link to the video: https://skillsmatter.com/skillscasts/14888-lightning-talk-one-language-to-rule-them-all-iac-in-f-sharp
+
+# Development notes
+
+Given that changes to the `Pulumi.FSharp.Myriad` project do not trigger re-generation unless the Myriad.fs file is modified, a `PreBuildEvent` in each `fsproj` file uses `sed` to change a dummy variable to a random integer on each build (this only works on GNU/Linux machines with `sed`). To avoid `git` finding changes in the `Myriad.fs` file every time, use the following:
+
+```bash
+git update-index --skip-worktree Pulumi.FSharp.Aws/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.Azure/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.Kubernetes/Myriad.fs
+```
