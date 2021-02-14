@@ -34,13 +34,13 @@ steps:
     displayName: Build
     inputs:
       command: build
-      projects: '**/Pulumi.FSharp.$(provider).fsproj'
+      projects: '**/Pulumi.FSharp.$(provider)/Pulumi.FSharp.$(provider).fsproj'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
     inputs:
       command: pack
-      packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
+      packagesToPack: '**/Pulumi.FSharp.$(provider)/Pulumi.FSharp.$(provider).fsproj'
       versioningScheme: byEnvVar
       versionEnvVar: providerVersion
 
