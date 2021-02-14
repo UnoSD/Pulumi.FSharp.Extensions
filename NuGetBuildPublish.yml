@@ -3,12 +3,7 @@ name: $(Rev:r)
 parameters:
   - name: provider
     type: string
-    default: ${{ variables.pipeline_provider }}
-    values:
-    - AzureAD
-    - Azure
-    - Aws
-    - Kubernetes
+    default: $(pipeline-provider)
 
 trigger:
   - master
