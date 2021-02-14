@@ -3,7 +3,7 @@ name: $(Rev:r)
 parameters:
   - name: provider
     type: string
-    default: $(pipeline-provider)
+    value: $(pipeline-provider)
 
 trigger:
   - master
