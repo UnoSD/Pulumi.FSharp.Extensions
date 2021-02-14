@@ -29,11 +29,11 @@ steps:
       version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet
     
-  #- task: DotNetCoreCLI@2
-  #  displayName: Build
-  #  inputs:
-  #    command: build
-  #    projects: '**/Pulumi.FSharp.$(provider).fsproj'
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: '**/Pulumi.FSharp.$(provider).fsproj'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
@@ -43,7 +43,10 @@ steps:
       versioningScheme: byEnvVar
       versionEnvVar: providerVersion
 
-  - task: PublishBuildArtifacts@1
+  - task: NuGetCommand@2
     displayName: Push
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
+      command: push
+      packagesToPush: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
+      nuGetFeedType: external
+      publishFeedCredentials: NuGet
