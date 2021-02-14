@@ -1,5 +1,9 @@
 name: 3.46.0.$(Rev:r)
 
+variables:
+  - name: provider
+    value: AzureAD
+
 trigger:
   - master
 
@@ -18,16 +22,16 @@ steps:
     displayName: Build
     inputs:
       command: build
-      projects: '**/Pulumi.FSharp.Azure.fsproj'
+      projects: '**/Pulumi.FSharp.$(provider).fsproj'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
     inputs:
       command: pack
-      packagesToPack: '**/Pulumi.FSharp.Azure.fsproj'
+      packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
       versioningScheme: byBuildNumber
 
   - task: PublishBuildArtifacts@1
     displayName: Push
     inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.3.46.0.*.nupkg'
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).*.nupkg'
