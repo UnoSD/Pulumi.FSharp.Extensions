@@ -50,3 +50,8 @@ steps:
       packagesToPush: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
       nuGetFeedType: external
       publishFeedCredentials: NuGet
+      
+  - task: PublishBuildArtifacts@1
+    displayName: Publish
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
