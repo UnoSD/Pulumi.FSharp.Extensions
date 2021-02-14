@@ -3,7 +3,7 @@ name: $(Rev:r)
 parameters:
   - name: provider
     type: string
-    default: ${{ variables.pipeline-provider }}
+    default: ${{ variables.pipeline_provider }}
     values:
     - AzureAD
     - Azure
