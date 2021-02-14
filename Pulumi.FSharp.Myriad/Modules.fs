@@ -45,21 +45,29 @@ let private getSchemaFromCacheOrUrl schemaUrl providerName version =
 
         json
     
-let rec private createModule (name : string) (namespace' : string) types =
-    match name.Split('.') with
-    | [| name |] -> Module.module'(name, [
-                        if name = "Inputs" && namespace'.Contains("Kubernetes") then
-                            ()
-                        else
-                            yield  Module.open'("Pulumi." + namespace' + "." + name)
-
-                        yield! types
-                    ])
-    | [| name; subname |] -> Module.module'(name, [
-                                Module.open'("Pulumi." + namespace' + ".Types.Inputs." + name + "." + subname)
-                                
-                                createModule subname (namespace' + "." + name) types
-                            ])
+let rec private createModule (name : string option) (openNamespace : string) types =
+    match name |> Option.map (fun n -> n.Split('.')) with
+    | None            -> Module.module'("Index", [
+                            yield Module.open'("Pulumi." + openNamespace)
+                 
+                            yield! types
+                        ])
+    | Some [| name |] -> Module.module'(name, [
+                            if (name = "Inputs" && openNamespace.Contains("Kubernetes")) || name = "Index" then
+                                ()
+                            else
+                                yield Module.open'("Pulumi." + openNamespace + "." + name)
+                 
+                            yield! types
+                        ])
+    | Some [| name; subname |] -> Module.module'(name, [
+                                    if name = "Index" then
+                                        ()
+                                    else
+                                        Module.open'("Pulumi." + openNamespace + ".Types.Inputs." + name + "." + subname)
+                                    
+                                    createModule (Some subname) (openNamespace + "." + name) types
+                                ])
     | _ -> failwith "Too many dots"
     
 let createPulumiModules schemaUrl providerName version =
@@ -121,8 +129,9 @@ let createPulumiModules schemaUrl providerName version =
               .["csharp"]
               .["namespaces"]
               .Properties() |>
-        Array.map (fun (p, jv) -> (p, jv.AsString())) |>
-        Map.ofArray
+        Map.ofArray |>
+        Map.map (fun _ jv -> jv.AsString() |> Some) |>
+        Map.add "index" None
     
     let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
@@ -138,7 +147,7 @@ let createPulumiModules schemaUrl providerName version =
         | Resource r -> create allTypes jsonValue "inputProperties" r.ResourceType.Value false
     
     let invalidProvidersList =
-        [ "config"; "index"; "" ]
+        [ "config"; "" ]
     
     let doesNot =
         not
@@ -168,25 +177,30 @@ let createPulumiModules schemaUrl providerName version =
     let resourceBuilders =
         createBuildersParallelFiltered allAvailableTypes resources
     
-    let providerNamespace =
+    let cloudProviderNamespace =
         match namespaces.TryGetValue(pulumiProviderName) with
-        | (true, value) -> value
-        | _             -> pulumiProviderName |> toPascalCase
+        | (true, Some value) -> value
+        | _                  -> pulumiProviderName |> toPascalCase
     
-    Map.fold (fun acc provider resourceBuilders ->
+    Map.fold (fun modules resourceProvider resourceBuilders ->
                     let resourceProviderNamespace =
-                        namespaces.[provider]
+                        namespaces.[resourceProvider]
+                    
+                    let openNamespace =
+                        resourceProviderNamespace |>
+                        Option.map (fun rpn -> $"{cloudProviderNamespace}.{rpn}") |>
+                        Option.defaultValue cloudProviderNamespace
                     
                     let typesModule =
                         typeBuilders |>
-                        Map.tryFind provider |>
+                        Map.tryFind resourceProvider |>
                         Option.bind (fun providerTypeBuilders -> if Array.isEmpty providerTypeBuilders then None else Some providerTypeBuilders) |>
-                        Option.map (fun providerTypeBuilders -> [|createModule "Inputs" (providerNamespace + "." + resourceProviderNamespace) providerTypeBuilders|]) |>
+                        Option.map (fun providerTypeBuilders -> [|createModule (Some "Inputs") openNamespace providerTypeBuilders|]) |>
                         Option.defaultValue [||]
                     
                     let moduleContent =
                         Array.append typesModule resourceBuilders
                     
-                    (createModule resourceProviderNamespace providerNamespace moduleContent) :: acc)
+                    (createModule resourceProviderNamespace cloudProviderNamespace moduleContent) :: modules)
              []
              resourceBuilders

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pulumi.FSharp.AzureAD\Pulumi.FSharp.AzureAD.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
   </ItemGroup>
 

@@ -16,6 +16,7 @@ type private Filters = {
 let private azureFilters = {
         Types     = Include [
             "WindowsVirtualMachineOsDisk"
+            "ProviderFeaturesKeyVault"
             "WindowsVirtualMachineSourceImageReference"
             "getAccountSASPermissions"
             "AccountNetworkRules"
@@ -29,6 +30,7 @@ let private azureFilters = {
             "compute"
             "storage"
             "network"
+            "index"
         ]                        
     }
 

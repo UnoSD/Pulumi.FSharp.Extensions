@@ -2,6 +2,7 @@
 F# computational expressions to reduce boilerplate in Pulumi code
 
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Azure)](https://www.nuget.org/packages/Pulumi.FSharp.Azure)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureAD)](https://www.nuget.org/packages/Pulumi.FSharp.AzureAD)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Aws)](https://www.nuget.org/packages/Pulumi.FSharp.Aws)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Kubernetes)](https://www.nuget.org/packages/Pulumi.FSharp.Kubernetes)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Core)](https://www.nuget.org/packages/Pulumi.FSharp.Core)
@@ -197,5 +198,6 @@ Given that changes to the `Pulumi.FSharp.Myriad` project do not trigger re-gener
 ```bash
 git update-index --skip-worktree Pulumi.FSharp.Aws/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Azure/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.AzureAD/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Kubernetes/Myriad.fs
 ```
