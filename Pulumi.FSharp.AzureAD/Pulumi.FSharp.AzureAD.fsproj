@@ -1,5 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project InitialTargets="SetPackageVersion" Sdk="Microsoft.NET.Sdk">
 
+    <Target Name="SetPackageVersion">
+        <PropertyGroup>
+            <PackageVersion Condition="'%(Identity)' == 'Pulumi.AzureAD'">@(PackageReference->Metadata('Version')).1</PackageVersion>
+        </PropertyGroup>
+    </Target>
+    
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
