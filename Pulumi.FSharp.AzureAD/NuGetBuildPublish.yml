@@ -35,7 +35,6 @@ steps:
     inputs:
       command: pack
       packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
-      versioningScheme: byBuildNumber
       versionEnvVar: providerVersion
 
   - task: PublishBuildArtifacts@1
