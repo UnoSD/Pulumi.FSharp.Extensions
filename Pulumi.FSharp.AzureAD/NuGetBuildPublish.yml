@@ -1,4 +1,4 @@
-name: 3.46.0.$(Rev:r)
+name: $(providerVersion)$(Rev:r)
 
 variables:
   - name: provider
@@ -11,8 +11,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+  - task: Bash@3
+    displayName: Set provider version variable
+    inputs:
+      targetType: inline
+      script: echo "##vso[task.setvariable variable=providerVersion]$(dotnet list package | grep -oP 'AzureAD[ ]*\K[1-9][0-9.]*')"
+    
   - task: UseDotNet@2
-    displayName: 'Use .NET 5 SDK'
+    displayName: Use .NET 5 SDK
     inputs:
       packageType: sdk
       version: 5.x
@@ -34,4 +40,4 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: Push
     inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).*.nupkg'
+      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).$(Rev:r).nupkg
