@@ -30,4 +30,4 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: Push
     inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.3.46.0.*.nupkg'
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.AzureAD.*.nupkg'
