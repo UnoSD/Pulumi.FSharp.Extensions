@@ -2,7 +2,7 @@
 
     <Target Name="SetPackageVersion">
         <PropertyGroup>
-            <PackageVersion Condition="'%(Identity)' == 'Pulumi.Azure'">@(PackageReference->Metadata('Version')).1</PackageVersion>
+            <PackageVersion Condition="'%(Identity)' == 'Pulumi.Azure'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
     </Target>
 
@@ -32,9 +32,7 @@
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
         <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.13" />
         <!-- This is required only to force build of the plugin -->
-        <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />        
-        
-        <None Include="NuGetBuildPublish.yml" />
+        <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
         
         <Compile Include="Myriad.fs" />
         

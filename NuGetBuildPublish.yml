@@ -1,8 +1,13 @@
 name: $(Rev:r)
 
-variables:
+parameters:
   - name: provider
-    value: AzureAD
+    type: string
+    values:
+    - AzureAD
+    - Azure
+    - Aws
+    - Kubernetes
 
 trigger:
   - master
@@ -19,7 +24,7 @@ steps:
       targetType: inline
       script: |
         dotnet restore Pulumi.FSharp.$(provider)
-        export NUGET_VERSION=$(dotnet list Pulumi.FSharp.$(provider) package | grep -oP 'AzureAD[ ]*\K[1-9][0-9.]*')
+        export NUGET_VERSION=$(dotnet list Pulumi.FSharp.$(provider) package | grep -oP '$(provider)[ ]*\K[1-9][0-9.]*')
         echo "##vso[task.setvariable variable=providerVersion]${NUGET_VERSION}.${BUILD_NUMBER}"
     
   - task: UseDotNet@2

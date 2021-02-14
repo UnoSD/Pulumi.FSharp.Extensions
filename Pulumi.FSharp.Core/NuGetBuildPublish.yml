@@ -1,4 +1,8 @@
-name: 2.0.$(Rev:r)
+name: $(Rev:r)
+
+variables:
+  - name: provider
+    value: Core
 
 trigger:
   branches:
@@ -13,29 +17,29 @@ pool:
 
 steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK 3.1.103'
+    displayName: Use .NET 5 SDK
     inputs:
       packageType: sdk
-      version: 3.1.103
+      version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet
     
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
       command: build
-      projects: '**/Pulumi.FSharp.Core.fsproj'
+      projects: '**/Pulumi.FSharp.$(provider).fsproj'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
     inputs:
       command: pack
-      packagesToPack: '**/Pulumi.FSharp.Core.fsproj'
+      packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
       versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
     displayName: Push
     inputs:
       command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Core.2.0.*.nupkg'
+      packagesToPush: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).*.nupkg
       nuGetFeedType: external
       publishFeedCredentials: NuGet

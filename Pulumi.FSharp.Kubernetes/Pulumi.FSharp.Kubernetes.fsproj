@@ -2,7 +2,7 @@
 
     <Target Name="SetPackageVersion">
         <PropertyGroup>
-            <PackageVersion Condition="'%(Identity)' == 'Pulumi.Kubernetes'">@(PackageReference->Metadata('Version')).1</PackageVersion>
+            <PackageVersion Condition="'%(Identity)' == 'Pulumi.Kubernetes'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
     </Target>
 
@@ -22,10 +22,6 @@
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And !exists('$(BUILD_BUILDNUMBER)')">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And exists('$(BUILD_BUILDNUMBER)')">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
     </PropertyGroup>
-
-    <ItemGroup>
-        <None Include="NuGetBuildPublish.yml" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.13" />

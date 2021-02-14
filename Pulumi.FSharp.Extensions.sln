@@ -21,6 +21,11 @@ EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureAD", "Pulumi.FSharp.AzureAD\Pulumi.FSharp.AzureAD.fsproj", "{D743DF85-53C4-4E5B-B7E0-8A3AE58B7B3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{19133DA2-F039-47AB-A225-6435EC14A67B}"
+ProjectSection(SolutionItems) = preProject
+	NuGetBuildPublish.yml = NuGetBuildPublish.yml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
