@@ -43,6 +43,11 @@ steps:
       versioningScheme: byEnvVar
       versionEnvVar: providerVersion
 
+  - task: PublishBuildArtifacts@1
+    displayName: Publish
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
+
   - task: NuGetCommand@2
     displayName: Push
     inputs:
@@ -50,8 +55,3 @@ steps:
       packagesToPush: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
       nuGetFeedType: external
       publishFeedCredentials: NuGet
-      
-  - task: PublishBuildArtifacts@1
-    displayName: Publish
-    inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
