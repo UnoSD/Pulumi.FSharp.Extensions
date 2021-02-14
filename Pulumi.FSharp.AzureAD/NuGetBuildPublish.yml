@@ -11,9 +11,11 @@ pool:
 steps:
   - task: Bash@3
     displayName: Set provider version variable
+    env:
+      BUILD_NUMBER: $(Rev:r)
     inputs:
       targetType: inline
-      script: echo "##vso[task.setvariable variable=BUILD_BUILDNUMBER]$(dotnet list package | grep -oP 'AzureAD[ ]*\K[1-9][0-9.]*')"
+      script: echo "##vso[task.setvariable variable=providerVersion]$(dotnet list package | grep -oP 'AzureAD[ ]*\K[1-9][0-9.]*')$(BUILD_NUMBER)"
     
   - task: UseDotNet@2
     displayName: Use .NET 5 SDK
@@ -34,8 +36,9 @@ steps:
       command: pack
       packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
       versioningScheme: byBuildNumber
+      versionEnvVar: providerVersion
 
   - task: PublishBuildArtifacts@1
     displayName: Push
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(BUILD_BUILDNUMBER).$(Rev:r).nupkg
+      pathToPublish: $(Build.ArtifactStagingDirectory)/Pulumi.FSharp.$(provider).$(providerVersion).nupkg
