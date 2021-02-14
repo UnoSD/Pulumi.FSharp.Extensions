@@ -8,10 +8,10 @@ pool:
 
 steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK 3.1.103'
+    displayName: 'Use .NET 5 SDK'
     inputs:
       packageType: sdk
-      version: 3.1.103
+      version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet
     
   - task: DotNetCoreCLI@2
@@ -27,10 +27,7 @@ steps:
       packagesToPack: '**/Pulumi.FSharp.Azure.fsproj'
       versioningScheme: byBuildNumber
 
-  - task: NuGetCommand@2
+  - task: PublishBuildArtifacts@1
     displayName: Push
     inputs:
-      command: push
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.3.46.0.*.nupkg'
-      nuGetFeedType: external
-      publishFeedCredentials: NuGet
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/Pulumi.FSharp.Azure.3.46.0.*.nupkg'
