@@ -30,7 +30,6 @@
         <Compile Include="Builder.fs" />
         <Compile Include="Debug.fs" />
         <Compile Include="Modules.fs" />
-        <Compile Include="Configuration.fs" />
         <Compile Include="Namespace.fs" />
         <Compile Include="Generator.fs" />
     </ItemGroup>

@@ -1,6 +1,5 @@
 ﻿module Pulumi.FSharp.Myriad
 
-open AstConfiguration
 open AstNamespace
 open AstModules
 open Myriad.Core
@@ -29,8 +28,9 @@ type PulumiFSharpGenerator() =
                                        x.Attributes.["Version"].Value |> Some
                                    else
                                        None)
-            
-            getSchemaUrl provider version |>
+
+            $"https://raw.githubusercontent.com/pulumi/pulumi-{provider.ToLower()}/v{version}" +
+            $"/provider/cmd/pulumi-resource-{provider.ToLower()}/schema.json" |>
             downloadSchema provider version |>
             createPulumiModules |>
             namespace' provider |>
