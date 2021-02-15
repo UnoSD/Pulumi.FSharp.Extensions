@@ -10,7 +10,7 @@ let private getSchemaFromFileCacheOrDownload provider version schemaUrl =
     | fi when fi.Exists -> fi.OpenText().ReadToEnd()
     | fi                -> let json = Http.RequestString(schemaUrl)
                            #if DEBUG
-                           json |> fi.CreateText().Write
+                           use fi = fi.CreateText() in json |> fi.Write
                            #endif
                            json
     
