@@ -1,33 +1,11 @@
 module AstModules
 
-open FSharp.Compiler.SyntaxTree
-open AstInstance
+open BuilderInstance
 open FSharp.Data
 open AstHelpers
 open AstBuilder
-open AstLet
 open Debug
-open FsAst
 open Core
-
-let private createModuleContent allTypes (properties : (string * JsonValue) []) typeName isType =
-    [|
-        createBuilderClass allTypes isType typeName properties
-        
-        createLet (toCamelCase (typeName))
-                  (createInstance (typeName + "Builder") SynExpr.CreateUnit)
-                  (seq { yield "*** Available properties ***"
-                         yield ""
-                         yield "When names are available on the resource,"
-                         yield "**resourceName** maps to the name of the"
-                         yield "provider resource, **name** maps to the"
-                         yield "Pulumi name"
-                         yield ""
-                         yield! properties |> Array.map fst })
-        
-        // Create also shortcut lets:
-        // let storageOsDisk = virtualMachineStorageOsDisk        
-    |]
 
 let rec private createModule (name : string option) (openNamespace : string) types =
     match name |> Option.map (fun n -> n.Split('.')) with
@@ -119,7 +97,11 @@ let createModules (schema : JsonValue) =
             | Some value -> value.Properties()
             | None       -> [||]
             
-        createModuleContent allTypes properties typeName isType
+        [|
+            createBuilderClass allTypes isType typeName properties
+            
+            createBuilderInstance typeName properties
+        |]
     
     let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with

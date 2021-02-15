@@ -29,6 +29,7 @@
         <Compile Include="Let.fs" />
         <Compile Include="Builder.fs" />
         <Compile Include="Debug.fs" />
+        <Compile Include="BuilderInstance.fs" />
         <Compile Include="Modules.fs" />
         <Compile Include="Namespace.fs" />
         <Compile Include="Schema.fs" />
