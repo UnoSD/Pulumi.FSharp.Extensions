@@ -1,6 +1,6 @@
 ﻿<Project InitialTargets="SetPackageVersion" Sdk="Microsoft.NET.Sdk">
 
-    <Target Name="SetPackageVersion">
+    <Target Name="SetPackageVersion" Condition="'$(BUILD_REASON)' == ''">
         <PropertyGroup>
             <PackageVersion Condition="'%(Identity)' == 'Pulumi.Aws'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
@@ -20,8 +20,8 @@
         <Version>3.28.1.1</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And !exists('$(BUILD_BUILDNUMBER)')">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
-        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And exists('$(BUILD_BUILDNUMBER)')">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' != ''">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' == ''">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
     </PropertyGroup>
 
     <ItemGroup>

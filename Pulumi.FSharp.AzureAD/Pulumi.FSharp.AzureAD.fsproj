@@ -1,7 +1,6 @@
 ﻿<Project InitialTargets="SetPackageVersion" Sdk="Microsoft.NET.Sdk">
 
     <Target Name="SetPackageVersion" Condition="'$(BUILD_REASON)' == ''">
-        <Warning Text="TEST"/>
         <PropertyGroup>            
             <PackageVersion Condition="'%(Identity)' == 'Pulumi.AzureAD'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
@@ -20,8 +19,8 @@
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And !exists('$(BUILD_BUILDNUMBER)')">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
-        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And exists('$(BUILD_BUILDNUMBER)')">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' != ''">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' == ''">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
     </PropertyGroup>
 
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
