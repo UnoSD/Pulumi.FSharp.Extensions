@@ -1,9 +1,5 @@
 name: $(Rev:r)
 
-variables:
-  - name: pipeline-provider
-    value: ""
-
 parameters:
   - name: provider
     type: string
