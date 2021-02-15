@@ -54,7 +54,7 @@ let rec private createModule (name : string option) (openNamespace : string) typ
                                 ])
     | _ -> failwith "Too many dots"
     
-let createPulumiModules (schema : JsonValue) =
+let createModules (schema : JsonValue) =
     let allNestedTypes =
         [
             for (_, jsonValue) in schema.["resources"].Properties() do

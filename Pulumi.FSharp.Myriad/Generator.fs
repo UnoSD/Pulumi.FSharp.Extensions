@@ -31,8 +31,8 @@ type PulumiFSharpGenerator() =
                                        None)
 
             loadSchema provider version |>
-            createPulumiModules |>
-            namespace' provider |>
+            createModules |>
+            createNamespace provider |>
             List.singleton
 
         member this.ValidInputExtensions = seq { ".fs" }

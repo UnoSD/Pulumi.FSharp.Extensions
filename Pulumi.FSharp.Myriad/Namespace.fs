@@ -2,7 +2,7 @@ module AstNamespace
 
 open AstHelpers
 
-let namespace' provider modules = 
+let createNamespace provider modules = 
     Namespace.namespace'($"Pulumi.FSharp.{provider}", [
        yield  Module.open'("Pulumi.FSharp")
     
