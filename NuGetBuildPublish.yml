@@ -3,7 +3,7 @@ name: $(Rev:r)
 parameters:
   - name: provider
     type: string
-    value: $(pipeline-provider)
+    default: $(pipeline-provider)
 
 trigger:
   - master
@@ -12,6 +12,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+  - script: |
+      echo "1:${{ parameters.provider }}"
+      echo "2:$(pipeline-provider)"
   - task: Bash@3
     displayName: Set provider version variable
     env:
