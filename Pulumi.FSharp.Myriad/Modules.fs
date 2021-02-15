@@ -7,15 +7,15 @@ open AstBuilder
 open Debug
 open Core
 
-let rec private createModule (name : string option) (openNamespace : string) types =
-    match name |> Option.map (fun n -> n.Split('.')) with
+let rec private createModule name openNamespace types =
+    match name |> Option.map (String.split '.') with
     | None            -> Module.module'("Index", [
                             yield Module.open'("Pulumi." + openNamespace)
                  
                             yield! types
                         ])
     | Some [| name |] -> Module.module'(name, [
-                            if (name = "Inputs" && openNamespace.Contains("Kubernetes")) || name = "Index" then
+                            if (name = "Inputs" && String.contains "Kubernetes" openNamespace) || name = "Index" then
                                 ()
                             else
                                 yield Module.open'("Pulumi." + openNamespace + "." + name)

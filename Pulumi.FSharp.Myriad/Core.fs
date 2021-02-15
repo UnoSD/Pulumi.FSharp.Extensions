@@ -21,3 +21,8 @@ let toPascalCase =
     
 let createPattern name args =
     SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
+    
+module String =
+    let split (char : char) (value : string) = value.Split(char)
+    
+    let contains (subString : string) (value : string) = value.Contains(subString) 
