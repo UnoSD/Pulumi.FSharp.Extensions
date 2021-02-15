@@ -1,7 +1,8 @@
 ﻿<Project InitialTargets="SetPackageVersion" Sdk="Microsoft.NET.Sdk">
 
     <Target Name="SetPackageVersion" Condition="!exists('$(BUILD_BUILDNUMBER)')">
-        <PropertyGroup>
+        <Warning Text="TEST"/>
+        <PropertyGroup>            
             <PackageVersion Condition="'%(Identity)' == 'Pulumi.AzureAD'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
     </Target>
