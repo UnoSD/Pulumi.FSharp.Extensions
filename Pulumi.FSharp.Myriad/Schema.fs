@@ -14,7 +14,7 @@ let private getSchemaFromFileCacheOrDownload provider version schemaUrl =
                            #endif
                            json
     
-let private loadSchema' provider version =
+let private loadSchema' version provider =
     $"https://raw.githubusercontent.com/pulumi/pulumi-{provider}/v{version}" +
     $"/provider/cmd/pulumi-resource-{provider}/schema.json" |>
     getSchemaFromFileCacheOrDownload provider version |>
