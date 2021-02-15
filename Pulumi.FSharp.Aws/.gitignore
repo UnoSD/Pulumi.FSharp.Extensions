@@ -352,5 +352,5 @@ MigrationBackup/
 .idea/
 
 /Generated.fs
-/Aws.*.json
+/aws.*.json
 /Generated.*.fs

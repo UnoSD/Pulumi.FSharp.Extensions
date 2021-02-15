@@ -352,5 +352,5 @@ MigrationBackup/
 .idea/
 
 /Generated.fs
-/Kubernetes.*.json
+/kubernetes.*.json
 /Generated.*.fs

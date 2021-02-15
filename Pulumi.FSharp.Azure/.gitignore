@@ -352,5 +352,5 @@ MigrationBackup/
 .idea/
 
 /Generated.fs
-/Azure.*.json
+/azure.*.json
 /Generated.*.fs
