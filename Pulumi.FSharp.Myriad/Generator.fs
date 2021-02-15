@@ -1,11 +1,11 @@
 ﻿module Pulumi.FSharp.Myriad
 
-open System.IO
-open System.Xml
 open AstConfiguration
-open Myriad.Core
-open AstHelpers
+open AstNamespace
 open AstModules
+open Myriad.Core
+open System.Xml
+open System.IO
 
 [<MyriadGenerator("Pulumi.FSharp")>]
 type PulumiFSharpGenerator() =
@@ -30,13 +30,10 @@ type PulumiFSharpGenerator() =
                                    else
                                        None)
             
-            let url =
-                getSchemaUrl provider version
-            
-            [Namespace.namespace'($"Pulumi.FSharp.{provider}", [
-                yield  Module.open'("Pulumi.FSharp")
-                
-                yield! createPulumiModules url provider version
-            ])]
+            getSchemaUrl provider version |>
+            downloadSchema provider version |>
+            createPulumiModules |>
+            namespace' provider |>
+            List.singleton
 
         member this.ValidInputExtensions = seq { ".fs" }

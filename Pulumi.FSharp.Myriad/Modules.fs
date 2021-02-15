@@ -70,11 +70,11 @@ let rec private createModule (name : string option) (openNamespace : string) typ
                                 ])
     | _ -> failwith "Too many dots"
     
-let createPulumiModules schemaUrl providerName version =
-    let schema =
-        getSchemaFromCacheOrUrl schemaUrl providerName version |>
-        JsonValue.Parse
+let downloadSchema providerName version schemaUrl =
+    getSchemaFromCacheOrUrl schemaUrl providerName version |>
+    JsonValue.Parse
     
+let createPulumiModules (schema : JsonValue) =
     let allNestedTypes =
         [
             for (_, jsonValue) in schema.["resources"].Properties() do
@@ -182,25 +182,26 @@ let createPulumiModules schemaUrl providerName version =
         | (true, Some value) -> value
         | _                  -> pulumiProviderName |> toPascalCase
     
-    Map.fold (fun modules resourceProvider resourceBuilders ->
-                    let resourceProviderNamespace =
-                        namespaces.[resourceProvider]
-                    
-                    let openNamespace =
-                        resourceProviderNamespace |>
-                        Option.map (fun rpn -> $"{cloudProviderNamespace}.{rpn}") |>
-                        Option.defaultValue cloudProviderNamespace
-                    
-                    let typesModule =
-                        typeBuilders |>
-                        Map.tryFind resourceProvider |>
-                        Option.bind (fun providerTypeBuilders -> if Array.isEmpty providerTypeBuilders then None else Some providerTypeBuilders) |>
-                        Option.map (fun providerTypeBuilders -> [|createModule (Some "Inputs") openNamespace providerTypeBuilders|]) |>
-                        Option.defaultValue [||]
-                    
-                    let moduleContent =
-                        Array.append typesModule resourceBuilders
-                    
-                    (createModule resourceProviderNamespace cloudProviderNamespace moduleContent) :: modules)
-             []
-             resourceBuilders
+    let folder modules resourceProvider resourceBuilders =
+        let resourceProviderNamespace =
+            namespaces.[resourceProvider]
+        
+        let openNamespace =
+            resourceProviderNamespace |>
+            Option.map (fun rpn -> $"{cloudProviderNamespace}.{rpn}") |>
+            Option.defaultValue cloudProviderNamespace
+        
+        let typesModule =
+            typeBuilders |>
+            Map.tryFind resourceProvider |>
+            Option.bind (fun providerTypeBuilders -> if Array.isEmpty providerTypeBuilders then None else Some providerTypeBuilders) |>
+            Option.map (fun providerTypeBuilders -> [|createModule (Some "Inputs") openNamespace providerTypeBuilders|]) |>
+            Option.defaultValue [||]
+        
+        let moduleContent =
+            Array.append typesModule resourceBuilders
+        
+        (createModule resourceProviderNamespace cloudProviderNamespace moduleContent) :: modules
+    
+    resourceBuilders |>
+    Map.fold folder List.empty
