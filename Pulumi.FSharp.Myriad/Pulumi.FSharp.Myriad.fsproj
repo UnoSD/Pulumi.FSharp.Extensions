@@ -31,6 +31,7 @@
         <Compile Include="Debug.fs" />
         <Compile Include="Modules.fs" />
         <Compile Include="Namespace.fs" />
+        <Compile Include="Schema.fs" />
         <Compile Include="Generator.fs" />
     </ItemGroup>
     

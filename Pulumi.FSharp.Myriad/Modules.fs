@@ -5,7 +5,6 @@ open AstInstance
 open FSharp.Data
 open AstHelpers
 open AstBuilder
-open System.IO
 open AstLet
 open Debug
 open FsAst
@@ -30,21 +29,6 @@ let private createModuleContent allTypes (properties : (string * JsonValue) []) 
         // let storageOsDisk = virtualMachineStorageOsDisk        
     |]
 
-let private getSchemaFromCacheOrUrl schemaUrl providerName version =
-    let fileName = providerName + "." + version + ".json"
-    
-    if File.Exists(fileName) then
-        File.ReadAllText(fileName)
-    else
-        let json =
-            Http.RequestString(schemaUrl)
-        
-        #if DEBUG
-        File.WriteAllText(fileName, json)
-        #endif
-
-        json
-    
 let rec private createModule (name : string option) (openNamespace : string) types =
     match name |> Option.map (fun n -> n.Split('.')) with
     | None            -> Module.module'("Index", [
@@ -69,10 +53,6 @@ let rec private createModule (name : string option) (openNamespace : string) typ
                                     createModule (Some subname) (openNamespace + "." + name) types
                                 ])
     | _ -> failwith "Too many dots"
-    
-let downloadSchema providerName version schemaUrl =
-    getSchemaFromCacheOrUrl schemaUrl providerName version |>
-    JsonValue.Parse
     
 let createPulumiModules (schema : JsonValue) =
     let allNestedTypes =

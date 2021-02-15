@@ -1,10 +1,11 @@
 ﻿module Pulumi.FSharp.Myriad
 
 open AstNamespace
-open AstModules
 open Myriad.Core
+open AstModules
 open System.Xml
 open System.IO
+open Schema
 
 [<MyriadGenerator("Pulumi.FSharp")>]
 type PulumiFSharpGenerator() =
@@ -29,9 +30,7 @@ type PulumiFSharpGenerator() =
                                    else
                                        None)
 
-            $"https://raw.githubusercontent.com/pulumi/pulumi-{provider.ToLower()}/v{version}" +
-            $"/provider/cmd/pulumi-resource-{provider.ToLower()}/schema.json" |>
-            downloadSchema provider version |>
+            loadSchema provider version |>
             createPulumiModules |>
             namespace' provider |>
             List.singleton
