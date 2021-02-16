@@ -35,6 +35,13 @@ let rec createModule name openNamespace types =
                                 ])
     | _ -> failwith "Too many dots"
     
+let createModule' name openNamespaces types =
+    Module.module'(name, [
+        yield! openNamespaces |> List.map (fun openNamespace -> Module.open'("Pulumi." + openNamespace))
+                             
+        yield! types
+    ])
+    
 type PulumiModule = {
     CloudProviderNamespace: string
     ResourceProviderNamespace: string option
