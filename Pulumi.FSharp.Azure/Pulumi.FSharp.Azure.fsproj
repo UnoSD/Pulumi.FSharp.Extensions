@@ -41,20 +41,6 @@
         </Compile>
 
         <Content Include="myriad.toml" />
-        
-        <Compile Include="Legacy\Regions.fs" />        
-        <Compile Include="Legacy\Core.fs" />        
-        <Compile Include="Legacy\ResourceGroup.fs" />        
-        <Compile Include="Legacy\AppService.fs" />        
-        <Compile Include="Legacy\StorageAccount.fs" />        
-        <Compile Include="Legacy\StorageContainer.fs" />        
-        <Compile Include="Legacy\StorageBlob.fs" />        
-        <Compile Include="Legacy\SasToken.fs" />        
-        <Compile Include="Legacy\AppInsight.fs" />        
-        <Compile Include="Legacy\ArmTemplate.fs" />        
-        <Compile Include="Legacy\ApimApi.fs" />        
-        <Compile Include="Legacy\ApimApiOperation.fs" />        
-        <Compile Include="Legacy\FunctionApp.fs" />
     </ItemGroup>
     
 </Project>
