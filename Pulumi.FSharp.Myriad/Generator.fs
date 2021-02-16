@@ -32,8 +32,8 @@ type PulumiFSharpGenerator() =
                                        None)
 
             loadSchema provider version |>
-            createModules |>
-            createIndexModule provider |>
+            createTypes |>
+            createModules provider |>
             createNamespace |>
             List.singleton
 

@@ -48,7 +48,7 @@ type PulumiModule = {
     Content: SynModuleDecl[]
 }
 
-let createModules (schema : JsonValue) =
+let createTypes (schema : JsonValue) =
     let allNestedTypes =
         [
             for (_, jsonValue) in schema.["resources"].Properties() do
@@ -186,4 +186,7 @@ let createModules (schema : JsonValue) =
         } :: modules
     
     resourceBuilders |>
-    Map.fold folder List.empty
+    Map.fold folder List.empty |>
+    List.partition (function
+                    | { ResourceProviderNamespace = None } -> true
+                    | _                                    -> false)
