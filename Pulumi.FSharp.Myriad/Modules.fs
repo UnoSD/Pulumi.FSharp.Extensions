@@ -15,17 +15,22 @@ let rec createModule name openNamespace types =
                  
                             yield! types
                         ])
-    | Some [| name |] -> Module.module'(name, [
-                            if (name = "Inputs" && String.contains "Kubernetes" openNamespace) then
-                                ()
-                            else
-                                Module.open'("Pulumi." + openNamespace + "." + name)
-                 
-                            yield! types
-                        ])
+    | Some [| name |] -> let openNamespaces =
+                            match name, String.split '.' openNamespace |> List.ofArray with
+                            | "Inputs", "Kubernetes" :: _    -> []
+                            | name    , "Kubernetes" :: tail ->
+                                let sub = tail |> String.concat "."
+                                let mn types = Module.open'("Pulumi." + "Kubernetes" + types + sub + "." + name)
+                                [ mn ".Types.Inputs."
+                                  mn "." ]
+                            | name, _                        -> [ Module.open'("Pulumi." + openNamespace + "." + name) ]
+                            
+                         Module.module'(name, [
+                             yield! openNamespaces
+                             
+                             yield! types
+                         ])
     | Some [| name; subname |] -> Module.module'(name, [
-                                    Module.open'("Pulumi." + openNamespace + ".Types.Inputs." + name + "." + subname)
-                                    
                                     createModule (Some subname) (openNamespace + "." + name) types
                                 ])
     | _ -> failwith "Too many dots"
