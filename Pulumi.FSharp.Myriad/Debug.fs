@@ -30,6 +30,20 @@ let private azureFilters = {
             "compute"
             "storage"
             "network"
+        ]                        
+    }
+
+let private azureAdFilters = {
+        Types     = Include [
+            "ApplicationAppRole"
+            "ApplicationOptionalClaims"
+            "getApplicationAppRole"
+        ]
+        Resources = Include [
+            "Application"
+            "ApplicationAppRole"
+        ]
+        Providers = Include [
             "index"
         ]                        
     }
@@ -63,7 +77,7 @@ let private join filtersList =
     }
 
 let private isDebug = false
-let private filters = join [ azureFilters; awsFilters; kubernetesFilters ]
+let private filters = join [ azureFilters; awsFilters; kubernetesFilters; azureAdFilters ]
 
 let private typeSelector builderType =
     match (builderType, filters.Types, filters.Resources) with
