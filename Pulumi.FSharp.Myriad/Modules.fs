@@ -1,37 +1,41 @@
 module AstModules
 
 open BuilderInstance
+open FSharp.Compiler.SyntaxTree
 open FSharp.Data
 open AstHelpers
 open AstBuilder
 open Debug
 open Core
 
-let rec private createModule name openNamespace types =
+let rec createModule name openNamespace types =
     match name |> Option.map (String.split '.') with
-    | None            -> Module.module'("Index", [
-                            yield Module.open'("Pulumi." + openNamespace)
+    | None            -> Module.module'(openNamespace, [
+                            Module.open'("Pulumi." + openNamespace)
                  
                             yield! types
                         ])
     | Some [| name |] -> Module.module'(name, [
-                            if (name = "Inputs" && String.contains "Kubernetes" openNamespace) || name = "Index" then
+                            if (name = "Inputs" && String.contains "Kubernetes" openNamespace) then
                                 ()
                             else
-                                yield Module.open'("Pulumi." + openNamespace + "." + name)
+                                Module.open'("Pulumi." + openNamespace + "." + name)
                  
                             yield! types
                         ])
     | Some [| name; subname |] -> Module.module'(name, [
-                                    if name = "Index" then
-                                        ()
-                                    else
-                                        Module.open'("Pulumi." + openNamespace + ".Types.Inputs." + name + "." + subname)
+                                    Module.open'("Pulumi." + openNamespace + ".Types.Inputs." + name + "." + subname)
                                     
                                     createModule (Some subname) (openNamespace + "." + name) types
                                 ])
     | _ -> failwith "Too many dots"
     
+type PulumiModule = {
+    CloudProviderNamespace: string
+    ResourceProviderNamespace: string option
+    Content: SynModuleDecl[]
+}
+
 let createModules (schema : JsonValue) =
     let allNestedTypes =
         [
@@ -163,7 +167,11 @@ let createModules (schema : JsonValue) =
         let moduleContent =
             Array.append typesModule resourceBuilders
         
-        (createModule resourceProviderNamespace cloudProviderNamespace moduleContent) :: modules
+        {
+            CloudProviderNamespace = cloudProviderNamespace
+            ResourceProviderNamespace = resourceProviderNamespace
+            Content = moduleContent
+        } :: modules
     
     resourceBuilders |>
     Map.fold folder List.empty

@@ -1,6 +1,7 @@
 ﻿module Pulumi.FSharp.Myriad
 
 open AstNamespace
+open IndexModule
 open Myriad.Core
 open AstModules
 open System.Xml
@@ -32,7 +33,8 @@ type PulumiFSharpGenerator() =
 
             loadSchema provider version |>
             createModules |>
-            createNamespace provider |>
+            createIndexModule provider |>
+            createNamespace |>
             List.singleton
 
         member this.ValidInputExtensions = seq { ".fs" }
