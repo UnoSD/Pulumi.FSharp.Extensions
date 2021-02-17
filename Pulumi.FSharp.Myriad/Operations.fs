@@ -7,6 +7,24 @@ open AstMember
 open FsAst
 open Core
     
+type PropertyType =
+    | Json
+    | Array
+    | ArrayItems of PropertyType[]
+    | Union of PropertyType[] * PropertyType[]
+    | String
+    | Integer
+    | Float
+    | Boolean
+    | Map
+    | MapType of PropertyType
+    | Description of string
+    | DeprecationMessage of string
+    | Complex of string
+    | NameOverride of string
+    | Asset
+    | Ignore
+    
 let private createPatternTyped name args (typeName : string) =
     SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
                           SynType.CreateLongIdent(typeName))
@@ -134,18 +152,18 @@ let private idIdent =
 let createOperationsFor' isType name pType (argsType : string) =
     let (setRights, argType) =
         match pType with
-        | "string"
-        | "integer"
-        | "number"
-        | "boolean" -> [ inputIdent; ioIdent ], None
-        | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
-        | "object"  -> [ inputMapIdent ], None
-        | "json"    -> [ inputJson ], Some "string"
-        | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
+        | [| String |]
+        //| "integer"
+        //| "number"
+        //| "boolean" -> [ inputIdent; ioIdent ], None
+        | [| Array _ |] -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
+        | [| Union _ |] -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
+        | [| Json |] -> [ inputJson ], Some "string"
+        //| "object"  -> [ inputMapIdent ], None
         // What to do here? // I don't think complex exists at all... check and delete
-        | "complexD"
-        | "complex" -> [ inputIdent ], None
-        | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
+        //| "complexD"
+        //| "complex" -> [ inputIdent ], None
+        | x -> (name, x) ||> sprintf "Missing match case: %s, %A" |> failwith
     
     let letExpr setRight =
         Expr.let'("apply", [ Pat.typed("args", argsType) ],

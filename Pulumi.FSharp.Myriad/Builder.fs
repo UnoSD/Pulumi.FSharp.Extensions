@@ -96,6 +96,26 @@ let private nameMember =
 let private identArgExpr =
     Expr.ident("arg")
     
+type PType =
+    | PArray of PType
+    | PUnion of PType * PType
+    | PString 
+    | PInteger
+    | PFloat  
+    | PBoolean
+    | PMap of PType  
+    | PJson   
+    | PAsset
+    | PRef of string
+    
+type PTypeDefinition =
+    {
+        Description: string
+        NameOverride: string option
+        DeprecationMessage: string option
+        Type: PType
+    }
+    
 let createBuilderClass allTypes isType name properties =
     let argsType =
         name + "Args"
@@ -117,17 +137,17 @@ let createBuilderClass allTypes isType name properties =
                     Expr.paren(apply)
                 ))
         
-    let createOperations propName (propType : string) =
+    let createOperations propName (propType : PropertyType []) =
         match propType with
-        | "string"
-        | "integer"
-        | "number"
-        | "boolean"
-        | "array"
-        | "union"
-        | "json"
-        | "complexD"
-        | "object" ->
+        | [| String |]
+        //| "integer"
+        //| "number"
+        //| "boolean"
+        | [| Array _ |]
+        | [| Union _ |]
+        | [| Json |]
+        //| "complexD"
+        (*| "object"*) ->
             createOperationsFor' isType propName propType argsType
         | _ -> // "complex:XXXX"
             let setExpr =
@@ -179,25 +199,54 @@ let createBuilderClass allTypes isType name properties =
                      | Some x when allTypes |> Array.contains (x.Substring(8)) -> yield x
                      | _                                                       -> () ]
         
+        let (|StartsWith|_|) (value : string) (text : string) =
+            match text.StartsWith(value) with
+            | true  -> String.length value |> text.Substring |> Some
+            | false -> None
+        
+        let getType =
+            function
+            | "array"                     -> PropertyType.Array
+            | "string"                    -> String
+            | "integer"                   -> Integer
+            | "number"                    -> Float
+            | "boolean"                   -> Boolean
+            | "object"                    -> Map
+            | "pulumi.json#/Json"         -> Json
+            | "pulumi.json#/Asset"        -> Asset
+            | StartsWith("#/types/") rest -> Complex rest
+        
+        let (|FstItem|_|) value seq =
+            seq |> Seq.tryFind (fst >> ((=)value))
+        
+        let rec getTypeInfos =
+            function
+            | "type",                 JsonValue.String(typeName)
+            | "$ref",                 JsonValue.String(typeName)
+            | "$ref",                 JsonValue.String("pulumi.json#/Json") & JsonValue.String(typeName)
+            | "items",                JsonValue.Record([| ("type", JsonValue.String(typeName)) |])
+            | "additionalProperties", JsonValue.Record([| ("type", JsonValue.String(typeName)) |])
+            //| "items",                JsonValue.Record([| ("$ref", JsonValue.String(typeName)) |])
+                                                                       -> getType typeName
+            | "items",                JsonValue.Record(arrayItemsType)
+                                                                       -> Array.map getTypeInfos arrayItemsType |> ArrayItems
+            | "oneOf",                JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |])
+                                                                       -> Union (Array.map getTypeInfos one,
+                                                                                 Array.map getTypeInfos two)
+            //| "oneOf",                JsonValue.Array([| JsonValue.Record([| ("type", JsonValue.String("string")) |])
+            //                                             JsonValue.Record([| ("type", JsonValue.String("string"))
+            //                                                                 ("$ref", JsonValue.String(otherType)) |]) |])
+            //                                                           -> Union (String, getType otherType)
+            | "description",          JsonValue.String(x)              -> Description x
+            | "deprecationMessage",   JsonValue.String(x)              -> DeprecationMessage x
+            | "language",             JsonValue.Record((FstItem("csharp") (_, JsonValue.Record(FstItem("name") (_, JsonValue.String(i)))))) -> NameOverride i
+            | "language",             JsonValue.Record((FstItem("csharp") x)) -> failwith $"C# metadata not supported: {x}"
+            | "language",             _ -> Ignore
+            | x          -> failwith $"{x} definition not yet supported"
+        
         let pType =
             properties |>
-            Array.choose (function
-                          | "$ref", v when v.AsString() = "pulumi.json#/Json" -> Some "json"
-                          | "type", v  -> v.AsString() |> Some // Array type has also "items"
-                          | "$ref", v  -> let t = v.AsString()
-                                          // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
-                                          if t.StartsWith("pulumi.json#/") then
-                                              "complex"
-                                          else
-                                              "complex:" + v.AsString().Substring(8)
-                                          |> Some
-                          | "oneOf", v -> match v with
-                                          | JsonValue.Array(SameType(type')) -> Some type'
-                                          | _                                -> Some "union"
-                          (*| "description"*)
-                          | _          -> None) |>
-            Array.sortBy (function | "union" -> 0 | "json" -> 1 | _ -> 2) |>
-            Array.head
+            Array.map (getTypeInfos)
         
         (tName, pType)
     
@@ -208,13 +257,13 @@ let createBuilderClass allTypes isType name properties =
     let (propOfSameComplexType, otherProperties) =
         nameAndTypes |>
         Array.groupBy snd |>
-        Array.partition (fun (t, l) -> t.StartsWith("complex:") && Array.length l > 1) |>
+        Array.partition (fun (t, l) -> t |> Array.exists (function | Union _ -> false | _ -> true) && Array.length l > 1) |>
         (fun (l, r) -> (l |> Array.collect snd,
                         r |> Array.collect snd))
         
     let propOfSameComplexTypeIgnoreComplex =
         propOfSameComplexType |>
-        Array.map (fun (n, _) -> (n, "complexD"))
+        Array.map (fun (n, _) -> (n, [| Description "complexD" |]))
         
     let order =
         nameAndTypes |> Array.map fst
