@@ -107,22 +107,25 @@ let createTypes (schema : JsonValue) =
         Map.map (fun _ jv -> jv.AsString() |> Some) |>
         Map.add "index" None
     
-    let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
+    let create allTypes (propertiesFromResource : JsonValue option) (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
-            match jsonValue.TryGetProperty(propertyName) with
-            | Some value -> value.Properties()
-            | None       -> [||]
-            
+            match isType, propertiesFromResource, lazy(jsonValue.TryGetProperty(propertyName)) with
+            | true,  Some rip, _             -> rip.Properties()
+            | _   ,  _       , Lazy(Some ip) -> ip.Properties()
+            | _   ,  _       , Lazy(None)    -> [||] 
         [|
             createBuilderClass allTypes isType typeName properties
             
             createBuilderInstance typeName properties
         |]
     
-    let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
+    let createBuilders allTypes (schema : JsonValue) (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
-        | Type t     -> create allTypes jsonValue "properties" t.ResourceType.Value true
-        | Resource r -> create allTypes jsonValue "inputProperties" r.ResourceType.Value false
+        | Type t     -> let propertiesFromResource =
+                            schema.["resources"].TryGetProperty(t.Value) |>
+                            Option.bind (fun r -> r.TryGetProperty("inputProperties"))
+                        create allTypes propertiesFromResource jsonValue "properties" t.ResourceType.Value true
+        | Resource r -> create allTypes None jsonValue "inputProperties" r.ResourceType.Value false
     
     let invalidProvidersList =
         [ "config"; "" ]
@@ -138,22 +141,22 @@ let createTypes (schema : JsonValue) =
         Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
         Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
-    let createBuildersParallelFiltered allTypes typesOrResources =
+    let createBuildersParallelFiltered allTypes typesOrResources schema =
         Array.groupBy resourceProvider typesOrResources |>
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
-                                           Array.Parallel.collect (createBuilders allTypes))
+                                           Array.Parallel.collect (createBuilders allTypes schema))
         
     let allAvailableTypes =
         schema.["types"].Properties() |> Array.map fst
         
     let typeBuilders =
-        createBuildersParallelFiltered allAvailableTypes types
+        createBuildersParallelFiltered allAvailableTypes types schema
         
     let resourceBuilders =
-        createBuildersParallelFiltered allAvailableTypes resources
+        createBuildersParallelFiltered allAvailableTypes resources schema
     
     let cloudProviderNamespace =
         match namespaces.TryGetValue(pulumiProviderName) with

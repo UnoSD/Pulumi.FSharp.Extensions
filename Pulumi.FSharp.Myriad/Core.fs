@@ -22,8 +22,8 @@ let toPascalCase =
 let createPattern name args =
     SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
     
-let private createPatternTyped name args typ =
-    SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args), typ)    
+let (|Lazy|) (lazy' : Lazy<'a>) =
+    lazy'.Value
     
 module String =
     let split (char : char) (value : string) = value.Split(char)
