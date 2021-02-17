@@ -7,24 +7,6 @@ open AstMember
 open FsAst
 open Core
     
-type PropertyType =
-    | Json
-    | Array
-    | ArrayItems of PropertyType[]
-    | Union of PropertyType[] * PropertyType[]
-    | String
-    | Integer
-    | Float
-    | Boolean
-    | Map
-    | MapType of PropertyType
-    | Description of string
-    | DeprecationMessage of string
-    | Complex of string
-    | NameOverride of string
-    | Asset
-    | Ignore
-    
 let private createPatternTyped name args (typeName : string) =
     SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
                           SynType.CreateLongIdent(typeName))
@@ -149,21 +131,47 @@ let private inputUnion2Of2 =
 let private idIdent =
     Expr.ident("id")
 
+type PType =
+    | PArray of PType
+    | PUnion of PType * PType
+    | PString 
+    | PInteger
+    | PFloat  
+    | PBoolean
+    | PMap of PType  
+    | PJson   
+    | PAssetOrArchive
+    | PArchive
+    | PAny
+    | PRef of string
+    
+type Deprecation =
+    | Current
+    | Deprecated of string
+    
+type PTypeDefinition =
+    {
+        Name: string
+        Type: PType
+        Description: string
+        Deprecation: Deprecation
+        GenerateYield: bool
+    }
+
 let createOperationsFor' isType name pType (argsType : string) =
     let (setRights, argType) =
         match pType with
-        | [| String |]
-        //| "integer"
-        //| "number"
-        //| "boolean" -> [ inputIdent; ioIdent ], None
-        | [| Array _ |] -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
-        | [| Union _ |] -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
-        | [| Json |] -> [ inputJson ], Some "string"
-        //| "object"  -> [ inputMapIdent ], None
-        // What to do here? // I don't think complex exists at all... check and delete
-        //| "complexD"
-        //| "complex" -> [ inputIdent ], None
-        | x -> (name, x) ||> sprintf "Missing match case: %s, %A" |> failwith
+        | { PTypeDefinition.Type = PString }
+        | { Type = PInteger }
+        | { Type = PFloat }
+        | { Type = PBoolean } -> [ inputIdent; ioIdent ], None
+        | { Type = PArray _ } -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
+        | { Type = PUnion _ } -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
+        | { Type = PJson }    -> [ inputJson ], Some "string"
+        | { Type = PMap _ }   -> [ inputMapIdent ], None
+        | { Type = PRef _ }   -> [ inputIdent ], None
+        | { Type = PAssetOrArchive }   -> [ inputIdent ], None
+        | _ -> failwith $"Missing case for {pType}"
     
     let letExpr setRight =
         Expr.let'("apply", [ Pat.typed("args", argsType) ],
