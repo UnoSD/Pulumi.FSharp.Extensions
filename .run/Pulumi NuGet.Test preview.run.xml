@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Pulumi NuGet.Test preview" type="RunNativeExe" factoryName="Native Executable">
+    <option name="EXE_PATH" value="/usr/bin/pulumi" />
+    <option name="PROGRAM_PARAMETERS" value="preview" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pulumi.FSharp.NuGet.Test/" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <envs>
+      <env name="PULUMI_CONFIG_PASSPHRASE" value="" />
+    </envs>
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <method v="2">
+      <option name="Build" default="false" projectName="Pulumi.FSharp.NuGet.Test" projectPath="$PROJECT_DIR$/Pulumi.FSharp.NuGet.Test/Pulumi.FSharp.NuGet.Test.fsproj" />
+    </method>
+  </configuration>
+</component>
