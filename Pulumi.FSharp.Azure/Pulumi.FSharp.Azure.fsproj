@@ -35,12 +35,12 @@
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
         
         <Compile Include="Myriad.fs" />
-        
+
         <Compile Include="Generated.fs">
             <MyriadFile>Myriad.fs</MyriadFile>
         </Compile>
 
         <Content Include="myriad.toml" />
     </ItemGroup>
-    
+
 </Project>

@@ -17,23 +17,23 @@
         <PackageTags>fsharp pulumi aws</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <Version>3.28.1.1</Version>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' == ''">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' != ''">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
     </PropertyGroup>
 
+    <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
+    
     <ItemGroup>
         <PackageReference Include="Pulumi.Aws" Version="3.28.1" />
         <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
         <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.13" />
-    </ItemGroup>
-    
-    <ItemGroup>
-
+        <!-- This is required only to force build of the plugin -->
+        <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
+        
         <Compile Include="Myriad.fs" />
 
         <Compile Include="Generated.fs">
@@ -41,16 +41,6 @@
         </Compile>
 
         <Content Include="myriad.toml" />
-        
-        <!-- This is required only to force build of the plugin -->
-        <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
-        
     </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
-    </ItemGroup>
-
-    <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
 </Project>

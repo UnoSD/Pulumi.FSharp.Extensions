@@ -8,7 +8,7 @@ open Pulumi.FSharp
 
 (*
 Test difference with backup copy:
-$ echo -n "Aws Azure AzureAD" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
+$ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
 *)
 
 let infra () =
