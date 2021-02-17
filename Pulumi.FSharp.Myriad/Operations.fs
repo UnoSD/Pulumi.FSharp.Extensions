@@ -41,7 +41,7 @@ let argsTuple' nameVarName withParen =
     createTuple [ nvn
                   argsPattern ] withParen
 
-let private createOperation'' nameVarName name coName argName hasAttribute =
+let private createOperation'' nameVarName name coName argName hasAttribute typ =
     let attributes =
         if hasAttribute then
             [ createAttributeWithArg "CustomOperation" coName ]
@@ -51,14 +51,14 @@ let private createOperation'' nameVarName name coName argName hasAttribute =
     let patterns = [
         createTuple [
             argsTuple' nameVarName true
-            createPattern argName []
+            match typ with | None -> createPattern argName [] | Some typ -> createPatternTyped argName [] typ
         ] true
     ]
     
     createMember name patterns attributes
 
 let createNameOperation newNameExpr =
-    createOperation'' null "Name" "name" "newName" true newNameExpr    
+    createOperation'' null "Name" "name" "newName" true None newNameExpr
 
 let private listCons =
     Expr.funcTuple("List.Cons", [ "apply"; "args" ])
@@ -89,6 +89,9 @@ let private inputListIdent =
 
 let private inputMapIdent =
     Expr.ident("inputMap")
+
+let private inputJson =
+    Expr.ident("Pulumi.InputJson.op_Implicit")
 
 let private resourceNameIdent =
     Expr.ident("resourceName")
@@ -129,17 +132,18 @@ let private idIdent =
     Expr.ident("id")
 
 let createOperationsFor' isType name pType (argsType : string) =
-    let setRights =
+    let (setRights, argType) =
         match pType with
         | "string"
         | "integer"
         | "number"
-        | "boolean" -> [ inputIdent; ioIdent ]
-        | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ]
-        | "object"  -> [ inputMapIdent ]
-        | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ]
+        | "boolean" -> [ inputIdent; ioIdent ], None
+        | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
+        | "object"  -> [ inputMapIdent ], None
+        | "json"    -> [ inputJson ], Some "string"
+        | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
         // What to do here? // I don't think complex exists at all... check and delete
-        | "complex" -> [ inputIdent ]
+        | "complex" -> [ inputIdent ], None
         | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
     
     let letExpr setRight =
@@ -189,4 +193,4 @@ let createOperationsFor' isType name pType (argsType : string) =
     
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation'' nameArgName memberName coName argName (i = 0) e)
+    List.mapi (fun i e -> createOperation'' nameArgName memberName coName argName (i = 0) argType e)

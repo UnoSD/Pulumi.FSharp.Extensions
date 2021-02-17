@@ -125,6 +125,7 @@ let createBuilderClass allTypes isType name properties =
         | "boolean"
         | "array"
         | "union"
+        | "json"
         | "object" ->
             createOperationsFor' isType propName propType argsType
         | _ -> // "complex:XXXX"
@@ -179,21 +180,22 @@ let createBuilderClass allTypes isType name properties =
         
         let pType =
             properties |>
-            Array.choose (fun (p, v) -> match p with
-                                        | "type"  -> v.AsString() |> Some // Array type has also "items"
-                                        | "$ref"  -> let t = v.AsString()
-                                                     // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
-                                                     if t.StartsWith("pulumi.json#/") then
-                                                         "complex"
-                                                     else
-                                                         "complex:" + v.AsString().Substring(8)
-                                                     |> Some
-                                        | "oneOf" -> match v with
-                                                     | JsonValue.Array(SameType(type')) -> Some type'
-                                                     | _                                -> Some "union"
-                                        (*| "description"*)
-                                        | _ -> None) |>
-            Array.sortBy (fun t -> match t with | "union" -> 0 | _ -> 1) |>
+            Array.choose (function
+                          | "$ref", v when v.AsString() = "pulumi.json#/Json" -> Some "json"
+                          | "type", v  -> v.AsString() |> Some // Array type has also "items"
+                          | "$ref", v  -> let t = v.AsString()
+                                          // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
+                                          if t.StartsWith("pulumi.json#/") then
+                                              "complex"
+                                          else
+                                              "complex:" + v.AsString().Substring(8)
+                                          |> Some
+                          | "oneOf", v -> match v with
+                                          | JsonValue.Array(SameType(type')) -> Some type'
+                                          | _                                -> Some "union"
+                          (*| "description"*)
+                          | _          -> None) |>
+            Array.sortBy (function | "union" -> 0 | "json" -> 1 | _ -> 2) |>
             Array.head
         
         (tName, pType)
