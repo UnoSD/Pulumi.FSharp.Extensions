@@ -126,6 +126,7 @@ let createBuilderClass allTypes isType name properties =
         | "array"
         | "union"
         | "json"
+        | "complexD"
         | "object" ->
             createOperationsFor' isType propName propType argsType
         | _ -> // "complex:XXXX"
@@ -200,9 +201,27 @@ let createBuilderClass allTypes isType name properties =
         
         (tName, pType)
     
-    let operations =
+    let nameAndTypes =
         properties |>
-        Array.map (fun (x, y : JsonValue) -> nameAndType x (y.Properties())) |>
+        Array.map (fun (x, y : JsonValue) -> nameAndType x (y.Properties()))
+        
+    let (propOfSameComplexType, otherProperties) =
+        nameAndTypes |>
+        Array.groupBy snd |>
+        Array.partition (fun (t, l) -> t.StartsWith("complex:") && Array.length l > 1) |>
+        (fun (l, r) -> (l |> Array.collect snd,
+                        r |> Array.collect snd))
+        
+    let propOfSameComplexTypeIgnoreComplex =
+        propOfSameComplexType |>
+        Array.map (fun (n, _) -> (n, "complexD"))
+        
+    let order =
+        nameAndTypes |> Array.map fst
+        
+    let operations =
+        Array.append propOfSameComplexTypeIgnoreComplex otherProperties |>
+        Array.sortBy (fun (n, _) -> order |> Array.findIndex ((=)n)) |>
         Seq.collect (fun (propName, propType) -> createOperations propName propType)
         
     let runReturnExpr =

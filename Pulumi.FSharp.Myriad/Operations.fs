@@ -143,6 +143,7 @@ let createOperationsFor' isType name pType (argsType : string) =
         | "json"    -> [ inputJson ], Some "string"
         | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
         // What to do here? // I don't think complex exists at all... check and delete
+        | "complexD"
         | "complex" -> [ inputIdent ], None
         | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
     
