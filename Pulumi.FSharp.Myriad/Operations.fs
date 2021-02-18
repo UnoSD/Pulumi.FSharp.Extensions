@@ -4,6 +4,7 @@ open FSharp.Compiler.SyntaxTree
 open AstAttribute
 open AstHelpers
 open AstMember
+open FSharp.Compiler.XmlDoc
 open FsAst
 open Core
     
@@ -41,7 +42,7 @@ let argsTuple' nameVarName withParen =
     createTuple [ nvn
                   argsPattern ] withParen
 
-let private createOperation'' nameVarName name coName argName hasAttribute typ =
+let private createOperation'' xmlDoc nameVarName name coName argName hasAttribute typ =
     let attributes =
         if hasAttribute then
             [ createAttributeWithArg "CustomOperation" coName ]
@@ -55,10 +56,10 @@ let private createOperation'' nameVarName name coName argName hasAttribute typ =
         ] true
     ]
     
-    createMember name patterns attributes
+    createMember'' xmlDoc name patterns attributes
 
 let createNameOperation newNameExpr =
-    createOperation'' null "Name" "name" "newName" true None newNameExpr
+    createOperation'' None null "Name" "name" "newName" true None newNameExpr
 
 let private listCons =
     Expr.funcTuple("List.Cons", [ "apply"; "args" ])
@@ -218,6 +219,9 @@ let createOperationsFor' isType pType (argsType : string) =
     let memberName =
         coName |> toPascalCase
     
+    let doc =
+        PreXmlDoc.Create([ pType.Description ]) |> Some
+    
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation'' nameArgName memberName coName argName (i = 0) argType e)
+    List.mapi (fun i e -> createOperation'' doc nameArgName memberName coName argName (i = 0) argType e)

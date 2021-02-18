@@ -64,7 +64,7 @@ let private combineArgs =
                           (Pat.paren (Pat.tuple ("rName", "rArgs")))))
     
 let private combineMember =
-    createMember' "this" "Combine" [combineArgs.ToRcd] [] combineExpr
+    createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineExpr
     
 let private forArgs =
     Pat.paren (Pat.tuple ("args", "delayedArgs"))
@@ -75,7 +75,7 @@ let private forExpr =
                       Expr.func("delayedArgs", Expr.unit) ])
 
 let private forMember =
-    createMember' "this" "For" [forArgs.ToRcd] [] forExpr
+    createMember' None "this" "For" [forArgs.ToRcd] [] forExpr
  
 let private delayMember =
     createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.func("f"))
