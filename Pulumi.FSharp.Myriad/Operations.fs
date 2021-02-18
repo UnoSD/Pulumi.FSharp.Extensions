@@ -131,21 +131,47 @@ let private inputUnion2Of2 =
 let private idIdent =
     Expr.ident("id")
 
+type PType =
+    | PArray of PType
+    | PUnion of PType * PType
+    | PString 
+    | PInteger
+    | PFloat  
+    | PBoolean
+    | PMap of PType  
+    | PJson   
+    | PAssetOrArchive
+    | PArchive
+    | PAny
+    | PRef of string
+    
+type Deprecation =
+    | Current
+    | Deprecated of string
+    
+type PTypeDefinition =
+    {
+        Name: string
+        Type: PType
+        Description: string
+        Deprecation: Deprecation
+        GenerateYield: bool
+    }
+
 let createOperationsFor' isType name pType (argsType : string) =
     let (setRights, argType) =
         match pType with
-        | "string"
-        | "integer"
-        | "number"
-        | "boolean" -> [ inputIdent; ioIdent ], None
-        | "array"   -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
-        | "object"  -> [ inputMapIdent ], None
-        | "json"    -> [ inputJson ], Some "string"
-        | "union"   -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
-        // What to do here? // I don't think complex exists at all... check and delete
-        | "complexD"
-        | "complex" -> [ inputIdent ], None
-        | x -> (name, x) ||> sprintf "Missing match case: %s, %s" |> failwith
+        | { PTypeDefinition.Type = PString }
+        | { Type = PInteger }
+        | { Type = PFloat }
+        | { Type = PBoolean } -> [ inputIdent; ioIdent ], None
+        | { Type = PArray _ } -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
+        | { Type = PUnion _ } -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
+        | { Type = PJson }    -> [ inputJson ], Some "string"
+        | { Type = PMap _ }   -> [ inputMapIdent ], None
+        | { Type = PRef _ }   -> [ inputIdent ], None
+        | { Type = PAssetOrArchive }   -> [ inputIdent ], None
+        | _ -> failwith $"Missing case for {pType}"
     
     let letExpr setRight =
         Expr.let'("apply", [ Pat.typed("args", argsType) ],

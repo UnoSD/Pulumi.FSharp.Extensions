@@ -1,11 +1,11 @@
 ﻿<Project InitialTargets="SetPackageVersion" Sdk="Microsoft.NET.Sdk">
 
     <Target Name="SetPackageVersion" Condition="'$(BUILD_REASON)' == ''">
-        <PropertyGroup>            
+        <PropertyGroup>
             <PackageVersion Condition="'%(Identity)' == 'Pulumi.AzureAD'">@(PackageReference-&gt;Metadata('Version')).1</PackageVersion>
         </PropertyGroup>
     </Target>
-    
+
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -39,7 +39,7 @@
         <Compile Include="Generated.fs">
             <MyriadFile>Myriad.fs</MyriadFile>
         </Compile>
-        
+
         <Content Include="myriad.toml" />
     </ItemGroup>
 

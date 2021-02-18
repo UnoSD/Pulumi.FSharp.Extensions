@@ -95,7 +95,26 @@ let private nameMember =
     
 let private identArgExpr =
     Expr.ident("arg")
+
+let createYieldFor propName argsType =
+    let setExpr =
+        Expr.sequential([
+            Expr.set("args." + propName, argToInput)
+            args
+        ])
     
+    let expr =
+        Expr.list([
+            Expr.paren(
+                Expr.sequential([
+                    Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
+                    funcIdent
+                ])
+            )
+        ])
+    
+    [ createYield' argIdent expr ]
+
 let createBuilderClass allTypes isType name properties =
     let argsType =
         name + "Args"
@@ -117,89 +136,101 @@ let createBuilderClass allTypes isType name properties =
                     Expr.paren(apply)
                 ))
         
-    let createOperations propName (propType : string) =
+    let createOperations (propType : PTypeDefinition) =
         match propType with
-        | "string"
-        | "integer"
-        | "number"
-        | "boolean"
-        | "array"
-        | "union"
-        | "json"
-        | "complexD"
-        | "object" ->
-            createOperationsFor' isType propName propType argsType
-        | _ -> // "complex:XXXX"
-            let setExpr =
-                Expr.sequential([
-                    Expr.set("args." + propName, argToInput)
-                    args
-                ])
-            
-            let expr =
-                Expr.list([
-                    Expr.paren(
-                        Expr.sequential([
-                            Expr.let'("func", [Pat.typed("args", argsType)], setExpr)
-                            funcIdent
-                        ])
-                    )
-                ])
-            
-            [ createYield' argIdent expr ]
-            // When creating a Yield, we could also create a
-            // let storageOsDisk = virtualMachineStorageOsDisk
-            // to simplify the name
+        | { Type = PString }
+        | { Type = PInteger }
+        | { Type = PFloat }
+        | { Type = PBoolean }
+        | { Type = PArray _ }
+        | { Type = PUnion _ }
+        | { Type = PJson _ }
+        | { Type = PMap _ }
+        | { Type = PRef _; GenerateYield = false } // Why not generating operations even when generating Yield?
+            -> createOperationsFor' isType propType.Name propType argsType
+        | { Type = PAssetOrArchive _ }
+        | { Type = PRef _ }
+        | { Type = PAny _ }
+        | { Type = PArchive _ }
+            -> createYieldFor propType.Name argsType
 
     let nameAndType name (properties : (string * JsonValue) []) =
-        let tName =
-            match properties |>
-                  Array.tryFind (fun (p, _) -> p = "language") |>
-                  Option.bind (fun (_, v) -> v.Properties() |>
-                                             Array.tryFind (fun (p, _) -> p = "csharp") |>
-                                             Option.map snd) |>
-                  Option.map (fun v -> v.GetProperty("name").AsString()) with
-            | Some n -> n
-            | None   -> name |> toPascalCase
+        let (|StartsWith|_|) (value : string) (text : string) =
+            match text.StartsWith(value) with
+            | true  -> String.length value |> text.Substring |> Some
+            | false -> None
+
+        let (|Property|_|) value seq =
+            seq |> Seq.tryFind (fst >> ((=)value)) |> Option.map snd
         
-        let (|SameType|_|) (jvs : JsonValue []) =
-            List.distinct >>
+        let typeMap =
+            [ "string" , PString
+              "number" , PFloat
+              "integer", PInteger
+              "boolean", PBoolean
+              "Asset",   PAssetOrArchive
+              "Any",     PAny
+              "Archive", PArchive ] |> Map.ofList
+        
+        let typeExists typeName =
+            Array.contains typeName allTypes
+        
+        let rec getTypeInfo : ((string * JsonValue) []) -> PType =
             function
-            | [type'] -> Some type'
-            | _       -> None
-            <| [ for jv in jvs do
-                     
-                     match jv.TryGetProperty("type") |>
-                           Option.map (fun x -> x.AsString()) with
-                     | Some x -> yield x
-                     | _      -> ()
-                                          
-                     match jv.TryGetProperty("$ref") |>
-                           Option.map (fun x -> x.AsString()) with
-                     | Some x when allTypes |> Array.contains (x.Substring(8)) -> yield x
-                     | _                                                       -> () ]
+            | Property("type") (JsonValue.String("array")) &
+              Property("items") (JsonValue.Record(itemType))
+                -> getTypeInfo itemType |> PType.PArray
+              
+            | Property("type") (JsonValue.String("object")) &
+              Property("additionalProperties") (JsonValue.Record(itemType))
+                -> getTypeInfo itemType |> PType.PMap
+              
+            | Property("type") (JsonValue.String("object")) &
+              Property("$ref") (JsonValue.String("pulumi.json#/Json"))
+                -> PType.PJson
+              
+            | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
+                -> match (getTypeInfo one, getTypeInfo two) with
+                   | one, two when one = two                              -> one
+                   | (PRef refType, other)
+                   | (other, PRef refType) when not <| typeExists refType -> other
+                   | one, two                                             -> PType.PUnion (one, two)
+
+            | Property("type") (JsonValue.String("string")) &
+              Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
+                -> PType.PString
+                          
+            | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
+                -> PType.PRef typeQualified
+              
+            | Property("type") (JsonValue.String(baseType))
+            | Property("$ref") (JsonValue.String(StartsWith("pulumi.json#/") baseType)) when (Map.containsKey baseType typeMap)
+                -> typeMap.[baseType]
+              
+            | _ -> failwith ""
+                
+        let (Property("description") (JsonValue.String(description)), _) |
+            (_, description) =
+            properties, ""
+            
+        //let (Property("description") (JsonValue.String(description)), _) | (_, description) = properties, "Default description"
         
-        let pType =
-            properties |>
-            Array.choose (function
-                          | "$ref", v when v.AsString() = "pulumi.json#/Json" -> Some "json"
-                          | "type", v  -> v.AsString() |> Some // Array type has also "items"
-                          | "$ref", v  -> let t = v.AsString()
-                                          // GET RID OF THIS STRING-BASED TYPE MATCHING IMMEDIATELY!
-                                          if t.StartsWith("pulumi.json#/") then
-                                              "complex"
-                                          else
-                                              "complex:" + v.AsString().Substring(8)
-                                          |> Some
-                          | "oneOf", v -> match v with
-                                          | JsonValue.Array(SameType(type')) -> Some type'
-                                          | _                                -> Some "union"
-                          (*| "description"*)
-                          | _          -> None) |>
-            Array.sortBy (function | "union" -> 0 | "json" -> 1 | _ -> 2) |>
-            Array.head
+        let (Property("language") (JsonValue.Record((Property("csharp") (JsonValue.Record(Property("name") (JsonValue.String(name))))))), _) |
+            (_, name) =
+            properties, name |> toPascalCase
         
-        (tName, pType)
+        let deprecation =
+            match properties with
+            | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
+            | _                                                          -> Current
+        
+        {
+            Type = properties |> getTypeInfo
+            Description = description
+            Name = name
+            Deprecation = deprecation
+            GenerateYield = true
+        }
     
     let nameAndTypes =
         properties |>
@@ -207,22 +238,22 @@ let createBuilderClass allTypes isType name properties =
         
     let (propOfSameComplexType, otherProperties) =
         nameAndTypes |>
-        Array.groupBy snd |>
-        Array.partition (fun (t, l) -> t.StartsWith("complex:") && Array.length l > 1) |>
+        Array.groupBy (fun pt -> pt.Type) |>
+        Array.partition (function | (PRef _, props) -> Array.length props > 1 | _ -> false) |>
         (fun (l, r) -> (l |> Array.collect snd,
                         r |> Array.collect snd))
         
     let propOfSameComplexTypeIgnoreComplex =
         propOfSameComplexType |>
-        Array.map (fun (n, _) -> (n, "complexD"))
+        Array.map (fun td -> { td with GenerateYield = false })
         
     let order =
-        nameAndTypes |> Array.map fst
+        nameAndTypes |> Array.map (fun td -> td.Name)
         
     let operations =
         Array.append propOfSameComplexTypeIgnoreComplex otherProperties |>
-        Array.sortBy (fun (n, _) -> order |> Array.findIndex ((=)n)) |>
-        Seq.collect (fun (propName, propType) -> createOperations propName propType)
+        Array.sortBy (fun n -> order |> Array.findIndex ((=)n.Name)) |>
+        Seq.collect createOperations
         
     let runReturnExpr =
         Expr.sequential([

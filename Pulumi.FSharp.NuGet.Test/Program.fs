@@ -1,17 +1,77 @@
 ﻿module Program
 
+open Pulumi.FSharp.Kubernetes.Apps.V1.Inputs
+open Pulumi.FSharp.Kubernetes.Core.V1.Inputs
+open Pulumi.FSharp.Kubernetes.Meta.V1.Inputs
+open Pulumi.Kubernetes.Types.Inputs.Core.V1
+open Pulumi.Kubernetes.Types.Inputs.Meta.V1
 open Pulumi.FSharp.Azure.Compute.Inputs
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Aws.S3.Inputs
+open Pulumi.FSharp.AzureAD
+open Pulumi.FSharp.Aws.S3
 open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
 
+let deployment = Kubernetes.Apps.V1.deployment
+
 (*
 Test difference with backup copy:
-$ echo -n "Aws Azure AzureAD" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
+$ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
 *)
 
 let infra () =
+    let application =
+        deployment {
+            name "application"            
+
+            deploymentSpec {
+                replicas 1
+                
+                LabelSelectorArgs(MatchLabels = inputMap [ "app", input "nginx" ])
+
+                podTemplateSpec {
+
+                    objectMeta { 
+                        labels [ "app", input "nginx" ]
+                    }
+
+                    podSpec {
+                        containers [ 
+                            ContainerArgs(Name = input "nginx",
+                                          Image = input "nginx",
+                                          Ports = inputList [ 
+                                                      input (ContainerPortArgs(ContainerPortValue = input 80))
+                                                  ])
+                        ]
+                    }
+                }
+            }
+        }
+
+    let k8sAppName =
+        output {
+            let! md = application.Metadata
+            
+            return md.Name
+        }
+
+    let bucket =
+        bucket {
+            name "my-bucket"
+            
+            bucketWebsite {
+                indexDocument "index.html"
+            }
+        }
+        
+    let aadGroup =
+        group {
+            name "aad-app"
+            displayName "Test AAD group"
+        }
+    
     let vm =
         windowsVirtualMachine {
             name "development"
@@ -50,8 +110,11 @@ let infra () =
             return pip + "/32"
         }
 
-    dict [ "SecretPrivateIP",      secretValue :> obj
-           "VisiblePrivateIPCIDR", pipCird     :> obj ]
+    dict [ "SecretPrivateIP",      secretValue            :> obj
+           "VisiblePrivateIPCIDR", pipCird                :> obj
+           "K8sAppName",           k8sAppName             :> obj
+           "AwsBucket",            bucket.WebsiteEndpoint :> obj
+           "AadGroup",             aadGroup.ObjectId      :> obj ]
 
 [<EntryPoint>]
 let main _ =
