@@ -190,12 +190,16 @@ let createBuilderClass allTypes isType name properties =
                 -> PType.PJson
               
             | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
-                -> PType.PUnion (getTypeInfo one, getTypeInfo two)
+                -> match (getTypeInfo one, getTypeInfo two) with
+                   | one, two when one = two                              -> one
+                   | (PRef refType, other)
+                   | (other, PRef refType) when not <| typeExists refType -> other
+                   | one, two                                             -> PType.PUnion (one, two)
 
-            //| Property("type") (JsonValue.String("string")) &
-            //  Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
-            //    -> PType.PString
-            //              
+            | Property("type") (JsonValue.String("string")) &
+              Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
+                -> PType.PString
+                          
             | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
                 -> PType.PRef typeQualified
               
@@ -220,14 +224,8 @@ let createBuilderClass allTypes isType name properties =
             | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
             | _                                                          -> Current
         
-        let simplifyWhenTypeDoesNotExist =
-            function
-            | PUnion (PRef refType, t)
-            | PUnion (t, PRef refType) when not <| typeExists refType -> t
-            | u -> u
-        
         {
-            Type = properties |> getTypeInfo |> simplifyWhenTypeDoesNotExist
+            Type = properties |> getTypeInfo
             Description = description
             Name = name
             Deprecation = deprecation
