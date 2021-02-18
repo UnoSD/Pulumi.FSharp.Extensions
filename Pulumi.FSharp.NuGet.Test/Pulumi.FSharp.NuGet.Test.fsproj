@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi.Azure" Version="3.46.0" />
-    <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
+    <PackageReference Include="Pulumi.Azure" Version="3.47.1" />
+    <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
     <PackageReference Include="Pulumi.FSharp.Aws" Version="3.28.1.25" />
     <PackageReference Include="Pulumi.FSharp.Azure" Version="3.46.0.10" />
     <PackageReference Include="Pulumi.FSharp.AzureAD" Version="3.3.0.25" />

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
+    <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
   </ItemGroup>
 
   <ItemGroup>

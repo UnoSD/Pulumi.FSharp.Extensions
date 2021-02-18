@@ -17,7 +17,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="2.20.0" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
 
         <None Include="NuGetBuildPublish.yml" />
