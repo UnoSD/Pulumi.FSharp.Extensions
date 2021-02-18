@@ -172,6 +172,9 @@ let createBuilderClass allTypes isType name properties =
               "Any",     PAny
               "Archive", PArchive ] |> Map.ofList
         
+        let typeExists typeName =
+            Array.contains typeName allTypes
+        
         let rec getTypeInfo : ((string * JsonValue) []) -> PType =
             function
             | Property("type") (JsonValue.String("array")) &
@@ -182,9 +185,17 @@ let createBuilderClass allTypes isType name properties =
               Property("additionalProperties") (JsonValue.Record(itemType))
                 -> getTypeInfo itemType |> PType.PMap
               
+            | Property("type") (JsonValue.String("object")) &
+              Property("$ref") (JsonValue.String("pulumi.json#/Json"))
+                -> PType.PJson
+              
             | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
                 -> PType.PUnion (getTypeInfo one, getTypeInfo two)
-              
+
+            //| Property("type") (JsonValue.String("string")) &
+            //  Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
+            //    -> PType.PString
+            //              
             | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
                 -> PType.PRef typeQualified
               
@@ -208,9 +219,6 @@ let createBuilderClass allTypes isType name properties =
             match properties with
             | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
             | _                                                          -> Current
-    
-        let typeExists typeName =
-            Array.contains typeName allTypes
         
         let simplifyWhenTypeDoesNotExist =
             function
