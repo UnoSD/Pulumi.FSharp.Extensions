@@ -212,8 +212,6 @@ let createBuilderClass allTypes isType name properties =
         let (Property("description") (JsonValue.String(description)), _) |
             (_, description) =
             properties, ""
-            
-        //let (Property("description") (JsonValue.String(description)), _) | (_, description) = properties, "Default description"
         
         let (Property("language") (JsonValue.Record((Property("csharp") (JsonValue.Record(Property("name") (JsonValue.String(name))))))), _) |
             (_, name) =
