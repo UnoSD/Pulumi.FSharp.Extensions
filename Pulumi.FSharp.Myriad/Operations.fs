@@ -220,7 +220,7 @@ let createOperationsFor' isType pType (argsType : string) =
         coName |> toPascalCase
     
     let doc =
-        PreXmlDoc.Create([ pType.Description ]) |> Some
+        PreXmlDoc.Create(String.split '\n' pType.Description) |> Some
     
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
