@@ -97,6 +97,9 @@ let private inputJson =
 let private resourceNameIdent =
     Expr.ident("resourceName")
 
+let private resourceTypeIdent =
+    Expr.ident("resourceType")
+
 let private compose =
     Expr.paren(Expr.ident("op_ComposeRight"))
 
@@ -205,6 +208,7 @@ let createOperationsFor' argsType pType =
     let operationName =
         match pType.Name with
         | "Name" when pType.IsResource -> resourceNameIdent
+        | "Type" when pType.IsResource -> resourceTypeIdent
         | _                            -> Expr.ident(argName)
     
     let nameArgName =
