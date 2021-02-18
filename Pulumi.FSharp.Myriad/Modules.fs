@@ -1,5 +1,6 @@
 module AstModules
 
+open AstOperations
 open BuilderInstance
 open FSharp.Compiler.SyntaxTree
 open FSharp.Data
@@ -47,6 +48,104 @@ type PulumiModule = {
     ResourceProviderNamespace: string option
     Content: SynModuleDecl[]
 }
+
+let private nameAndType allTypes name (properties : (string * JsonValue) []) =
+    let (|StartsWith|_|) (value : string) (text : string) =
+        match text.StartsWith(value) with
+        | true  -> String.length value |> text.Substring |> Some
+        | false -> None
+
+    let (|Property|_|) value seq =
+        seq |> Seq.tryFind (fst >> ((=)value)) |> Option.map snd
+    
+    let typeMap =
+        [ "string" , PString
+          "number" , PFloat
+          "integer", PInteger
+          "boolean", PBoolean
+          "Asset",   PAssetOrArchive
+          "Any",     PAny
+          "Archive", PArchive ] |> Map.ofList
+    
+    let typeExists typeName =
+        Array.contains typeName allTypes
+    
+    let rec getTypeInfo : ((string * JsonValue) []) -> PType =
+        function
+        | Property("type") (JsonValue.String("array")) &
+          Property("items") (JsonValue.Record(itemType))
+            -> getTypeInfo itemType |> PType.PArray
+          
+        | Property("type") (JsonValue.String("object")) &
+          Property("additionalProperties") (JsonValue.Record(itemType))
+            -> getTypeInfo itemType |> PType.PMap
+          
+        | Property("type") (JsonValue.String("object")) &
+          Property("$ref") (JsonValue.String("pulumi.json#/Json"))
+            -> PType.PJson
+          
+        | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
+            -> match (getTypeInfo one, getTypeInfo two) with
+               | one, two when one = two                              -> one
+               | (PRef refType, other)
+               | (other, PRef refType) when not <| typeExists refType -> other
+               | one, two                                             -> PType.PUnion (one, two)
+
+        | Property("type") (JsonValue.String("string")) &
+          Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
+            -> PType.PString
+                      
+        | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
+            -> PType.PRef typeQualified
+          
+        | Property("type") (JsonValue.String(baseType))
+        | Property("$ref") (JsonValue.String(StartsWith("pulumi.json#/") baseType)) when (Map.containsKey baseType typeMap)
+            -> typeMap.[baseType]
+          
+        | _ -> failwith ""
+            
+    let (Property("description") (JsonValue.String(description)), _) |
+        (_, description) =
+        properties, ""
+    
+    let (Property("language") (JsonValue.Record((Property("csharp") (JsonValue.Record(Property("name") (JsonValue.String(name))))))), _) |
+        (_, name) =
+        properties, name |> toPascalCase
+    
+    let deprecation =
+        match properties with
+        | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
+        | _                                                          -> Current
+    
+    {
+        Type = properties |> getTypeInfo
+        Description = description
+        Name = name
+        Deprecation = deprecation
+        GenerateYield = true
+    }
+
+let private createPTypes allTypes properties =
+    let nameAndTypes =
+        properties |>
+        Array.map (fun (x, y : JsonValue) -> nameAndType allTypes x (y.Properties()))
+        
+    let (propOfSameComplexType, otherProperties) =
+        nameAndTypes |>
+        Array.groupBy (fun pt -> pt.Type) |>
+        Array.partition (function | (PRef _, props) -> Array.length props > 1 | _ -> false) |>
+        (fun (l, r) -> (l |> Array.collect snd,
+                        r |> Array.collect snd))
+        
+    let propOfSameComplexTypeIgnoreComplex =
+        propOfSameComplexType |>
+        Array.map (fun td -> { td with GenerateYield = false })
+        
+    let order =
+        nameAndTypes |> Array.map (fun td -> td.Name)
+        
+    Array.append propOfSameComplexTypeIgnoreComplex otherProperties |>
+    Array.sortBy (fun n -> order |> Array.findIndex ((=)n.Name))
 
 let createTypes (schema : JsonValue) =
     let allNestedTypes =
@@ -112,11 +211,15 @@ let createTypes (schema : JsonValue) =
             match isType, propertiesFromResource, lazy(jsonValue.TryGetProperty(propertyName)) with
             | true,  Some rip, _             -> rip.Properties()
             | _   ,  _       , Lazy(Some ip) -> ip.Properties()
-            | _   ,  _       , Lazy(None)    -> [||] 
-        [|
-            createBuilderClass allTypes isType typeName properties
+            | _   ,  _       , Lazy(None)    -> [||]
             
-            createBuilderInstance typeName properties
+        let pTypes =
+            createPTypes allTypes properties
+            
+        [|
+            createBuilderClass isType typeName pTypes
+            
+            createBuilderInstance typeName pTypes
         |]
     
     let createBuilders allTypes (schema : JsonValue) (typeInfo, (jsonValue : JsonValue)) =

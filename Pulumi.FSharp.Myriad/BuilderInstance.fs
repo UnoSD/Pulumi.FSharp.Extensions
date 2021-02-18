@@ -1,12 +1,13 @@
 module BuilderInstance
 
+open AstOperations
 open FSharp.Compiler.SyntaxTree
 open AstInstance
 open AstLet
 open FsAst
 open Core
 
-let createBuilderInstance typeName properties =
+let createBuilderInstance typeName pTypes =
     seq {
         yield "*** Available properties ***"
         yield ""
@@ -15,6 +16,6 @@ let createBuilderInstance typeName properties =
         yield "provider resource, **name** maps to the"
         yield "Pulumi name"
         yield ""
-        yield! properties |> Array.map fst } |>
+        yield! pTypes |> Array.map (fun x -> x.Name) } |>
     createLet (toCamelCase typeName)
               (createInstance $"{typeName}Builder" SynExpr.CreateUnit)
