@@ -138,6 +138,11 @@ let createBuilderClass allTypes isType name properties =
         
     let createOperations (propType : PTypeDefinition) =
         match propType with
+        | { Type = PRef _; GenerateYield = true }
+        | { Type = PAssetOrArchive _ }
+        | { Type = PAny _ }
+        | { Type = PArchive _ } -> createYieldFor propType.Name argsType
+        | { Type = PRef _ }
         | { Type = PString }
         | { Type = PInteger }
         | { Type = PFloat }
@@ -145,14 +150,8 @@ let createBuilderClass allTypes isType name properties =
         | { Type = PArray _ }
         | { Type = PUnion _ }
         | { Type = PJson _ }
-        | { Type = PMap _ }
-        | { Type = PRef _; GenerateYield = false } // Why not generating operations even when generating Yield?
-            -> createOperationsFor' isType propType.Name propType argsType
-        | { Type = PAssetOrArchive _ }
-        | { Type = PRef _ }
-        | { Type = PAny _ }
-        | { Type = PArchive _ }
-            -> createYieldFor propType.Name argsType
+        | { Type = PMap _ }     -> createOperationsFor' isType propType argsType
+
 
     let nameAndType name (properties : (string * JsonValue) []) =
         let (|StartsWith|_|) (value : string) (text : string) =

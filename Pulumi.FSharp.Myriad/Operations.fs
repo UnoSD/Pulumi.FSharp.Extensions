@@ -158,7 +158,7 @@ type PTypeDefinition =
         GenerateYield: bool
     }
 
-let createOperationsFor' isType name pType (argsType : string) =
+let createOperationsFor' isType pType (argsType : string) =
     let (setRights, argType) =
         match pType with
         | { PTypeDefinition.Type = PString }
@@ -176,7 +176,7 @@ let createOperationsFor' isType name pType (argsType : string) =
     let letExpr setRight =
         Expr.let'("apply", [ Pat.typed("args", argsType) ],
                   Expr.sequential([
-                      Expr.set("args." + name, SynExpr.CreateApp(setRight))
+                      Expr.set("args." + pType.Name, SynExpr.CreateApp(setRight))
                       argsIdent
                   ]))
     
@@ -187,10 +187,10 @@ let createOperationsFor' isType name pType (argsType : string) =
         ])
 
     let snakeCaseName =
-        if name = "Name" && (not isType) then
+        if pType.Name = "Name" && (not isType) then
             "resourceName"
         else 
-            toCamelCase name
+            toCamelCase pType.Name
     
     let argName =
         match snakeCaseName with
@@ -199,7 +199,7 @@ let createOperationsFor' isType name pType (argsType : string) =
         | _      -> snakeCaseName
     
     let operationName =
-        match name with
+        match pType.Name with
         | "Name" when not isType -> resourceNameIdent
         | _                      -> Expr.ident(argName)
     
