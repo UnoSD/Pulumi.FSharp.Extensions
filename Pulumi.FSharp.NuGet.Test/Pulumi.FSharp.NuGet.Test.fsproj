@@ -17,11 +17,11 @@
   <ItemGroup>
     <PackageReference Include="Pulumi.Azure" Version="3.47.1" />
     <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
-    <PackageReference Include="Pulumi.FSharp.Aws" Version="3.28.1.25" />
-    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.46.0.10" />
-    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="3.3.0.25" />
+    <PackageReference Include="Pulumi.FSharp.Aws" Version="3.29.1.28" />
+    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.47.1.13" />
+    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="3.3.1.28" />
     <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.13" />
-    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="2.8.1.1" />
+    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="2.8.1.4" />
     <PackageReference Include="Pulumi.Random" Version="3.0.3" />
   </ItemGroup>
 
