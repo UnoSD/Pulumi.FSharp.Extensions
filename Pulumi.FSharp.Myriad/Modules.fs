@@ -49,7 +49,7 @@ type PulumiModule = {
     Content: SynModuleDecl[]
 }
 
-let private nameAndType allTypes name (properties : (string * JsonValue) []) =
+let private nameAndType isType allTypes name (properties : (string * JsonValue) []) =
     let (|StartsWith|_|) (value : string) (text : string) =
         match text.StartsWith(value) with
         | true  -> String.length value |> text.Substring |> Some
@@ -117,18 +117,32 @@ let private nameAndType allTypes name (properties : (string * JsonValue) []) =
         | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
         | _                                                          -> Current
     
+    let snakeCaseName =
+        if name = "Name" && (not isType) then
+            "resourceName"
+        else 
+            toCamelCase name
+    
+    let customOperationName =
+        match snakeCaseName with
+        | "resourceGroupName" -> "resourceGroup"
+        | "name" when not isType -> "resourceName"
+        | x -> x
+    
     {
         Type = properties |> getTypeInfo
         Description = description
         Name = name
+        OperationName = customOperationName
         Deprecation = deprecation
-        GenerateYield = true
+        CanGenerateYield = true
+        IsResource = not isType
     }
 
-let private createPTypes allTypes properties =
+let private createPTypes isType allTypes properties =
     let nameAndTypes =
         properties |>
-        Array.map (fun (x, y : JsonValue) -> nameAndType allTypes x (y.Properties()))
+        Array.map (fun (x, y : JsonValue) -> nameAndType isType allTypes x (y.Properties()))
         
     let (propOfSameComplexType, otherProperties) =
         nameAndTypes |>
@@ -139,7 +153,7 @@ let private createPTypes allTypes properties =
         
     let propOfSameComplexTypeIgnoreComplex =
         propOfSameComplexType |>
-        Array.map (fun td -> { td with GenerateYield = false })
+        Array.map (fun td -> { td with CanGenerateYield = false })
         
     let order =
         nameAndTypes |> Array.map (fun td -> td.Name)
@@ -214,7 +228,7 @@ let createTypes (schema : JsonValue) =
             | _   ,  _       , Lazy(None)    -> [||]
             
         let pTypes =
-            createPTypes allTypes properties
+            createPTypes isType allTypes properties
             
         [|
             createBuilderClass isType typeName pTypes

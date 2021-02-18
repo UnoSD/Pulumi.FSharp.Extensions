@@ -95,10 +95,10 @@ let private nameMember =
 let private identArgExpr =
     Expr.ident("arg")
 
-let createYieldFor propName argsType =
+let createYieldFor argsType propType =
     let setExpr =
         Expr.sequential([
-            Expr.set("args." + propName, argToInput)
+            Expr.set("args." + propType.Name, argToInput)
             args
         ])
     
@@ -113,6 +113,22 @@ let createYieldFor propName argsType =
         ])
     
     [ createYield' argIdent expr ]
+
+let mapOperationType yieldSelector opsSelector =
+    function
+    | { Type = PRef _; CanGenerateYield = true } & pt -> yieldSelector pt
+    | { Type = PRef _ }                          & pt
+    | { Type = PString }                         & pt
+    | { Type = PInteger }                        & pt
+    | { Type = PFloat }                          & pt
+    | { Type = PBoolean }                        & pt
+    | { Type = PArray _ }                        & pt
+    | { Type = PUnion _ }                        & pt
+    | { Type = PJson _ }                         & pt
+    | { Type = PMap _ }                          & pt
+    | { Type = PAssetOrArchive _ }               & pt
+    | { Type = PAny _ }                          & pt
+    | { Type = PArchive _ }                      & pt -> opsSelector pt
 
 let createBuilderClass isType name pTypes =
     let argsType =
@@ -135,21 +151,9 @@ let createBuilderClass isType name pTypes =
                     Expr.paren(apply)
                 ))
         
-    let createOperations (propType : PTypeDefinition) =
-        match propType with
-        | { Type = PRef _; GenerateYield = true }
-        | { Type = PAssetOrArchive _ }
-        | { Type = PAny _ }
-        | { Type = PArchive _ } -> createYieldFor propType.Name argsType
-        | { Type = PRef _ }
-        | { Type = PString }
-        | { Type = PInteger }
-        | { Type = PFloat }
-        | { Type = PBoolean }
-        | { Type = PArray _ }
-        | { Type = PUnion _ }
-        | { Type = PJson _ }
-        | { Type = PMap _ }     -> createOperationsFor' isType propType argsType
+    let createOperations =
+        mapOperationType (createYieldFor argsType)
+                         (createOperationsFor' argsType)
         
     let operations =
         pTypes |>

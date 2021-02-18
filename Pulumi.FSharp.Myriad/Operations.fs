@@ -156,10 +156,12 @@ type PTypeDefinition =
         Type: PType
         Description: string
         Deprecation: Deprecation
-        GenerateYield: bool
+        CanGenerateYield: bool
+        IsResource: bool
+        OperationName: string
     }
 
-let createOperationsFor' isType pType (argsType : string) =
+let createOperationsFor' argsType pType =
     let (setRights, argType) =
         match pType with
         | { PTypeDefinition.Type = PString }
@@ -170,9 +172,10 @@ let createOperationsFor' isType pType (argsType : string) =
         | { Type = PUnion _ } -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
         | { Type = PJson }    -> [ inputJson ], Some "string"
         | { Type = PMap _ }   -> [ inputMapIdent ], None
-        | { Type = PRef _ }   -> [ inputIdent ], None
-        | { Type = PAssetOrArchive }   -> [ inputIdent ], None
-        | _ -> failwith $"Missing case for {pType}"
+        | { Type = PRef _ }
+        | { Type = PArchive }
+        | { Type = PAny }
+        | { Type = PAssetOrArchive } -> [ inputIdent ], None
     
     let letExpr setRight =
         Expr.let'("apply", [ Pat.typed("args", argsType) ],
@@ -184,11 +187,11 @@ let createOperationsFor' isType pType (argsType : string) =
     let expr setExpr =
         Expr.sequential([
             setExpr
-            returnTupleCache isType
+            returnTupleCache (not pType.IsResource)
         ])
 
     let snakeCaseName =
-        if pType.Name = "Name" && (not isType) then
+        if pType.Name = "Name" && pType.IsResource then
             "resourceName"
         else 
             toCamelCase pType.Name
@@ -201,26 +204,26 @@ let createOperationsFor' isType pType (argsType : string) =
     
     let operationName =
         match pType.Name with
-        | "Name" when not isType -> resourceNameIdent
-        | _                      -> Expr.ident(argName)
+        | "Name" when pType.IsResource -> resourceNameIdent
+        | _                            -> Expr.ident(argName)
     
     let nameArgName =
-        if isType then
-            "n"
-        else
+        if pType.IsResource then
             "name"
+        else
+            "n"
     
     let coName =
         match snakeCaseName with
-        | "resourceGroupName" -> "resourceGroup"
-        | "name" when not isType -> "resourceName"
+        | "resourceGroupName"          -> "resourceGroup"
+        | "name" when pType.IsResource -> "resourceName"
         | x -> x
     
     let memberName =
         coName |> toPascalCase
     
     let doc =
-        PreXmlDoc.Create(String.split '\n' pType.Description) |> Some
+        PreXmlDoc.Create(String.split '\n' pType.Description |> Array.filter (((=)"") >> not)) |> Some
     
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
