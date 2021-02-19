@@ -250,21 +250,21 @@ let createTypes (schema : JsonValue) =
         | PTJson                                  -> None
         | x                                       -> failwith $"Pattern not matched {x}"
         
-    let rec getAllNestedTypes (refTypes : string []) (resourceOrType : JsonValue) =
+    let rec getAllNestedTypes refTypes resourceOrType =
         getPropertiesValues resourceOrType |>
         Array.choose getRefType |>
-        Array.collect Array.ofList |>
-        (fun a -> match Array.isEmpty a with
-                  | true -> refTypes
-                  | false -> a |> Array.collect (fun refType -> match Array.exists ((=)refType) refTypes with
-                                                                | true  -> refTypes
-                                                                | false -> getAllNestedTypes (Array.append refTypes [| refType |])
-                                                                                             allTypes.[refType]))
+        List.concat |>
+        (function
+         | [] -> refTypes
+         | a  -> a |> List.collect (fun refType -> match List.exists ((=)refType) refTypes with
+                                                   | true  -> refTypes
+                                                   | false -> allTypes.[refType] |>
+                                                              getAllNestedTypes (refType :: refTypes)))
         
-    
     let allNestedTypes =
         schema.["resources"].Properties() |>
-        Array.collect (snd >> getAllNestedTypes [||])
+        Array.map (snd >> getAllNestedTypes []) |>
+        List.concat        
     
     let pulumiProviderName =
         schema.["name"].AsString()
@@ -285,7 +285,7 @@ let createTypes (schema : JsonValue) =
         
     let types =
         typedMatches "types" typeInfo Type <|
-        Array.filter (fst >> (flip Array.contains) allNestedTypes)
+        Array.filter (fst >> (flip List.contains) allNestedTypes)
     
     let resourceProvider (builder, _) =
         match builder with
