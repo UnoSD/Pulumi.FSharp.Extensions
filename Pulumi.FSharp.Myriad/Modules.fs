@@ -49,15 +49,61 @@ type PulumiModule = {
     Content: SynModuleDecl[]
 }
 
-let private nameAndType isType allTypes name (properties : (string * JsonValue) []) =
-    let (|StartsWith|_|) (value : string) (text : string) =
-        match text.StartsWith(value) with
-        | true  -> String.length value |> text.Substring |> Some
-        | false -> None
+let private (|StartsWith|_|) (value : string) (text : string) =
+    match text.StartsWith(value) with
+    | true  -> String.length value |> text.Substring |> Some
+    | false -> None
 
-    let (|Property|_|) value seq =
-        seq |> Seq.tryFind (fst >> ((=)value)) |> Option.map snd
+let private (|Property|_|) value seq =
+    seq |> Seq.tryFind (fst >> ((=)value)) |> Option.map snd
+
+let private (|PTArray|_|) =
+    function
+    | Property("type") (JsonValue.String("array")) &
+      Property("items") (JsonValue.Record(itemType))
+        -> Some itemType
+    | _ -> None
+
+let private (|PTMap|_|) =
+    function
+    | Property("type") (JsonValue.String("object")) &
+      Property("additionalProperties") (JsonValue.Record(itemType))
+        -> Some itemType
+    | _ -> None
     
+let private (|PTJson|_|) =
+    function
+    | Property("type") (JsonValue.String("object")) &
+      Property("$ref") (JsonValue.String("pulumi.json#/Json"))
+        -> Some ()
+    | _ -> None
+    
+let private (|PTUnion|_|) =
+    function
+    | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
+        -> Some (one, two)
+    | _ -> None
+    
+let private (|PTRef|_|) =
+    function
+    | Property("type") (JsonValue.String("string")) &
+      Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
+    | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
+        -> Some typeQualified
+    | _ -> None
+    
+let private (|PTBase|_|) =
+    function
+    | PTJson
+    | PTMap _
+    | PTUnion _
+    | PTArray _ -> None
+    | Property("type") (JsonValue.String(baseType))
+    | Property("$ref") (JsonValue.String(StartsWith("pulumi.json#/") baseType))
+        -> Some baseType
+    | _ -> None
+
+let private nameAndType isType allTypes name (properties : (string * JsonValue) []) =
     let typeMap =
         [ "string" , PString
           "number" , PFloat
@@ -69,40 +115,22 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
     
     let typeExists typeName =
         Array.contains typeName allTypes
-    
+        
     let rec getTypeInfo : ((string * JsonValue) []) -> PType =
         function
-        | Property("type") (JsonValue.String("array")) &
-          Property("items") (JsonValue.Record(itemType))
-            -> getTypeInfo itemType |> PType.PArray
-          
-        | Property("type") (JsonValue.String("object")) &
-          Property("additionalProperties") (JsonValue.Record(itemType))
-            -> getTypeInfo itemType |> PType.PMap
-          
-        | Property("type") (JsonValue.String("object")) &
-          Property("$ref") (JsonValue.String("pulumi.json#/Json"))
-            -> PType.PJson
-          
-        | Property("oneOf") (JsonValue.Array([| JsonValue.Record(one); JsonValue.Record(two) |]))
+        | PTArray itemType                                         -> getTypeInfo itemType |> PType.PArray
+        | PTMap   itemType                                         -> getTypeInfo itemType |> PType.PMap
+        | PTJson                                                   -> PType.PJson
+        | PTRef typeQualified when not <| typeExists typeQualified -> PType.PString
+        | PTRef typeQualified                                      -> PType.PRef typeQualified
+        | PTBase baseType when (Map.containsKey baseType typeMap)  -> typeMap.[baseType]
+        | PTUnion (one, two)
             -> match (getTypeInfo one, getTypeInfo two) with
                | one, two when one = two                              -> one
                | (PRef refType, other)
                | (other, PRef refType) when not <| typeExists refType -> other
-               | one, two                                             -> PType.PUnion (one, two)
-
-        | Property("type") (JsonValue.String("string")) &
-          Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified)) when not <| typeExists typeQualified
-            -> PType.PString
-                      
-        | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
-            -> PType.PRef typeQualified
-          
-        | Property("type") (JsonValue.String(baseType))
-        | Property("$ref") (JsonValue.String(StartsWith("pulumi.json#/") baseType)) when (Map.containsKey baseType typeMap)
-            -> typeMap.[baseType]
-          
-        | _ -> failwith ""
+               | one, two                                             -> PType.PUnion (one, two)          
+        | x -> failwith $"Missing type pattern for {x}"
             
     let (Property("description") (JsonValue.String(description)), _) |
         (_, description) =
@@ -162,22 +190,56 @@ let private createPTypes isType allTypes properties =
     Array.sortBy (fun n -> order |> Array.findIndex ((=)n.Name))
 
 let createTypes (schema : JsonValue) =
+    let allAvailableTypes =
+        schema.["types"].Properties() |> Array.map fst
+    
+    let allTypes =
+        schema.["types"].Properties() |>
+        Array.map(fun (k, v) -> (k, (k, v))) |>
+        Map.ofArray
+   
+    let rec getAllNestedTypes resources =
+        resources |>
+        Array.collect(fun (_, jv : JsonValue) ->
+                         match jv.Properties() with
+                         | Property("inputProperties") (JsonValue.Record(jv))
+                         | Property("properties") (JsonValue.Record(jv)) -> jv |> Array.map snd
+                         | _ -> [||]) |>
+        Array.collect(fun jv ->
+                         match jv.Properties() with
+                         | PTUnion (_, PTArray (PTRef z)) when z = "aws:s3/routingRules:RoutingRule" -> [||]
+                         
+                         
+                         | PTUnion (PTRef _, PTRef _)
+                         | PTUnion (PTArray (PTRef _), PTArray (PTRef _))
+                         | PTArray (PTUnion (PTRef _, PTRef _)) -> failwith "Aha!"
+                         
+                         | PTArray (PTRef t)
+                         | PTUnion (PTRef t, _) 
+                         | PTUnion (_, PTRef t)
+                         | PTUnion (PTArray (PTRef t), _) 
+                         | PTUnion (_, PTArray (PTRef t))
+                         | PTArray (PTMap (PTRef t))
+                         | PTArray (PTUnion (PTRef t, _))
+                         | PTArray (PTUnion (_, PTRef t))
+                         | PTMap (PTRef t)
+                         | PTRef t
+                            when Map.containsKey t allTypes
+                            -> [| allTypes.[t] |] |> getAllNestedTypes |> Array.append [| t |]
+
+                         | PTBase _
+                         | PTJson
+                         | PTArray (PTBase _)
+                         | PTArray (PTMap (PTBase _))
+                         | PTArray (PTUnion (PTBase _, PTBase _))
+                         | PTUnion (PTBase _, PTBase _)
+                         | PTMap (PTBase _) -> [||]
+                         | x -> failwith $"Pattern not matched {x}")
+        // Make this recursive, it's getting too verbose to handle all nested cases
+    
     let allNestedTypes =
-        [
-            for (_, jsonValue) in schema.["resources"].Properties() do
-                for (property, jsonValue) in jsonValue.Properties() do
-                    if property = "inputProperties" then
-                        for (_, jsonValue) in jsonValue.Properties() do
-                            for tuple in jsonValue.Properties() do
-                                 match tuple with 
-                                 | ("type", JsonValue.String("array")) -> match jsonValue.["items"]
-                                                                                         .TryGetProperty("$ref") with
-                                                                          | Some jsonValue -> yield jsonValue.AsString()
-                                                                                                             .Substring(8)
-                                                                          | _      -> ()
-                                 | ("$ref", JsonValue.String(type'))   -> yield type'.Substring(8)
-                                 | _                                   -> ()
-        ]
+        schema.["resources"].Properties() |>
+        getAllNestedTypes
     
     let pulumiProviderName =
         schema.["name"].AsString()
@@ -198,7 +260,7 @@ let createTypes (schema : JsonValue) =
         
     let types =
         typedMatches "types" typeInfo Type <|
-        Array.filter (fst >> (flip List.contains) allNestedTypes)
+        Array.filter (fst >> (flip Array.contains) allNestedTypes)
     
     let resourceProvider (builder, _) =
         match builder with
@@ -265,9 +327,6 @@ let createTypes (schema : JsonValue) =
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
                                            Array.Parallel.collect (createBuilders allTypes schema))
-        
-    let allAvailableTypes =
-        schema.["types"].Properties() |> Array.map fst
         
     let typeBuilders =
         createBuildersParallelFiltered allAvailableTypes types schema

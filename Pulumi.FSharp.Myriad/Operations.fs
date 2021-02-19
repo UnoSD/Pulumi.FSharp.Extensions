@@ -203,6 +203,7 @@ let createOperationsFor' argsType pType =
         match snakeCaseName with
         | "input"
         | "args" -> snakeCaseName + "\'"
+        | "type" -> "resourceType"
         | _      -> snakeCaseName
     
     let operationName =
