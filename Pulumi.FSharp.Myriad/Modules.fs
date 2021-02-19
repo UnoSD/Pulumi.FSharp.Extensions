@@ -75,6 +75,7 @@ let private (|PTJson|_|) =
     function
     | Property("type") (JsonValue.String("object")) &
       Property("$ref") (JsonValue.String("pulumi.json#/Json"))
+    | Property("$ref") (JsonValue.String("pulumi.json#/Json"))
         -> Some ()
     | _ -> None
     
@@ -203,40 +204,56 @@ let createTypes (schema : JsonValue) =
         | JsonValue.Record(Property("properties")      (JsonValue.Record(jv))) -> jv |> Array.map (snd >> (fun x -> x.Properties()))
         | _                                                                    -> [||]
         
-    let getRefType =
+    //let optionApply func =
+    //    // Option.fold (fun o2 v1 -> o2 |> Option.map (func v1) |> Option.orElse (Some v1)) o2 o1
+    //    function
+    //    | Some value1, Some value2 -> func value1 value2 |> Some
+    //    | None       , Some value
+    //    | Some value , None        -> value |> Some
+    //    | None       , None        -> None
+                
+    //let tupleMap f (one, two) =
+    //    (f one, f two)
+        
+    let (<*>) fOpt xOpt =
+        match fOpt, xOpt with
+        | Some f, Some x -> Some (f x)
+        | None  , Some x -> Some x
+        | _              -> None
+        
+    let (<!>) =
+        Option.map
+                
+    //let lift2 f xOpt yOpt =
+    //    f <!> xOpt <*> yOpt
+
+    //let (<*) x y =
+    //    lift2 List.append x y
+    
+    let rec getRefType =
         function
-        | PTUnion (_, PTArray (PTRef z)) when z = "aws:s3/routingRules:RoutingRule" -> None
+        | PTRef t when Map.containsKey t allTypes -> Some [t]
         
-        | PTUnion (PTRef _, PTRef _)
-        | PTUnion (PTArray (PTRef _), PTArray (PTRef _))
-        | PTArray (PTUnion (PTRef _, PTRef _)) -> failwith "Aha!"
-        
-        | PTArray (PTRef t)
-        | PTUnion (PTRef t, _) 
-        | PTUnion (_, PTRef t)
-        | PTUnion (PTArray (PTRef t), _) 
-        | PTUnion (_, PTArray (PTRef t))
-        | PTArray (PTMap (PTRef t))
-        | PTArray (PTUnion (PTRef t, _))
-        | PTArray (PTUnion (_, PTRef t))
-        | PTMap (PTRef t)
-        | PTRef t
-           when Map.containsKey t allTypes
-           -> Some t
-        
-        | PTBase _
-        | PTJson
-        | PTArray (PTBase _)
-        | PTArray (PTMap (PTBase _))
-        | PTArray (PTUnion (PTBase _, PTBase _))
-        | PTUnion (PTBase _, PTBase _)
-        | PTMap (PTBase _) -> None
-        | x -> failwith $"Pattern not matched {x}"
-        // Make this recursive, it's getting too verbose to handle all nested cases
+        | PTMap t
+        | PTArray t                               -> getRefType t
+                                                  
+        | PTUnion (a, b) (*PTUnion typeTuple*)    -> //typeTuple |> tupleMap getRefType |> optionApply (@)
+                                                     //typeTuple |> tupleMap getRefType |> lift2 (@)
+                                                     //typeTuple |>
+                                                     //tupleMap getRefType ||>
+                                                     //(fun x y -> List.append <!> x <*> y)                                                     
+                                                     List.append <!> (getRefType a) <*> (getRefType b)
+                                                     
+        | PTMap t                                 -> getRefType t
+                                                  
+        | PTBase _                                
+        | PTJson                                  -> None
+        | x                                       -> failwith $"Pattern not matched {x}"
         
     let rec getAllNestedTypes (refTypes : string []) (resourceOrType : JsonValue) =
         getPropertiesValues resourceOrType |>
         Array.choose getRefType |>
+        Array.collect Array.ofList |>
         (fun a -> match Array.isEmpty a with
                   | true -> refTypes
                   | false -> a |> Array.collect (fun refType -> match Array.exists ((=)refType) refTypes with
