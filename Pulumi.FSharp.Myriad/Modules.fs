@@ -317,11 +317,16 @@ let createTypes (schema : JsonValue) =
         let pTypes =
             createPTypes isType allTypes properties
             
-        [|
-            createBuilderClass isType typeName pTypes
-            
-            createBuilderInstance typeName pTypes
-        |]
+        // Enums will fall into this category E.G. "kubernetes:core/v1:ServiceSpecType"
+        // Not required as it will use an operation: type Pulumi.Kubernetes.Input.Types.Core.V1.ServiceSpecType.NodePort
+        if Array.isEmpty pTypes then
+            [||]
+        else            
+            [|
+                createBuilderClass isType typeName pTypes
+                
+                createBuilderInstance typeName pTypes
+            |]
     
     let createBuilders allTypes (schema : JsonValue) (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
