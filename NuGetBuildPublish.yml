@@ -6,7 +6,13 @@ parameters:
     default: $(pipeline-provider)
 
 trigger:
-  - master
+  branches:
+    include:
+      - master
+  path:
+    exclude:
+      - Pulumi.FSharp.NuGet.Test/*
+      - Pulumi.FSharp.Test/*
 
 pool:
   vmImage: ubuntu-latest
