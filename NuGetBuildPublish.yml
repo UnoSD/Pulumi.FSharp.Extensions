@@ -9,7 +9,7 @@ trigger:
   branches:
     include:
       - master
-  path:
+  paths:
     exclude:
       - Pulumi.FSharp.NuGet.Test/*
       - Pulumi.FSharp.Test/*
