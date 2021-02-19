@@ -154,7 +154,8 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
     
     let customOperationName =
         match snakeCaseName with
-        | "resourceGroupName" -> "resourceGroup"
+        | "resourceGroupName"    -> "resourceGroup"
+        | "type"                 -> "resourceType"
         | "name" when not isType -> "resourceName"
         | x -> x
     

@@ -218,18 +218,12 @@ let createOperationsFor' argsType pType =
         else
             "n"
     
-    let coName =
-        match snakeCaseName with
-        | "resourceGroupName"          -> "resourceGroup"
-        | "name" when pType.IsResource -> "resourceName"
-        | x -> x
-    
     let memberName =
-        coName |> toPascalCase
+        pType.OperationName |> toPascalCase
     
     let doc =
         PreXmlDoc.Create(String.split '\n' pType.Description |> Array.filter (((=)"") >> not)) |> Some
     
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
-    List.mapi (fun i e -> createOperation'' doc nameArgName memberName coName argName (i = 0) argType e)
+    List.mapi (fun i e -> createOperation'' doc nameArgName memberName pType.OperationName argName (i = 0) argType e)
