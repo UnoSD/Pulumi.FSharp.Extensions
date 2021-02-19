@@ -26,7 +26,7 @@
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.AzureAD" Version="3.3.1" />
+        <PackageReference Include="Pulumi.AzureAD" Version="3.4.0" />
         <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
