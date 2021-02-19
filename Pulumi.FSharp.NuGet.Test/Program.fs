@@ -5,21 +5,56 @@ open Pulumi.FSharp.Kubernetes.Core.V1.Inputs
 open Pulumi.FSharp.Kubernetes.Meta.V1.Inputs
 open Pulumi.FSharp.Azure.Compute.Inputs
 open Pulumi.FSharp.Azure.Compute
+open Pulumi.FSharp.Azure.Storage
 open Pulumi.FSharp.Aws.S3.Inputs
 open Pulumi.FSharp.AzureAD
+open Pulumi.FSharp.Assets
 open Pulumi.FSharp.Aws.S3
 open Pulumi.FSharp.Config
 open Pulumi.FSharp.Output
 open Pulumi.FSharp
 
 let deployment = Kubernetes.Apps.V1.deployment
+let container = Kubernetes.Core.V1.Inputs.container
 
 (*
 Test difference with backup copy:
 $ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
 *)
 
+
+
 let infra () =
+    
+    let _ =
+        blob {
+            name "storageblob1"
+            storageContainerName "cont"
+            storageAccountName "storage"
+            ``type`` "Block"
+            source { Path = "Program.fs" }.ToPulumiType
+        }
+        
+    let _ =
+        blob {
+            name "storageblob2"
+            storageContainerName "cont"
+            storageAccountName "storage"
+            ``type`` "Block"
+            source { Uri = "https://raw.githubusercontent.com/UnoSD/Pulumi.FSharp.Extensions/master/README.md" }.ToPulumiType
+        }
+        
+    let _ =
+        blob {
+            name "storageblob3"
+            storageContainerName "cont"
+            storageAccountName "storage"
+            ``type`` "Block"
+            source { Assets = Map.empty
+                                 .Add("name" , File { Path = "Program.fs" })
+                                 .Add("name2", String { Text = "text" }) }.ToPulumiType
+        }
+    
     let application =
         deployment {
             name "application"            
