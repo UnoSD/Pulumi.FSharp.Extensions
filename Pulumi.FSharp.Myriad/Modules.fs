@@ -203,39 +203,47 @@ let createTypes (schema : JsonValue) =
         | JsonValue.Record(Property("properties")      (JsonValue.Record(jv))) -> jv |> Array.map (snd >> (fun x -> x.Properties()))
         | _                                                                    -> [||]
         
-    let rec getAllNestedTypes (acc : string []) (resourceOrType : JsonValue) =
-        getPropertiesValues resourceOrType |>
-        Array.choose(function
-                     | PTUnion (_, PTArray (PTRef z)) when z = "aws:s3/routingRules:RoutingRule" -> None
-                     
-                     
-                     | PTUnion (PTRef _, PTRef _)
-                     | PTUnion (PTArray (PTRef _), PTArray (PTRef _))
-                     | PTArray (PTUnion (PTRef _, PTRef _)) -> failwith "Aha!"
-                     
-                     | PTArray (PTRef t)
-                     | PTUnion (PTRef t, _) 
-                     | PTUnion (_, PTRef t)
-                     | PTUnion (PTArray (PTRef t), _) 
-                     | PTUnion (_, PTArray (PTRef t))
-                     | PTArray (PTMap (PTRef t))
-                     | PTArray (PTUnion (PTRef t, _))
-                     | PTArray (PTUnion (_, PTRef t))
-                     | PTMap (PTRef t)
-                     | PTRef t
-                        when Map.containsKey t allTypes
-                        -> Some t
-
-                     | PTBase _
-                     | PTJson
-                     | PTArray (PTBase _)
-                     | PTArray (PTMap (PTBase _))
-                     | PTArray (PTUnion (PTBase _, PTBase _))
-                     | PTUnion (PTBase _, PTBase _)
-                     | PTMap (PTBase _) -> None
-                     | x -> failwith $"Pattern not matched {x}") |>
-        Array.collect (fun t -> allTypes.[t] |> getAllNestedTypes acc |> Array.append [| t |])
+    let getRefType =
+        function
+        | PTUnion (_, PTArray (PTRef z)) when z = "aws:s3/routingRules:RoutingRule" -> None
+        
+        | PTUnion (PTRef _, PTRef _)
+        | PTUnion (PTArray (PTRef _), PTArray (PTRef _))
+        | PTArray (PTUnion (PTRef _, PTRef _)) -> failwith "Aha!"
+        
+        | PTArray (PTRef t)
+        | PTUnion (PTRef t, _) 
+        | PTUnion (_, PTRef t)
+        | PTUnion (PTArray (PTRef t), _) 
+        | PTUnion (_, PTArray (PTRef t))
+        | PTArray (PTMap (PTRef t))
+        | PTArray (PTUnion (PTRef t, _))
+        | PTArray (PTUnion (_, PTRef t))
+        | PTMap (PTRef t)
+        | PTRef t
+           when Map.containsKey t allTypes
+           -> Some t
+        
+        | PTBase _
+        | PTJson
+        | PTArray (PTBase _)
+        | PTArray (PTMap (PTBase _))
+        | PTArray (PTUnion (PTBase _, PTBase _))
+        | PTUnion (PTBase _, PTBase _)
+        | PTMap (PTBase _) -> None
+        | x -> failwith $"Pattern not matched {x}"
         // Make this recursive, it's getting too verbose to handle all nested cases
+        
+    let rec getAllNestedTypes (refTypes : string []) (resourceOrType : JsonValue) =
+        getPropertiesValues resourceOrType |>
+        Array.choose getRefType |>
+        (fun a -> match Array.isEmpty a with
+                  | true -> refTypes
+                  | false -> a |> Array.collect (fun refType -> match Array.exists ((=)refType) refTypes with
+                                                                | true  -> refTypes
+                                                                | false -> getAllNestedTypes (Array.append refTypes [| refType |])
+                                                                                             allTypes.[refType]))
+        
     
     let allNestedTypes =
         schema.["resources"].Properties() |>
