@@ -39,7 +39,7 @@
             <MyriadFile>Myriad.fs</MyriadFile>
         </Compile>
 
-        <Content Include="myriad.toml" />
+        <None Include="myriad.toml" />
     </ItemGroup>
     
 </Project>
