@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <NoWarn>NU1605;NU1603;FS0020</NoWarn>
-    <RootNamespace>temp</RootNamespace>
+    <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +17,11 @@
   <ItemGroup>
     <PackageReference Include="Pulumi.Azure" Version="3.48.0" />
     <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
-    <PackageReference Include="Pulumi.FSharp.Aws" Version="3.29.1.32" />
-    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.47.1.17" />
-    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="3.4.0.36" />
+    <PackageReference Include="Pulumi.FSharp.Aws" Version="3.29.1.36" />
+    <PackageReference Include="Pulumi.FSharp.Azure" Version="3.48.0.22" />
+    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="3.4.0.38" />
     <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.14" />
-    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="2.8.1.8" />
+    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="2.8.1.12" />
     <PackageReference Include="Pulumi.Random" Version="3.0.3" />
   </ItemGroup>
 
