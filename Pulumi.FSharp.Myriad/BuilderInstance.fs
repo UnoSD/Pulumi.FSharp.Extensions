@@ -21,16 +21,16 @@ let createBuilderInstance description typeName pTypes =
     let builderNamesSection =
         match builderNames |> List.ofArray with
         | [] -> [ "</summary>" ]
-        | bn -> let fn = List.map (fun x -> $"<c>{x}</c>") bn
-                "<strong>Nested computational expressions</strong>" :: fn @ [ "</summary>" ]
+        | bn -> let fn = List.map (fun x -> $" - {x}") bn
+                "*** Nested computational expressions ***" :: fn @ [ "</summary>" ]
     
     let descriptionShort =
         description |> String.split '\n' |> Array.head
     
     seq {
         yield $"<summary>{descriptionShort}"
-        yield  "<strong>Operations</strong>"
-        yield! ops |> Array.map (fun x -> $"<c>{x.OperationName}</c>")
+        yield  "*** Operations ***"
+        yield! ops |> Array.map (fun x -> $" - {x.OperationName}")
         yield! builderNamesSection } |>
     createLet (toCamelCase typeName)
               (createInstance $"{typeName}Builder" SynExpr.CreateUnit)
