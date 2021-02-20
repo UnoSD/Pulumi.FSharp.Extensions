@@ -20,16 +20,16 @@ let createBuilderInstance description typeName pTypes =
         
     let builderNamesSection =
         match builderNames |> List.ofArray with
-        | [] -> [ "</remarks>" ]
+        | [] -> [ "</summary>" ]
         | bn -> let fn = List.map (fun x -> $"<item><c>{x}</c></item>") bn
-                "<list type=\"bullet\">" :: "<strong>Nested properties</strong>" :: fn @ [ "</list></remarks>" ]
+                "<list type=\"bullet\">" :: "<strong>Nested properties</strong>" :: fn @ [ "</list></summary>" ]
     
     let descriptionShort =
         description |> String.split '\n' |> Array.head
     
     seq {
-        yield $"<summary>{descriptionShort}</summary>"
-        yield  "<remarks>*** Available properties ***"
+        yield $"<summary>{descriptionShort}"
+        yield  "*** Available properties ***"
         yield  ""
         yield  "<strong>Operations</strong>"
         yield  "<list type=\"bullet\">"
