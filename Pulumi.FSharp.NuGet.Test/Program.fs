@@ -18,6 +18,8 @@ let deployment = Kubernetes.Apps.V1.deployment
 let container = Kubernetes.Core.V1.Inputs.container
 
 (*
+Backup
+$ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'cp Pulumi.FSharp.{}/Generated.fs $(find Pulumi.FSharp.{} -name "Generated.*.fs")'
 Test difference with backup copy:
 $ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
 *)
@@ -31,7 +33,7 @@ let infra () =
             name "storageblob1"
             storageContainerName "cont"
             storageAccountName "storage"
-            ``type`` "Block"
+            resourceType "Block"
             source { Path = "Program.fs" }.ToPulumiType
         }
         
@@ -40,7 +42,7 @@ let infra () =
             name "storageblob2"
             storageContainerName "cont"
             storageAccountName "storage"
-            ``type`` "Block"
+            resourceType "Block"
             source { Uri = "https://raw.githubusercontent.com/UnoSD/Pulumi.FSharp.Extensions/master/README.md" }.ToPulumiType
         }
         
@@ -49,7 +51,7 @@ let infra () =
             name "storageblob3"
             storageContainerName "cont"
             storageAccountName "storage"
-            ``type`` "Block"
+            resourceType "Block"
             source { Assets = Map.empty
                                  .Add("name" , File { Path = "Program.fs" })
                                  .Add("name2", String { Text = "text" }) }.ToPulumiType
