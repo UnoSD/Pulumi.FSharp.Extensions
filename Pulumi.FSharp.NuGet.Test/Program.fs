@@ -29,50 +29,47 @@ $ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -q
 *)
 
 let infra () =
-    let _ =
-        deployment {
-            name "application"
+    deployment {
+        name "application"
 
-            deploymentSpec {
-                replicas 1
+        deploymentSpec {
+            replicas 1
 
-                labelSelector { 
-                    matchLabels [ "app", input "nginx" ]
+            labelSelector { 
+                matchLabels [ "app", input "nginx" ]
+            }
+
+            podTemplateSpec {
+                objectMeta {
+                    labels [ "app", input "nginx" ]
                 }
 
-                podTemplateSpec {
-                    objectMeta {
-                        labels [ "app", input "nginx" ]
-                    }
-
-                    podSpec {
-                        containers [
-                            container {
-                                name  "nginx"
-                                image "nginx"
-                                ports [ containerPort { containerPortValue 80 } ]
-                            }
-                        ]
-                    }
+                podSpec {
+                    containers [
+                        container {
+                            name  "nginx"
+                            image "nginx"
+                            ports [ containerPort { containerPortValue 80 } ]
+                        }
+                    ]
                 }
             }
         }
+    }
 
-    let _ =
-        bucket {
-            name "bucket-example"
-            acl  "Private"
+    bucket {
+        name "bucket-example"
+        acl  "private"
 
-            bucketWebsite { 
-                indexDocument "index.html"
-            }
+        bucketWebsite { 
+            indexDocument "index.html"
         }
+    }
 
-    let _ =
-        group {
-            name        "group-example"
-            displayName "Example AAD group from Pulumi.FSharp.Extensions"
-        }
+    group {
+        name        "group-example"
+        displayName "Example AAD group from Pulumi.FSharp.Extensions"
+    }
 
     let rg =
         resourceGroup {
@@ -96,40 +93,37 @@ let infra () =
             containerAccessType "private"
         }
 
-    let _ =
-        blob {
-            name                 "file-blob"
-            resourceType         "Block"
-            storageContainerName container.Name
-            storageAccountName   storage.Name
-            source               { Path = "Program.fs" }.ToPulumiType
-        }
+    blob {
+        name                 "file-blob"
+        resourceType         "Block"
+        storageContainerName container.Name
+        storageAccountName   storage.Name
+        source               { Path = "Program.fs" }.ToPulumiType
+    }
 
-    let _ =
-        blob {
-            name                 "url-blob"
-            resourceType         "Block"
-            storageContainerName container.Name
-            storageAccountName   storage.Name
+    blob {
+        name                 "url-blob"
+        resourceType         "Block"
+        storageContainerName container.Name
+        storageAccountName   storage.Name
 
-            source {
-                Uri = "https://raw.githubusercontent.com/UnoSD/Pulumi.FSharp.Extensions/master/README.md"
-            }.ToPulumiType
-        }
+        source {
+            Uri = "https://raw.githubusercontent.com/UnoSD/Pulumi.FSharp.Extensions/master/README.md"
+        }.ToPulumiType
+    }
 
-    let _ =
-        blob {
-            name                 "archive-blob"
-            resourceType         "Block"
-            storageContainerName container.Name
-            storageAccountName   storage.Name
+    blob {
+        name                 "archive-blob"
+        resourceType         "Block"
+        storageContainerName container.Name
+        storageAccountName   storage.Name
 
-            source { 
-                Assets = Map.empty
-                            .Add("pr.fs", File   { Path = "Program.fs" })
-                            .Add("p.txt", String { Text = "text!!!!!!" }) 
-            }.ToPulumiType
-        }
+        source { 
+            Assets = Map.empty
+                        .Add("pr.fs", File   { Path = "Program.fs" })
+                        .Add("p.txt", String { Text = "text!!!!!!" }) 
+        }.ToPulumiType
+    }
 
     let vnet =
         virtualNetwork {
