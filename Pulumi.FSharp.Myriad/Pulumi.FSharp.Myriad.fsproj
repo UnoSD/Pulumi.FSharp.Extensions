@@ -6,6 +6,7 @@
         <NoWarn>NU1605</NoWarn>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RootNamespace>Pulumi.FSharp.Myriad</RootNamespace>
+        <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

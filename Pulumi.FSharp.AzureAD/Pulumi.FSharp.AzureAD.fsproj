@@ -18,6 +18,7 @@
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <NoWarn>NU1605,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' == ''">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' != ''">sed -i "s/module Force = let private nonce = [0-9]*//" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>
     </PropertyGroup>

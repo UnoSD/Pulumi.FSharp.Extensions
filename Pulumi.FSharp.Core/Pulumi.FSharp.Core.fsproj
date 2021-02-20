@@ -13,6 +13,7 @@
         <PackageVersion>2.0.14</PackageVersion>
         <NoWarn>NU1605</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>
     
     <ItemGroup>

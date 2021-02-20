@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <NoWarn>NU1605;FS0020</NoWarn>
-    <RootNamespace>temp</RootNamespace>
+    <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
