@@ -315,6 +315,11 @@ let createTypes (schema : JsonValue) =
             | _   ,  _       , Lazy(Some ip) -> ip.Properties()
             | _   ,  _       , Lazy(None)    -> [||]
             
+        let description =
+            match jsonValue.Properties() with
+            | Property("description") (JsonValue.String(d)) -> d
+            | _                                             -> "No description available"
+            
         let pTypes =
             createPTypes isType allTypes properties
             
@@ -326,7 +331,7 @@ let createTypes (schema : JsonValue) =
             [|
                 createBuilderClass isType typeName pTypes
                 
-                createBuilderInstance typeName pTypes
+                createBuilderInstance description typeName pTypes
             |]
     
     let createBuilders allTypes (schema : JsonValue) (typeInfo, (jsonValue : JsonValue)) =

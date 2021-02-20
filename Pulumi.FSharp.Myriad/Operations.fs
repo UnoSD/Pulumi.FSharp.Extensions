@@ -42,7 +42,7 @@ let argsTuple' nameVarName withParen =
     createTuple [ nvn
                   argsPattern ] withParen
 
-let private createOperation'' xmlDoc nameVarName name coName argName hasAttribute typ =
+let private createOperation'' (xmlDoc : seq<string>) nameVarName name coName argName hasAttribute typ =
     let attributes =
         if hasAttribute then
             [ createAttributeWithArg "CustomOperation" coName ]
@@ -56,10 +56,13 @@ let private createOperation'' xmlDoc nameVarName name coName argName hasAttribut
         ] true
     ]
     
-    createMember'' xmlDoc name patterns attributes
+    let doc =
+        PreXmlDoc.Create(xmlDoc) |> Some
+    
+    createMember'' doc name patterns attributes
 
 let createNameOperation newNameExpr =
-    createOperation'' None null "Name" "name" "newName" true None newNameExpr
+    createOperation'' ["Pulumi logical resource name"] null "Name" "name" "newName" true None newNameExpr
 
 let private listCons =
     Expr.funcTuple("List.Cons", [ "apply"; "args" ])
@@ -222,7 +225,7 @@ let createOperationsFor' argsType pType =
         pType.OperationName |> toPascalCase
     
     let doc =
-        PreXmlDoc.Create(String.split '\n' pType.Description |> Array.filter (((=)"") >> not)) |> Some
+        String.split '\n' pType.Description |> Array.filter (((=)"") >> not)
     
     setRights |>
     List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
