@@ -48,7 +48,7 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: Publish generated code
     inputs:
-      pathToPublish: '**/Generated.fs'
+      pathToPublish: '**/Pulumi.FSharp.${{ parameters.provider }}/Generated.fs'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
