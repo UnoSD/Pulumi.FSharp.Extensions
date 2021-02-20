@@ -61,6 +61,7 @@ let infra () =
     let _ =
         bucket {
             name "bucket-example"
+            acl  "Private"
 
             bucketWebsite { 
                 indexDocument "index.html"
