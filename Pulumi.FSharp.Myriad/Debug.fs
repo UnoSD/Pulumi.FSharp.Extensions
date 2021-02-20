@@ -15,33 +15,35 @@ type private Filters = {
 
 let private azureFilters = {
         Types     = Include [
-            "WindowsVirtualMachineOsDisk"
-            "ProviderFeaturesKeyVault"
             "WindowsVirtualMachineSourceImageReference"
-            "getAccountSASPermissions"
-            "AccountNetworkRules"
+            "WindowsVirtualMachineOsDisk"
+            "NetworkInterfaceIpConfiguration"
         ]
         Resources = Include [
+            "Blob"
             "WindowsVirtualMachine"
-            "AccountNetworkRules"
             "NetworkInterface"
+            "Subnet"
+            "VirtualNetwork"
+            "ResourceGroup"
+            "Subnet"
+            "Account"
+            "Container"
         ]
         Providers = Include [
             "compute"
             "storage"
             "network"
+            "core"
         ]                        
     }
 
 let private azureAdFilters = {
         Types     = Include [
-            "ApplicationAppRole"
-            "ApplicationOptionalClaims"
-            "getApplicationAppRole"
         ]
         Resources = Include [
             "Application"
-            "ApplicationAppRole"
+            "Group"
         ]
         Providers = Include [
             "index"
@@ -49,15 +51,36 @@ let private azureAdFilters = {
     }
 
 let private awsFilters = {
-        Types     = Include [ "AccessPointVpcConfiguration" ]
-        Resources = Include [ "Bucket" ]
-        Providers = Include [ "s3" ]                        
+        Types     = Include [
+            "BucketWebsite"
+        ]
+        Resources = Include [
+            "Bucket"
+        ]
+        Providers = Include [
+            "s3"
+        ]
     }
 
 let private kubernetesFilters = {
-        Types     = Include [ "VolumeAttachment" ]
-        Resources = Include [ "VolumeAttachment" ]
-        Providers = Include [ "storage" ]                        
+        Types     = Include [ 
+            "ServiceSpecType"
+            "ServiceSpec"
+            "DeploymentSpec"
+            "LabelSelector"
+            "PodTemplateSpec"
+            "PodSpec"
+            "Container"
+            "ContainerPort"
+            "ObjectMeta"
+        ]
+        Resources = Include [
+            "Deployment"
+        ]
+        Providers = Include [ 
+            "core/v1"
+            "apps/v1"
+            "meta/v1" ]
     }
 
 let private merge left right =
