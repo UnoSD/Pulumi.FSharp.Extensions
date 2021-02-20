@@ -34,7 +34,6 @@ steps:
     inputs:
       command: pack
       packagesToPack: '**/Pulumi.FSharp.$(provider).fsproj'
-      versioningScheme: byBuildNumber
 
   - task: NuGetCommand@2
     displayName: Push

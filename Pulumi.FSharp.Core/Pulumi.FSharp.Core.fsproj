@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
         <Copyright>Copyright 2020</Copyright>
         <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
@@ -11,7 +10,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <PackageVersion>2.0.13</PackageVersion>
+        <PackageVersion>2.0.14</PackageVersion>
         <NoWarn>NU1605</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
