@@ -11,7 +11,7 @@
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <PackageVersion>2.0.14</PackageVersion>
-        <NoWarn>NU1605</NoWarn>
+        <NoWarn>NU1605,NU1608</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>

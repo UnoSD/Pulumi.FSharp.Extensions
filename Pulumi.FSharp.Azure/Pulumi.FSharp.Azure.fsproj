@@ -16,7 +16,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <NoWarn>NU1605,FS0058,FS0044</NoWarn>
+        <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
         <PreBuildEvent Condition="$([MSBuild]::IsOSPlatform('Linux')) And '$(BUILD_REASON)' == ''">sed -i "s/\(module Force = let private nonce = \)[0-9]*/\1${RANDOM}/" $(MSBuildProjectDirectory)/Myriad.fs</PreBuildEvent>

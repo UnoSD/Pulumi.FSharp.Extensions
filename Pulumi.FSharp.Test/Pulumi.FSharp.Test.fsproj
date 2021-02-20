@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <NoWarn>NU1605;FS0020</NoWarn>
+    <NoWarn>NU1605;NU1608;FS0020</NoWarn>
     <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
   </PropertyGroup>
 
