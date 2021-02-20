@@ -18,19 +18,27 @@ let createBuilderInstance description typeName pTypes =
                    | { Type = PRef t } -> String.split ':' t |> Array.last |> toCamelCase
                    | x                 -> failwith $"{x} type should not use yield")
         
+    let listItem =
+        sprintf " - %s </br>"
+        
+    let title text =
+        $"*** {text} ***"
+        
     let builderNamesSection =
         match builderNames |> List.ofArray with
-        | [] -> [ "</summary>" ]
-        | bn -> let fn = List.map (fun x -> $" - {x}") bn
-                "*** Nested computational expressions ***" :: fn @ [ "</summary>" ]
+        | [] -> []
+        | bn -> let fn = List.map listItem bn
+                title "Nested computational expressions" :: fn
     
     let descriptionShort =
         description |> String.split '\n' |> Array.head
     
     seq {
-        yield $"<summary>{descriptionShort}"
-        yield  "*** Operations ***"
-        yield! ops |> Array.map (fun x -> $" - {x.OperationName}")
-        yield! builderNamesSection } |>
+        yield  "<summary>"
+        yield $"{descriptionShort}</br>"
+        yield  title "Operations"
+        yield! ops |> Array.map (fun x -> listItem x.OperationName)
+        yield! builderNamesSection
+        yield  "</summary>" } |>
     createLet (toCamelCase typeName)
               (createInstance $"{typeName}Builder" SynExpr.CreateUnit)
