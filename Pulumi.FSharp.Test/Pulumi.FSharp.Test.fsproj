@@ -21,9 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Program.fs">
-      <Link>Program.fs</Link>
-    </Compile>
+    <Compile Include="Program.fs" />
+    <Content Include="Pulumi.yaml" />
     <Content Include="Pulumi.test.yaml" />
   </ItemGroup>
 
