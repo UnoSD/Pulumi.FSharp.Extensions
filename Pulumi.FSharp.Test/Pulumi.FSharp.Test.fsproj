@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Pulumi.FSharp.Aws\Pulumi.FSharp.Aws.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.AzureAD\Pulumi.FSharp.AzureAD.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
+    <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj" />
   </ItemGroup>
 
