@@ -10,9 +10,9 @@ trigger:
     include:
       - master
   paths:
-    exclude:
-      - Pulumi.FSharp.NuGet.Test/*
-      - Pulumi.FSharp.Test/*
+    include:
+      - Pulumi.FSharp.Myriad/*
+      - Pulumi.FSharp.${{ parameters.provider }}/*
 
 pool:
   vmImage: ubuntu-latest
@@ -44,6 +44,11 @@ steps:
     inputs:
       command: build
       projects: '**/Pulumi.FSharp.${{ parameters.provider }}.fsproj'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish generated code
+    inputs:
+      pathToPublish: '**/Generated.fs'
 
   - task: DotNetCoreCLI@2
     displayName: Pack
