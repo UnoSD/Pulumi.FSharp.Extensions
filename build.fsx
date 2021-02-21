@@ -7,6 +7,7 @@ nuget Fake.Core.Xml
 nuget Fake.Core.Target //"
 #load ".fake/build.fsx/intellisense.fsx"
 open Fake.IO.Globbing.Operators
+open Fake.Core.TargetOperators
 open Fake.DotNet.NuGet
 open Fake.BuildServer
 open Fake.Core.Xml
@@ -92,23 +93,37 @@ let pushOptions options : DotNet.NuGetPushOptions = {
         }
 }
 
-let envDependentAction localBuildAction buildServerAction =
-    match BuildServer.isLocalBuild with
-    | true  -> localBuildAction
-    | false -> buildServerAction
+Target.create "Install" (fun _ ->
+    DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create()) |> ignore
+)
 
-// Deployment tasks
+Target.create "Build" (fun _ ->
+    DotNet.build buildOptions projectFile
+)
 
-DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create())
+Target.create "PublishGeneratedCode" (fun _ ->
+    !! (sprintf "**/%s/Generated.fs" fullName) |>
+    Seq.exactlyOne |>
+    Trace.publish ImportData.BuildArtifact
+)
 
-DotNet.build buildOptions projectFile
+Target.create "Pack" (fun _ ->
+    DotNet.pack packOptions projectFile
+)
 
-!! (sprintf "**/%s/Generated.fs" fullName) |>
-Seq.exactlyOne |>
-Trace.publish ImportData.BuildArtifact
+Target.create "Push" (fun _ ->
+    !! (sprintf "**/%s.*.nupkg" fullName) |>
+    Seq.exactlyOne |>
+    DotNet.nugetPush pushOptions
+)
 
-DotNet.pack packOptions projectFile
+Target.create "Default" ignore
 
-!! (sprintf "**/%s.*.nupkg" fullName) |>
-Seq.exactlyOne |>
-envDependentAction ignore (DotNet.nugetPush pushOptions)
+"Install"                                              ==>
+"Build"                                                =?>
+("PublishGeneratedCode", not BuildServer.isLocalBuild) ==>
+"Pack"                                                 =?>
+("Push"                , not BuildServer.isLocalBuild) ==>
+"Default"
+
+Target.runOrDefaultWithArguments "Default"

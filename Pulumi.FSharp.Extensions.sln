@@ -23,7 +23,6 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureAD", "Pu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{19133DA2-F039-47AB-A225-6435EC14A67B}"
 ProjectSection(SolutionItems) = preProject
-	NuGetBuildPublish.yml = NuGetBuildPublish.yml
 	build.fsx = build.fsx
 	FAKE.yml = FAKE.yml
 EndProjectSection

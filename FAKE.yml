@@ -21,7 +21,6 @@ trigger:
   paths:
     include:
       - Pulumi.FSharp.Myriad/*
-      - Pulumi.FSharp.$(provider)/*
 
 pool:
   vmImage: ubuntu-latest
