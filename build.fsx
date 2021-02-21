@@ -26,7 +26,7 @@ let vault =
     | _, false          -> failwith "Unsupported source for secrets"
 
 let provider =
-    Vault.get "pipelineProvider" vault
+    Environment.environVarOrFail "PROVIDER"
 
 let fullName =
     sprintf "Pulumi.FSharp.%s" provider
