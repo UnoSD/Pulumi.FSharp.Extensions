@@ -35,7 +35,7 @@ steps:
     arguments: install fake-cli
 
 - task: DownloadSecureFile@1
-  name: Pulumi.FSharp.Extensions.vault.json
+  name: FakeVaultFile
   displayName: Download FAKE Vault file
   inputs:
     secureFile: Pulumi.FSharp.Extensions.vault.json
