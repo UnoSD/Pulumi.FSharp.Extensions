@@ -353,3 +353,4 @@ MigrationBackup/
 
 /TODO
 /Generated.fs
+Pulumi.FSharp.Extensions.vault.json
