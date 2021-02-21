@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{
 ProjectSection(SolutionItems) = preProject
 	NuGetBuildPublish.yml = NuGetBuildPublish.yml
 	build.fsx = build.fsx
+	FAKE.yml = FAKE.yml
 EndProjectSection
 EndProject
 Global
