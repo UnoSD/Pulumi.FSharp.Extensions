@@ -14,6 +14,9 @@ open System.IO
 open Fake.Core
 open System
 
+// Local usage:
+// dotnet fake run build.fsx -- <provider>
+
 BuildServer.install [ TeamFoundation.Installer ]
 
 let vaultFile =
@@ -26,7 +29,10 @@ let vault =
     | _, false          -> failwith "Unsupported source for secrets"
 
 let provider =
-    Environment.environVarOrFail "PROVIDER"
+    match BuildServer.buildServer with
+    | TeamFoundation -> Environment.environVarOrFail "PROVIDER"
+    | LocalBuild     -> Context.forceFakeContext().Arguments |> List.exactlyOne
+    | _              -> failwith "Missing provider or unsupported build server"
 
 let fullName =
     sprintf "Pulumi.FSharp.%s" provider
@@ -78,6 +84,7 @@ let pushOptions options : DotNet.NuGetPushOptions = {
         PushParams = {
             options.PushParams with
                 ApiKey = Vault.tryGet "apiKey" vault
+                Source = Some "https://api.nuget.org/v3/index.json"
         }
 }
 
