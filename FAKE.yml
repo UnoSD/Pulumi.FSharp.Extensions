@@ -2,7 +2,6 @@ name: $(Rev:r)
 
 # Set the pipeline variable `provider` to a provider E.G. `Azure` `AzureAD` `Aws` `Kubernetes`
 
-variables:
 # Create a secure file `Pulumi.FSharp.Extensions.vault.json`
 # with the following content:
 # {
@@ -14,7 +13,6 @@ variables:
 #     }
 #   ]
 # }
-- group: NuGet
 
 trigger:
   branches:
