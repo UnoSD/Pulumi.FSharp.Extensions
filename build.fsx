@@ -12,12 +12,22 @@ open Fake.BuildServer
 open Fake.Core.Xml
 open Fake.DotNet
 open Fake.Core
+open System.IO
 open System
 
 // Local usage:
 // dotnet fake run build.fsx -- <provider>
 
 BuildServer.install [ TeamFoundation.Installer ]
+
+let vaultFile =
+    FileInfo("Pulumi.FSharp.Extensions.vault.json")
+
+let vault =
+    match Vault.fromFakeEnvironmentOrNone(), vaultFile.Exists with
+    | Some vault, _     -> vault
+    | None      , true  -> vaultFile.OpenText().ReadToEnd() |> Vault.fromJson
+    | None      , false -> failwith "Unsupported source for secrets"
 
 let provider =
     match Environment.environVarOrNone "PROVIDER", lazy(Context.forceFakeContext().Arguments) with
@@ -74,7 +84,7 @@ let pushOptions options : DotNet.NuGetPushOptions = {
     options with
         PushParams = {
             options.PushParams with
-                ApiKey = Environment.environVarOrFail "NUGETAPIKEY" |> Some
+                ApiKey = Vault.tryGet "nuGetApiKey" vault
                 Source = Some "https://api.nuget.org/v3/index.json"
         }
 }

@@ -3,8 +3,17 @@ name: $(Rev:r)
 # Set the pipeline variable `provider` to a provider E.G. `Azure` `AzureAD` `Aws` `Kubernetes`
 
 variables:
-# Create a variable group called NuGet
-# and add the variable `apiKey`
+# Create a secure file `Pulumi.FSharp.Extensions.vault.json`
+# with the following content:
+# {
+#   "values": [
+#     {
+#       "secret": false,
+#       "value": "<NuGet API key>",
+#       "name": "nuGetApiKey"
+#     }
+#   ]
+# }
 - group: NuGet
 
 trigger:
@@ -26,6 +35,12 @@ steps:
     command: custom
     custom: tool
     arguments: install fake-cli
+
+- task: DownloadSecureFile@1
+  name: Pulumi.FSharp.Extensions.vault.json
+  displayName: Download FAKE Vault file
+  inputs:
+    secureFile: Pulumi.FSharp.Extensions.vault.json
 
 - task: DotNetCoreCLI@2
   displayName: Run FAKE
