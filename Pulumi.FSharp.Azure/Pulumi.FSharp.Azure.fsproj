@@ -30,9 +30,9 @@
         <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
-        <PackageReference Include="Pulumi.FSharp.Core" Version="2.0.14" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
+        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
         
         <Compile Include="Myriad.fs" />
 
