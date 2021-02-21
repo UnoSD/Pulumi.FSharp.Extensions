@@ -3,9 +3,9 @@ name: $(Rev:r)
 # Set the pipeline variable `provider` to a provider E.G. `Azure` `AzureAD` `Aws` `Kubernetes`
 
 variables:
-  # Create a variable group called NuGet
-  # and add the variable `apiKey`
-  - group: NuGet
+# Create a variable group called NuGet
+# and add the variable `apiKey`
+- group: NuGet
 
 trigger:
   branches:
