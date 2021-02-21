@@ -20,6 +20,9 @@ open System
 
 BuildServer.install [ TeamFoundation.Installer ]
 
+Environment.environVars() |>
+List.iter (printfn "%A")
+exit 0
 let vaultFile =
     Environment.environVarOrNone "SECUREFILEPATH" |>
     Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
