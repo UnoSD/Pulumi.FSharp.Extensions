@@ -1,0 +1,37 @@
+name: $(Rev:r)
+
+parameters:
+  - name: provider
+    type: string
+    default: $(pipelineProvider)
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - Pulumi.FSharp.Myriad/*
+      - Pulumi.FSharp.$(pipelineProvider)/*
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: custom
+    custom: new
+    arguments: tool-manifest
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install fake-cli
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: custom
+    custom: fake
+    arguments: run
