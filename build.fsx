@@ -99,7 +99,7 @@ let envDependentAction localBuildAction buildServerAction =
 
 // Deployment tasks
 
-DotNet.install DotNet.Versions.FromGlobalJson
+DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create())
 
 DotNet.build buildOptions projectFile
 
