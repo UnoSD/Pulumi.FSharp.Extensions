@@ -21,7 +21,9 @@ open System
 BuildServer.install [ TeamFoundation.Installer ]
 
 let vaultFile =
-    FileInfo("Pulumi.FSharp.Extensions.vault.json")
+    Environment.environVarOrNone "SECUREFILEPATH" |>
+    Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
+    FileInfo
 
 let vault =
     match Vault.fromFakeEnvironmentOrNone(), vaultFile.Exists with
