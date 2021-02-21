@@ -20,11 +20,8 @@ open System
 
 BuildServer.install [ TeamFoundation.Installer ]
 
-Environment.environVars() |>
-List.iter (printfn "%A")
-exit 0
 let vaultFile =
-    Environment.environVarOrNone "SECUREFILEPATH" |>
+    Environment.environVarOrNone "FAKEVAULTFILE_SECUREFILEPATH" |>
     Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
     FileInfo
 
@@ -35,6 +32,7 @@ let vault =
     | None      , false -> failwith "Unsupported source for secrets"
 
 let provider =
+    // Environment.environVarOrNone "BUILD_DEFINITIONNAME"
     match Environment.environVarOrNone "PROVIDER", lazy(Context.forceFakeContext().Arguments) with
     | Some p, _
     | None  , Lazy([ p ]) -> p
