@@ -3,6 +3,7 @@ nuget FSharp.Core 5.0.0.0
 nuget Fake.DotNet.Cli
 nuget Fake.IO.FileSystem
 nuget Fake.BuildServer.TeamFoundation
+nuget Fake.Core.CommandLineParsing
 nuget Fake.Core.Xml
 nuget Fake.Core.Target //"
 #load ".fake/build.fsx/intellisense.fsx"
@@ -16,10 +17,21 @@ open Fake.Core
 open System.IO
 open System
 
-// Local usage:
-// dotnet fake run build.fsx -- <provider>
-
 BuildServer.install [ TeamFoundation.Installer ]
+
+let args =
+    Context.forceFakeContext().Arguments |>
+    Docopt("""
+usage: dotnet_fake_run_build.fsx [PROVIDER] [options]
+
+options:
+ -t <target>
+    """).Parse
+
+let target =
+    match Map.tryFind "-t" args with
+    | Some (Argument t) -> t
+    | _                 -> "Default"
 
 let vaultFile =
     Environment.environVarOrNone "FAKEVAULTFILE_SECUREFILEPATH" |>
@@ -33,11 +45,12 @@ let vault =
     | None      , false -> failwith "Unsupported source for secrets"
 
 let provider =
-    // Environment.environVarOrNone "BUILD_DEFINITIONNAME"
-    match Environment.environVarOrNone "PROVIDER", lazy(Context.forceFakeContext().Arguments) with
-    | Some p, _
-    | None  , Lazy([ p ]) -> p
-    | _                   -> failwith "Missing provider"
+    match Map.tryFind "PROVIDER" args |>
+          Option.bind (function | Argument p -> Some p | _ -> None) |>
+          Option.orElse (Environment.environVarOrNone "PROVIDER") |>
+          Option.orElse (Environment.environVarOrNone "BUILD_DEFINITIONNAME") with
+    | Some p -> p
+    | _      -> failwith "Missing provider"
 
 let fullName =
     sprintf "Pulumi.FSharp.%s" provider
@@ -93,8 +106,28 @@ let pushOptions options : DotNet.NuGetPushOptions = {
         }
 }
 
+let myriadFile =
+    !! (sprintf "**/%s/Myriad.fs" fullName) |>
+    Seq.exactlyOne
+
+let random =
+    int32 DateTime.Now.Ticks |>
+    Random
+
 Target.create "Install" (fun _ ->
     DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create()) |> ignore
+)
+
+Target.create "ForceRegeneration" (fun _ ->
+    let moduleDeclaration =
+        sprintf "module private %s" provider
+
+    let forceRebuild =
+        match BuildServer.isLocalBuild with
+        | true  -> random.Next() |> sprintf "module Force = let private nonce = %i"
+        | false -> ""
+    
+    File.WriteAllText(myriadFile, sprintf "%s\n\n%s" moduleDeclaration forceRebuild)
 )
 
 Target.create "Build" (fun _ ->
@@ -119,11 +152,12 @@ Target.create "Push" (fun _ ->
 
 Target.create "Default" ignore
 
-"Install"                                              ==>
+"Install"                                              =?>
+("ForceRegeneration"   ,     BuildServer.isLocalBuild) ==>
 "Build"                                                =?>
 ("PublishGeneratedCode", not BuildServer.isLocalBuild) ==>
 "Pack"                                                 =?>
 ("Push"                , not BuildServer.isLocalBuild) ==>
 "Default"
 
-Target.runOrDefaultWithArguments "Default"
+Target.runOrDefaultWithArguments target
