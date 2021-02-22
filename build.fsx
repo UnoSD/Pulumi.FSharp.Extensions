@@ -53,7 +53,9 @@ let getProjectFile provider =
     !! projectPattern |> Seq.head
 
 Target.create "Install" (fun _ ->
-    DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create()) |> ignore
+    DotNet.Options.Create() |>
+    DotNet.install DotNet.Versions.FromGlobalJson |>
+    ignore
 )
 
 Target.create "ForceRegeneration" (fun _ ->
