@@ -7,6 +7,7 @@ nuget Fake.Core.CommandLineParsing
 nuget Fake.Core.Xml
 nuget Fake.Core.Target //"
 #load ".fake/build.fsx/intellisense.fsx"
+#nowarn "52"
 open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
 open Fake.DotNet.NuGet
@@ -29,23 +30,12 @@ options:
  -t <target>
     """).Parse
 
-let target =
+let getTarget args =
     match Map.tryFind "-t" args with
     | Some (Argument t) -> t
     | _                 -> "Default"
 
-let vaultFile =
-    Environment.environVarOrNone "FAKEVAULTFILE_SECUREFILEPATH" |>
-    Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
-    FileInfo
-
-let vault =
-    match Vault.fromFakeEnvironmentOrNone(), vaultFile.Exists with
-    | Some vault, _     -> vault
-    | None      , true  -> vaultFile.OpenText().ReadToEnd() |> Vault.fromJson
-    | None      , false -> failwith "Unsupported source for secrets"
-
-let provider =
+let getProvider args =
     match Map.tryFind "PROVIDER" args |>
           Option.bind (function | Argument p -> Some p | _ -> None) |>
           Option.orElse (Environment.environVarOrNone "PROVIDER") |>
@@ -53,81 +43,30 @@ let provider =
     | Some p -> p
     | _      -> failwith "Missing provider"
 
-let fullName =
+let getFullName provider =
     sprintf "Pulumi.FSharp.%s" provider
 
-let projectPattern =
-    sprintf "**/%s.fsproj" fullName
-
-let projectFile = 
+let getProjectFile provider = 
+    let projectPattern =
+        provider |> getFullName |> sprintf "**/%s.fsproj" 
+        
     !! projectPattern |> Seq.head
-
-let xPath =
-    sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']" provider
-
-let pulumiNuGetVersion =
-    projectFile |> 
-    loadDoc |>
-    selectXPathAttributeValue xPath
-                              "Version"
-                              []
-
-let buildOptions options : DotNet.BuildOptions = {
-        options with 
-            Common = {
-                options.Common with
-                    Verbosity = Some DotNet.Verbosity.Quiet
-            }
-            NoLogo = true
-            MSBuildParams = {
-                options.MSBuildParams with
-                    Properties = ("NoRegenerate","true") :: options.MSBuildParams.Properties
-                }
-    }
-
-let nextExtensionsVersion =
-    NuGet.getLatestPackage (NuGet.getRepoUrl()) fullName |>
-    (fun x -> x.Version.Split('.')) |>
-    Array.last |>
-    Int32.Parse |>
-    (+)1
-
-let packOptions options : DotNet.PackOptions = {
-    options with
-        MSBuildParams = { 
-            options.MSBuildParams with
-                Properties = 
-                    ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
-                    ("NoRegenerate","true") ::
-                    options.MSBuildParams.Properties
-        }
-}
-
-let pushOptions options : DotNet.NuGetPushOptions = {
-    options with
-        PushParams = {
-            options.PushParams with
-                ApiKey = Vault.tryGet "nuGetApiKey" vault
-                Source = Some "https://api.nuget.org/v3/index.json"
-        }
-}
-
-let myriadFile =
-    !! (sprintf "**/%s/Myriad.fs" fullName) |>
-    Seq.exactlyOne
-
-#nowarn "52"
-let random =
-    DateTime.Now.Millisecond |>
-    Random
 
 Target.create "Install" (fun _ ->
     DotNet.install DotNet.Versions.FromGlobalJson (DotNet.Options.Create()) |> ignore
 )
 
 Target.create "ForceRegeneration" (fun _ ->
+    let myriadFile =
+        !! (getProvider args |> getFullName |> sprintf "**/%s/Myriad.fs") |>
+        Seq.exactlyOne
+
+    let random =
+        DateTime.Now.Millisecond |>
+        Random
+    
     let moduleDeclaration =
-        sprintf "module private %s" provider
+        getProvider args |> sprintf "module private %s"
 
     let forceRebuild =
         match BuildServer.isLocalBuild with
@@ -138,21 +77,90 @@ Target.create "ForceRegeneration" (fun _ ->
 )
 
 Target.create "Build" (fun _ ->
-    DotNet.build buildOptions projectFile
+    let buildOptions options : DotNet.BuildOptions = {
+            options with 
+                Common = {
+                    options.Common with
+                        Verbosity = Some DotNet.Verbosity.Quiet
+                }
+                NoLogo = true
+                MSBuildParams = {
+                    options.MSBuildParams with
+                        Properties = ("NoRegenerate","true") :: options.MSBuildParams.Properties
+                    }
+        }
+    
+    getProvider args |>
+    getProjectFile |>
+    DotNet.build buildOptions
 )
 
 Target.create "PublishGeneratedCode" (fun _ ->
-    !! (sprintf "**/%s/Generated.fs" fullName) |>
+    !! (getProvider args |> getFullName |> sprintf "**/%s/Generated.fs") |>
     Seq.exactlyOne |>
     Trace.publish ImportData.BuildArtifact
 )
 
 Target.create "Pack" (fun _ ->
-    DotNet.pack packOptions projectFile
+    let nextExtensionsVersion =
+        getProvider args |> 
+        getFullName |> 
+        NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
+        (fun x -> x.Version.Split('.')) |>
+        Array.last |>
+        Int32.Parse |>
+        (+)1
+        
+    let xPath =
+        getProvider args |>
+        sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']"
+        
+    let pulumiNuGetVersion =
+        getProvider args |>
+        getProjectFile |> 
+        loadDoc |>
+        selectXPathAttributeValue xPath
+                                  "Version"
+                                  []
+    
+    let packOptions options : DotNet.PackOptions = {
+        options with
+            MSBuildParams = { 
+                options.MSBuildParams with
+                    Properties = 
+                        ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
+                        ("NoRegenerate","true") ::
+                        options.MSBuildParams.Properties
+            }
+    }
+    
+    getProvider args |>
+    getProjectFile |>
+    DotNet.pack packOptions
 )
 
 Target.create "Push" (fun _ ->
-    !! (sprintf "**/%s.*.nupkg" fullName) |>
+    let vaultFile =
+        Environment.environVarOrNone "FAKEVAULTFILE_SECUREFILEPATH" |>
+        Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
+        FileInfo
+
+    let vault =
+        match Vault.fromFakeEnvironmentOrNone(), vaultFile.Exists with
+        | Some vault, _     -> vault
+        | None      , true  -> vaultFile.OpenText().ReadToEnd() |> Vault.fromJson
+        | None      , false -> failwith "Unsupported source for secrets"
+
+    let pushOptions options : DotNet.NuGetPushOptions = {
+        options with
+            PushParams = {
+                options.PushParams with
+                    ApiKey = Vault.tryGet "nuGetApiKey" vault
+                    Source = Some "https://api.nuget.org/v3/index.json"
+            }
+    }
+    
+    !! (getProvider args |> getFullName |> sprintf "**/%s.*.nupkg") |>
     Seq.exactlyOne |>
     DotNet.nugetPush pushOptions
 )
@@ -160,11 +168,12 @@ Target.create "Push" (fun _ ->
 Target.create "Default" ignore
 
 "Install"                                              =?>
-("ForceRegeneration"   ,     BuildServer.isLocalBuild) ==>
-"Build"                                                =?>
+("ForceRegeneration"   ,     BuildServer.isLocalBuild) =?>
 ("PublishGeneratedCode", not BuildServer.isLocalBuild) ==>
 "Pack"                                                 =?>
 ("Push"                , not BuildServer.isLocalBuild) ==>
 "Default"
 
-Target.runOrDefaultWithArguments target
+args |>
+getTarget |>
+Target.runOrDefaultWithArguments
