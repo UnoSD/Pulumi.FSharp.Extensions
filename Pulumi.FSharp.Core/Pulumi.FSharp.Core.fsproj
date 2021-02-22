@@ -20,7 +20,7 @@
         <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
 
-        <None Include="NuGetBuildPublish.yml" />
+        <None Include="build.fsx" />
         
         <Compile Include="OutputBuilder.fs" />
         <Compile Include="Config.fs" />
