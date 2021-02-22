@@ -1,5 +1,5 @@
 #r "paket:
-nuget FSharp.Core 5.0.0.0
+nuget FSharp.Core 4.7.0
 nuget Fake.DotNet.Cli
 nuget Fake.IO.FileSystem
 nuget Fake.BuildServer.TeamFoundation
@@ -21,6 +21,7 @@ BuildServer.install [ TeamFoundation.Installer ]
 
 let args =
     Context.forceFakeContext().Arguments |>
+    Array.ofList |>
     Docopt("""
 usage: dotnet_fake_run_build.fsx [PROVIDER] [options]
 
@@ -78,6 +79,10 @@ let buildOptions options : DotNet.BuildOptions = {
                     Verbosity = Some DotNet.Verbosity.Quiet
             }
             NoLogo = true
+            MSBuildParams = {
+                options.MSBuildParams with
+                    Properties = ("NoRegenerate","true") :: options.MSBuildParams.Properties
+                }
     }
 
 let nextExtensionsVersion =
@@ -92,7 +97,8 @@ let packOptions options : DotNet.PackOptions = {
         MSBuildParams = { 
             options.MSBuildParams with
                 Properties = 
-                    ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) :: 
+                    ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
+                    ("NoRegenerate","true") ::
                     options.MSBuildParams.Properties
         }
 }
@@ -110,8 +116,9 @@ let myriadFile =
     !! (sprintf "**/%s/Myriad.fs" fullName) |>
     Seq.exactlyOne
 
+#nowarn "52"
 let random =
-    int32 DateTime.Now.Ticks |>
+    DateTime.Now.Millisecond |>
     Random
 
 Target.create "Install" (fun _ ->

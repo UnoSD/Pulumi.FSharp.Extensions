@@ -13,9 +13,29 @@
         <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
-        <PreBuildEvent Condition="'$(BUILD_REASON)' == ''">cd "$(MSBuildProjectDirectory)/.."; dotnet fake run build.fsx AzureAD -t ForceRegeneration</PreBuildEvent>
     </PropertyGroup>
 
+    <UsingTask
+            TaskName="ForceRegenerate"
+            TaskFactory="RoslynCodeTaskFactory"
+            AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+        <Task>
+            <Using Namespace="System"/>
+            <Using Namespace="System.IO"/>
+            <Code Type="Fragment" Language="cs"><![CDATA[
+                var number = new Random(DateTime.Now.Millisecond).Next();
+                File.WriteAllText("Myriad.fs", $"module private AzureAD\n\nmodule Force = let private nonce = {number}");
+                Log.LogWarning("Force regenerate");
+         ]]></Code>
+        </Task>
+    </UsingTask>
+
+    <!-- To skip: -->
+    <!-- dotnet build Pulumi.FSharp.<provider> -p:NoRegenerate=true -->
+    <Target Name="CustomBeforeBuild" BeforeTargets="Build" Condition="'$(NoRegenerate)'!='true'">
+        <ForceRegenerate />
+    </Target>
+    
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
@@ -34,5 +54,4 @@
 
         <None Include="myriad.toml" />
     </ItemGroup>
-
 </Project>
