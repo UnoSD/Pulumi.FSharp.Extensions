@@ -174,9 +174,9 @@ Target.create "Default" ignore
 "Build"
 
 "Install"                                              =?>
-("ForceRegeneration"   ,     BuildServer.isLocalBuild) =?>
-("PublishGeneratedCode", not BuildServer.isLocalBuild) ==>
+("ForceRegeneration"   ,     BuildServer.isLocalBuild) ==>
 "Pack"                                                 =?>
+("PublishGeneratedCode", not BuildServer.isLocalBuild) =?>
 ("Push"                , not BuildServer.isLocalBuild) ==>
 "Default"
 
