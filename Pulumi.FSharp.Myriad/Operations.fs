@@ -65,7 +65,7 @@ let createNameOperation newNameExpr =
     createOperation'' ["Pulumi logical resource name"] null "Name" "name" "newName" true None newNameExpr
 
 let private listCons =
-    Expr.funcTuple("List.Cons", [ "apply"; "args" ])
+    Expr.appTuple("List.Cons", [ "apply"; "args" ])
 
 let private nReturnTuple =
     Expr.tuple(Expr.ident("n"), listCons)
@@ -108,8 +108,8 @@ let private compose =
 
 let private inputListFromSeqOf (expr : SynExpr) =
     Expr.paren(
-        Expr.func(compose, [
-            Expr.paren(Expr.func(Expr.longIdent("Seq.map"), expr))
+        Expr.app(compose, [
+            Expr.paren(Expr.app(Expr.longIdent("Seq.map"), expr))
             inputListIdent
         ])
     )
@@ -120,12 +120,12 @@ let private inputMapFromMapOf (expr : SynExpr) =
             Expr.lambda([ SimplePat.id("k")
                           SimplePat.id("v") ],
                         Expr.tuple(Expr.ident("k"),
-                                   Expr.func(expr,
-                                             Expr.ident("v")))))
+                                   Expr.app(expr,
+                                            Expr.ident("v")))))
     
     Expr.paren(
-        Expr.func(compose, [
-            Expr.paren(Expr.func(Expr.longIdent("Seq.map"), mapSelector))
+        Expr.app(compose, [
+            Expr.paren(Expr.app(Expr.longIdent("Seq.map"), mapSelector))
             inputMapIdent
         ])
     )
@@ -143,7 +143,9 @@ let private inputListFromOutputSeq =
     inputListFromSeqOf ioIdent
 
 let private inputListFromItemOf (expr : SynExpr) =
-    Expr.paren(Expr.func(compose, (Expr.func(Expr.paren(Expr.func(compose, [ expr; Expr.longIdent("Seq.singleton") ])), inputListIdent))))
+    Expr.paren(Expr.app(compose,
+                        (Expr.app(Expr.paren(Expr.app(compose,
+                                                      [ expr; Expr.longIdent("Seq.singleton") ])), inputListIdent))))
 
 let private inputListFromItem =
     inputListFromItemOf inputIdent

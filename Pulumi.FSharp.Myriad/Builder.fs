@@ -34,7 +34,7 @@ let private argIdent =
     Pat.ident("arg")
     
 let private argToInput =
-    Expr.func("input", "arg")
+    Expr.app("input", "arg")
     
 let private args =
     Expr.ident("args")
@@ -56,7 +56,7 @@ let private matchExpr =
 
 let private combineExpr =
     Expr.tuple(matchExpr,
-               Expr.paren(Expr.func("List.concat", (Expr.list [ "lArgs"; "rArgs" ]))))
+               Expr.paren(Expr.app("List.concat", (Expr.list [ "lArgs"; "rArgs" ]))))
 
 let private combineArgs =
     Pat.paren (Pat.tuple ((Pat.paren (Pat.tuple ("lName", "lArgs"))),
@@ -71,13 +71,13 @@ let private forArgs =
 let private forExpr =
     Expr.methodCall("this.Combine",
                     [ Expr.ident("args")
-                      Expr.func("delayedArgs", Expr.unit) ])
+                      Expr.app("delayedArgs", Expr.unit) ])
 
 let private forMember =
     createMember' None "this" "For" [forArgs.ToRcd] [] forExpr
  
 let private delayMember =
-    createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.func("f"))
+    createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.app("f", []))
 
 let private zeroMember =
     createMember "Zero" [Pat.wild.ToRcd] [] (Expr.unit)

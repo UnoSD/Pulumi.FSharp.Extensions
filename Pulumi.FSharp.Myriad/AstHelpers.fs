@@ -49,8 +49,11 @@ type Pat =
 
 type Expr =
     /// str
-    /// FIX THIS, IT SHOULD BE IDENT, NOT LONG IDENT TODO x
     static member ident(str) =
+        SynExpr.CreateIdent(Ident.Create(str))
+        
+    /// str.str
+    static member longIdent(str) =
         SynExpr.CreateLongIdent(LongIdentWithDots.CreateString(str))
         
     /// (exp)
@@ -103,59 +106,29 @@ type Expr =
         SynExpr.CreateApp(func, arg)
         
     /// func arg1 arg2 ...
-    static member app(func, args) =
+    static member app(func : SynExpr, args : SynExpr list) =
         match args with
         | [ ]      -> Expr.app(func, Expr.unit)
         | [x]      -> Expr.app(func, x)
         |  x :: xs -> Expr.app(Expr.app(func, x), xs)
         
+    /// func arg1 arg2 ...
     static member app(func : string, args : SynExpr list) =
         Expr.app((Expr.longIdent(func) : SynExpr), args)
     
+    /// func arg
     static member app(func : string, arg : string) =
         Expr.app(Expr.longIdent(func), Expr.ident(arg))
     
-    // REMOVE THIS, SHOULD BE CALLED APP TODO s
-    /// name exp
-    static member func(name, exp) =
-        SynExpr.CreateApp(Expr.longIdent(name),
-                          exp)
-
-    /// name ()
-    static member func(name : string) =
-        Expr.func(name, Expr.unit)
-    
-    /// name(exp1, exp2, ...)
-    static member funcTuple(name : string, exps) =
-        Expr.func(name,
-                  Expr.paren(Expr.tuple(exps)))
-        
-    static member funcTuple(name : string, names) =
-        Expr.func(name,
-                  Expr.paren(Expr.tuple(names |> List.map Expr.ident)))
-
-    static member func(name : string, args : string list) =
-        Expr.func(Expr.longIdent(name), args |> List.map Expr.ident)
-
-    /// name arg
-    static member func(name : SynExpr, arg : SynExpr) =
-        SynExpr.CreateApp(name, arg)
-    
-    /// name arg1 arg2 ...
-    static member func(name : SynExpr, args : SynExpr list) =
-        match args with
-        | [x]     -> Expr.func(name, x)
-        | x :: xs -> Expr.func(name, Expr.func(x, xs))
-        | []      -> failwith "Empty arguments"
-        
-    /// name arg1 arg2 ...
-    static member func(name : string, args : SynExpr list) =
-        Expr.func(Expr.longIdent(name), args)
+    /// func arg
+    static member app(func : string, arg : SynExpr) =
+        Expr.app(Expr.longIdent(func), arg)
             
-    /// name arg
-    static member func(name, arg : string) =
-        Expr.func(name, [arg])
-        
+    /// func (arg1, arg2, ...)
+    static member appTuple(func : string, args) =
+        Expr.app(func,
+                 Expr.paren(Expr.tuple(args |> List.map Expr.ident)))
+    
     static member match'(expr, clauses) =
         SynExpr.CreateMatch(expr, clauses)
 
@@ -165,7 +138,7 @@ type Expr =
     
     /// failwith msg
     static member failwith(msg) =
-        Expr.func("failwith", Expr.const'(msg))
+        Expr.app("failwith", Expr.const'(msg))
         
     static member let'(name, args : SynPat list, exp) =
         SynExpr.LetOrUse(
@@ -192,11 +165,6 @@ type Expr =
             ],
             Expr.unit,
             range.Zero)
-      
-    static member longIdent(identString) =
-        identString |>
-        LongIdentWithDots.CreateString |>
-        SynExpr.CreateLongIdent
         
     static member set(identString, exp) =
         SynExpr.Set (Expr.longIdent(identString),
