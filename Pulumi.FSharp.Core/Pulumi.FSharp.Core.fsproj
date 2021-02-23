@@ -21,6 +21,7 @@
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
 
         <None Include="build.fsx" />
+        <Content Include="FAKE.yml" />
         
         <Compile Include="OutputBuilder.fs" />
         <Compile Include="Config.fs" />

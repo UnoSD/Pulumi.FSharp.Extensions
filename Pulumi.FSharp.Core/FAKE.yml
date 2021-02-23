@@ -41,3 +41,4 @@ steps:
     command: custom
     custom: fake
     arguments: run
+    workingDirectory: Pulumi.FSharp.Core
