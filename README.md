@@ -2,74 +2,105 @@
 F# computational expressions to reduce boilerplate in Pulumi code
 
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Azure)](https://www.nuget.org/packages/Pulumi.FSharp.Azure)
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureAD)](https://www.nuget.org/packages/Pulumi.FSharp.AzureAD)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Aws)](https://www.nuget.org/packages/Pulumi.FSharp.Aws)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Kubernetes)](https://www.nuget.org/packages/Pulumi.FSharp.Kubernetes)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureAD)](https://www.nuget.org/packages/Pulumi.FSharp.AzureAD)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Core)](https://www.nuget.org/packages/Pulumi.FSharp.Core)
 
-# Pulumi.FSharp.Azure
+# Packages examples
 
-```fsharp
-open Pulumi.FSharp.Azure
+## Pulumi.FSharp.Aws
 
+```f#
+bucket {
+    name "bucket-example"
+    acl  "private"
+
+    bucketWebsite { 
+        indexDocument "index.html"
+    }
+}
+```
+
+## Pulumi.FSharp.Azure
+
+```f#
 let rg =
     resourceGroup {
-        name            "ResourceGroupName"
+        name                   "ResourceGroupName"
     }
 
 let sa =
     storageAccount {
-        name            "StorageAccountName"
-        resourceGroup   rg
-        replication     LRS
-        tier            Standard
-        httpsOnly       true
+        name                   "StorageAccountName"
+        resourceGroup          rg.Name
+        accountReplicationType "LRS"
+        accountTier            "Standard"
+        enableHttpsTrafficOnly true
     }
     
 let container =
     storageContainer {
-        name            "StorageContainer"
-        account         sa.Name
-        access          Private
-        containerName   "containername"
+        name                   "StorageContainer"
+        account                sa.Name
     }
     
-let blob =
-    storageBlob {
-        name            "StorageBlob"
-        account         storage
-        container       buildContainer
-        source          (input (("Blob content" |> StringAsset) :> AssetOrArchive))
-    }
-    
-let appServicePlan =
-    appService {
-        name            "FunctionAppServiceName"
-        resourceGroup   rg
-    }
-    
-let appInsights =
-    appInsight {
-        name            "AppInsight"
-        resourceGroup   rg
-        applicationType Web
-        retentionInDays 90
-    }
-    
-let template =
-    armTemplate {
-        name            "ArmTemplate"
-        resourceGroup   rg
-        json            (File.ReadAllText("Template.json"))
-        parameters      [ "location", io rg.Location ]
+let contentBlob =
+    blob {
+        name                   "StorageBlob"
+        storageAccountName     storage
+        storageContainerName   buildContainer
+        source                 { Text = "Blob content" }.ToPulumiType
     }
     
 let sasToken =
     sasToken {
         storage         sa
-        blob            apiBlob
+        blob            contentBlob
     }
     
+let appServicePlan =
+    plan {
+        name                   "FunctionAppServiceName"
+        resourceGroup          rg.Name
+        kind                   "FunctionApp"
+        
+        planSku {
+            size "Y1"
+            tier "Dynamic"
+        }
+    }
+```
+
+## Pulumi.FSharp.AzureAD
+
+```f#
+application {
+    name                    "AzureADApplicationName"
+    displayName             "AzureAD application name"
+    oauth2AllowImplicitFlow true
+    
+    replyUrls               [
+        config.["WebEndpoint"]
+        "https://jwt.ms"
+        "http://localhost:8080"
+    ]            
+    
+    applicationOptionalClaims {
+        idTokens [
+            applicationOptionalClaimsIdToken {
+                name                 "upn"
+                additionalProperties "include_externally_authenticated_upn"
+                essential            true
+            }
+        ]
+    }
+}
+```
+
+## Pulumi.FSharp.Core
+
+```f#
 // Output computational expressions
 let deploymentCountBars =
     output {
@@ -85,7 +116,7 @@ let someSecret =
         let! key1 = sa.PrimaryConnectionString
         let! key2 = sa.SecondaryConnectionString
         
-        return "Secret connection strings: " + key1 + " " + key2
+        return $"Secret connection strings: {key1} {key2}"
     }
     
 // Mixing Output<> and Task<>
@@ -117,71 +148,140 @@ let sas =
     }
 ```
 
+## Pulumi.FSharp.Kubernetes
+
+```f#
+deployment {
+    name "application"
+
+    deploymentSpec {
+        replicas 1
+
+        labelSelector { 
+            matchLabels [ "app", input "nginx" ]
+        }
+
+        podTemplateSpec {
+            objectMeta {
+                labels [ "app", input "nginx" ]
+            }
+
+            podSpec {
+                containers [
+                    container {
+                        name  "nginx"
+                        image "nginx"
+                        ports [ containerPort { containerPortValue 80 } ]
+                    }
+                ]
+            }
+        }
+    }
+}
+```
+
 # Full stack file example
 
-Create a Pulumi F# project using `pulumi new azure-fsharp` and add the NuGet packages above.
+- Create a Pulumi F# project using `pulumi new fsharp`
+- Upgrade the project to .NET 5 
+- Add the NuGet package `Pulumi.FSharp.Azure`
+- Edit the `Program.fs` and paste the example below
+- Run `pulumi up` and create the infrastructure using a readable strongly-typed DSL
+- Log in your new Visual Studio VM using the IP from the outputs and credentials in code
 
-Edit the `Program.fs` similarly to the example below.
+To discover available properties for each resource, examine the code documentation of the builders (E.G. hover over a `Pulumi.FSharp.Azure.Compute.windowsVirtualMachine` computational expression to find all available properties and on each property to discover their description)
 
-Run `pulumi up` and create the infrastructure using a readable strongly-typed DSL.
-
-To discover available properties for each resource, examine the code documentation of the builders (E.G. hover over a `Pulumi.FSharp.Azure.Compute.windowsVirtualMachine` computational expression)
-
-```fsharp
+```f#
 module Program
 
 open Pulumi.FSharp.Azure.Compute.Inputs
+open Pulumi.FSharp.Azure.Network.Inputs
 open Pulumi.FSharp.Azure.Compute
-open Pulumi.FSharp.Config
-open Pulumi.FSharp.Output
+open Pulumi.FSharp.Azure.Network
+open Pulumi.FSharp.Azure.Core
 open Pulumi.FSharp
 
 let infra () =
+    let rg =
+        resourceGroup {
+            name     "rg-example"
+            location "West Europe"
+        }
+
+    let pip =
+        publicIp {
+            name             "pip-example"
+            resourceGroup    rg.Name
+            location         rg.Location
+            allocationMethod "Dynamic"
+        }
+    
+    let vnet =
+        virtualNetwork {
+            name          "vnet-example"
+            addressSpaces "10.0.0.0/16"
+            location      rg.Location
+            resourceGroup rg.Name
+        }
+
+    let subnet =
+        subnet {
+            name               "snet-example"
+            resourceGroup      rg.Name
+            virtualNetworkName vnet.Name
+            addressPrefixes    "10.0.2.0/24"
+        }
+
+    let nic =
+        networkInterface {
+            name          "nic-example"
+            location      rg.Location
+            resourceGroup rg.Name
+
+            ipConfigurations [ 
+                networkInterfaceIpConfiguration {
+                    name                       "internal"
+                    subnetId                   subnet.Id
+                    privateIpAddressAllocation "Dynamic"
+                    publicIpAddressId          pip.Id
+                }
+            ]
+        }
+    
     let vm =
         windowsVirtualMachine {
-            name "PulumiVmName"
-            resourceName "AzureNameForVm"
-            
-            resourceGroup "ResourceGroupName"
-            networkInterfaceIds [ config.["nicResourceIdFromConfig"] ]
-            size "Standard_D4s_v3"
+            name                "vm-example"
+            resourceName        "vm-example"
+            resourceGroup       rg.Name
+            size                "Standard_A1_v2"
+            networkInterfaceIds nic.Id
             
             windowsVirtualMachineOsDisk {
-                name config.["vmDiskName"]
-                caching "ReadWrite"
+                caching            "ReadWrite"
                 storageAccountType "Standard_LRS"
             }
             
-            adminUsername config.["vmUser"]
-            adminPassword secret.["encryptedPasswordFromPulumiConfig"]
+            adminUsername "unosdpulumi"
+            adminPassword "ReplaceThisWithAProperPassword%%55"
             
             windowsVirtualMachineSourceImageReference {
-                offer "visualstudio2019latest"
+                offer     "visualstudio2019latest"
                 publisher "microsoftvisualstudio"
-                sku "vs-2019-comm-latest-win10-n"
-                version "latest"
+                sku       "vs-2019-comm-latest-win10-n"
+                version   "latest"
             }
         }
-    
-    let secretValue =
-        secretOutput {
-            return vm.PublicIpAddress
-        }
-    
-    let pipCird =
-        output {
-            let! pip = vm.PublicIpAddress
-            
-            return pip + "/32"
-        }
-    
-    dict [ "SecretPublicIP",      secretValue :> obj
-           "VisiblePublicIPCIDR", pipCird     :> obj ]
+        
+    dict [ "PublicIP", vm.PublicIpAddress :> obj ]
            
 [<EntryPoint>]
 let main _ =
   Deployment.run infra
 ```
+
+# Example project using the library
+
+[https://github.com/UnoSD/UnoCash](https://github.com/UnoSD/UnoCash/blob/master/UnoCash.Pulumi/Program.fs)
 
 # One language to rule them all (F# eXchange 2020)
 
