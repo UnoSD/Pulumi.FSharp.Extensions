@@ -1,10 +1,10 @@
 module AstOperations
 
 open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.XmlDoc
 open AstAttribute
 open AstHelpers
 open AstMember
-open FSharp.Compiler.XmlDoc
 open FsAst
 open Core
     
@@ -114,6 +114,27 @@ let private inputListFromSeqOf (expr : SynExpr) =
         ])
     )
 
+let private inputMapFromMapOf (expr : SynExpr) =    
+    let mapSelector =
+        Expr.paren(
+            Expr.lambda(SimplePat.tuple("k", "v"),
+                        Expr.tuple(Expr.ident("k"),
+                                   Expr.func(expr,
+                                             Expr.ident("v")))))
+    
+    Expr.paren(
+        Expr.func(compose, [
+            Expr.paren(Expr.func(Expr.longIdent("Seq.map"), mapSelector))
+            inputMapIdent
+        ])
+    )
+
+let private inputMapFromMapOfInput =
+    inputMapFromMapOf inputIdent
+
+let private inputMapFromMapOfOutput =
+    inputMapFromMapOf ioIdent
+
 let private inputListFromSeq =
     inputListFromSeqOf inputIdent
 
@@ -177,7 +198,7 @@ let createOperationsFor' argsType pType =
         | { Type = PArray _ } -> [ inputListIdent; inputListFromSeq; inputListFromOutputSeq; inputListFromItem; inputListFromOutput ], None
         | { Type = PUnion _ } -> [ idIdent; inputUnion1Of2; inputUnion2Of2 ], None
         | { Type = PJson }    -> [ inputJson ], Some "string"
-        | { Type = PMap _ }   -> [ inputMapIdent ], None
+        | { Type = PMap _ }   -> [ idIdent; inputMapIdent; inputMapFromMapOfInput; inputMapFromMapOfOutput ], None
         | { Type = PRef _ }
         | { Type = PArchive }
         | { Type = PAny }
