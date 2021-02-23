@@ -170,6 +170,10 @@ Target.create "Push" (fun _ ->
 Target.create "Default" ignore
 
 "Install"                                              =?>
+("ForceRegeneration"   ,     BuildServer.isLocalBuild) ==>
+"Build"
+
+"Install"                                              =?>
 ("ForceRegeneration"   ,     BuildServer.isLocalBuild) =?>
 ("PublishGeneratedCode", not BuildServer.isLocalBuild) ==>
 "Pack"                                                 =?>
