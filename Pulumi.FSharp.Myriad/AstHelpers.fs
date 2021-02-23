@@ -9,13 +9,6 @@ type SimplePat =
     /// str
     static member id(str) =
         SynSimplePat.Id(Ident.Create(str), None, false, false, false, range.Zero)
-    
-    /// (left, right)
-    static member tuple(left, right) =
-        SynSimplePats.SimplePats([
-            SimplePat.id(left)
-            SimplePat.id(right)
-        ], range.Zero)
 
 type Pat =
     static member tuple(left, right) =
@@ -56,6 +49,7 @@ type Pat =
 
 type Expr =
     /// str
+    /// FIX THIS, IT SHOULD BE IDENT, NOT LONG IDENT TODO x
     static member ident(str) =
         SynExpr.CreateLongIdent(LongIdentWithDots.CreateString(str))
         
@@ -104,6 +98,24 @@ type Expr =
     static member sequential(exps) =
         SynExpr.CreateSequential(exps)
         
+    /// func arg
+    static member app(func, arg) =
+        SynExpr.CreateApp(func, arg)
+        
+    /// func arg1 arg2 ...
+    static member app(func, args) =
+        match args with
+        | [ ]      -> Expr.app(func, Expr.unit)
+        | [x]      -> Expr.app(func, x)
+        |  x :: xs -> Expr.app(Expr.app(func, x), xs)
+        
+    static member app(func : string, args : SynExpr list) =
+        Expr.app((Expr.longIdent(func) : SynExpr), args)
+    
+    static member app(func : string, arg : string) =
+        Expr.app(Expr.longIdent(func), Expr.ident(arg))
+    
+    // REMOVE THIS, SHOULD BE CALLED APP TODO s
     /// name exp
     static member func(name, exp) =
         SynExpr.CreateApp(Expr.longIdent(name),
@@ -195,14 +207,19 @@ type Expr =
         SynExpr.CreateInstanceMethodCall(LongIdentWithDots.CreateString(identString),
                                          Expr.paren(Expr.tuple(exps)))
     
-    /// fun args -> exp
     static member lambda(args, exp) =
         SynExpr.Lambda(false,
-                       false,
-                       args,
+                       true,
+                       SynSimplePats.SimplePats(args, range.Zero),
                        exp,
                        None,
                        range.Zero)
+    
+    static member lambda(args : string list, exp) =
+        match args with
+        | [ ]      -> Expr.lambda(List.empty<SynSimplePat>, exp)
+        | [x]      -> Expr.lambda([ SimplePat.id(x) ], exp)
+        |  x :: xs -> Expr.lambda([ SimplePat.id(x) ], Expr.lambda(xs, exp))
 
 type Match =
     static member clause(pat, expr) =

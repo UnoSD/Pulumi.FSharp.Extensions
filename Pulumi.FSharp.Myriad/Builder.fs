@@ -135,21 +135,19 @@ let createBuilderClass isType name pTypes =
         name + "Args"
 
     let apply =
-        Expr.func("List.fold", [
-            Expr.ident("func")
+        Expr.app("List.fold", [
+            Expr.paren(Expr.lambda([ "args"; "f" ], Expr.app("f", "args")))
             Expr.paren(createInstance argsType Expr.unit)
             Expr.ident("args")
         ])
        
-    let runArgs =
-        if isType then
-            apply
-        else
-            Expr.paren(
-                Expr.tuple(
-                    Expr.ident("name"),
-                    Expr.paren(apply)
-                ))
+    let resourceRunExp () =
+        Expr.paren(
+            Expr.tuple(
+                Expr.ident("name"),
+                Expr.paren(apply)
+            )) |>
+        createInstance name
         
     let createOperations =
         mapOperationType (createYieldFor argsType)
@@ -159,17 +157,16 @@ let createBuilderClass isType name pTypes =
         pTypes |>
         Seq.collect createOperations
         
-    let runReturnExpr =
-        Expr.sequential([
-            Expr.let'("func", [ "args"; "f" ], Expr.func("f", "args"))
-            if isType then runArgs else createInstance name runArgs
-        ])
-    
     Module.type'(name + "Builder", [
         Type.ctor()
         
         yieldMember
-        createRun (if isType then null else "name") runReturnExpr
+        
+        if isType then
+            apply            |> createRun null
+        else
+            resourceRunExp() |> createRun "name"
+            
         combineMember
         forMember
         delayMember

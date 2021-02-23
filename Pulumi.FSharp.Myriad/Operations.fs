@@ -117,7 +117,8 @@ let private inputListFromSeqOf (expr : SynExpr) =
 let private inputMapFromMapOf (expr : SynExpr) =    
     let mapSelector =
         Expr.paren(
-            Expr.lambda(SimplePat.tuple("k", "v"),
+            Expr.lambda([ SimplePat.id("k")
+                          SimplePat.id("v") ],
                         Expr.tuple(Expr.ident("k"),
                                    Expr.func(expr,
                                              Expr.ident("v")))))
