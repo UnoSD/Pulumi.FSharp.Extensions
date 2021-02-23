@@ -97,7 +97,10 @@ type Expr =
             idents |> List.map Expr.ident,
             range.Zero
         )
-     
+    
+    /// exp1
+    /// exp2
+    /// ...
     static member sequential(exps) =
         SynExpr.CreateSequential(exps)
         
