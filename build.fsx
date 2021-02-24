@@ -16,7 +16,17 @@ open Fake.Core.Xml
 open Fake.DotNet
 open Fake.Core
 open System.IO
+open Fake.IO
 open System
+
+(*
+    Usage:
+
+    dotnet fake run build.fsx AzureAD                      # Install, ForceRegeneration, Pack for AzureAD
+    dotnet fake run build.fsx AzureAD -t ForceRegeneration # Install and ForceRegeneration only
+    dotnet fake run build.fsx All     -t ForceRegeneration # Install and ForceRegeneration for all providers
+    dotnet fake run build.fsx All     -t Build             # Install, ForceRegeneration and Build for all providers
+*)
 
 BuildServer.install [ TeamFoundation.Installer ]
 
@@ -40,17 +50,29 @@ let getProvider args =
           Option.bind (function | Argument p -> Some p | _ -> None) |>
           Option.orElse (Environment.environVarOrNone "PROVIDER") |>
           Option.orElse (Environment.environVarOrNone "BUILD_DEFINITIONNAME") with
-    | Some p -> p
-    | _      -> failwith "Missing provider"
+    | Some "All" -> "*"
+    | Some p     -> p
+    | _          -> failwith "Missing provider"
+
+let getProviders =
+    function
+    | "All" -> DirectoryInfo.ofPath "." |>
+               DirectoryInfo.getSubDirectories |>
+               Array.filter (fun d -> d.Name.StartsWith("Pulumi.FSharp.") &&
+                                      not <| d.Name.EndsWith(".Test") &&
+                                      not <| d.Name.EndsWith(".Core") &&
+                                      not <| d.Name.EndsWith(".Myriad")) |>
+               Array.map (fun d -> d.Name.Substring(14))
+    | name  -> [| name |]
 
 let getFullName provider =
     sprintf "Pulumi.FSharp.%s" provider
 
-let getProjectFile provider = 
+let getProjectFiles provider = 
     let projectPattern =
         provider |> getFullName |> sprintf "**/%s.fsproj" 
         
-    !! projectPattern |> Seq.head
+    !! projectPattern
 
 Target.create "Install" (fun _ ->
     DotNet.Options.Create() |>
@@ -59,9 +81,8 @@ Target.create "Install" (fun _ ->
 )
 
 Target.create "ForceRegeneration" (fun _ ->
-    let myriadFile =
-        !! (getProvider args |> getFullName |> sprintf "**/%s/Myriad.fs") |>
-        Seq.exactlyOne
+    let myriadFiles =
+        !! (getProvider args |> getFullName |> sprintf "**/%s/Myriad.fs")
 
     let random =
         DateTime.Now.Millisecond |>
@@ -75,7 +96,8 @@ Target.create "ForceRegeneration" (fun _ ->
         | true  -> random.Next() |> sprintf "module Force = let private nonce = %i"
         | false -> ""
     
-    File.WriteAllText(myriadFile, sprintf "%s\n\n%s" moduleDeclaration forceRebuild)
+    myriadFiles |>
+    Seq.iter (fun myriadFile -> File.WriteAllText(myriadFile, sprintf "%s\n\n%s" moduleDeclaration forceRebuild))
 )
 
 Target.create "Build" (fun _ ->
@@ -93,52 +115,55 @@ Target.create "Build" (fun _ ->
         }
     
     getProvider args |>
-    getProjectFile |>
-    DotNet.build buildOptions
+    getProjectFiles |>
+    Seq.iter (DotNet.build buildOptions)
 )
 
 Target.create "PublishGeneratedCode" (fun _ ->
     !! (getProvider args |> getFullName |> sprintf "**/%s/Generated.fs") |>
-    Seq.exactlyOne |>
-    Trace.publish ImportData.BuildArtifact
+    Seq.iter (Trace.publish ImportData.BuildArtifact)
 )
 
 Target.create "Pack" (fun _ ->
-    let nextExtensionsVersion =
-        getProvider args |> 
-        getFullName |> 
-        NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
-        (fun x -> x.Version.Split('.')) |>
-        Array.last |>
-        Int32.Parse |>
-        (+)1
-        
-    let xPath =
-        getProvider args |>
-        sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']"
-        
-    let pulumiNuGetVersion =
-        getProvider args |>
-        getProjectFile |> 
-        loadDoc |>
-        selectXPathAttributeValue xPath
-                                  "Version"
-                                  []
-    
-    let packOptions options : DotNet.PackOptions = {
-        options with
-            MSBuildParams = { 
-                options.MSBuildParams with
-                    Properties = 
-                        ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
-                        ("NoRegenerate","true") ::
-                        options.MSBuildParams.Properties
-            }
-    }
-    
     getProvider args |>
-    getProjectFile |>
-    DotNet.pack packOptions
+    getProviders |>
+    Seq.iter (fun provider -> 
+        let nextExtensionsVersion =
+            getFullName provider |> 
+            NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
+            (fun x -> x.Version.Split('.')) |>
+            Array.last |>
+            Int32.Parse |>
+            (+)1
+            
+        let xPath =
+            sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']" provider
+            
+        let projectFile =
+            getProjectFiles provider |>
+            Seq.exactlyOne
+
+        let pulumiNuGetVersion =
+            projectFile |> 
+            loadDoc |>
+            selectXPathAttributeValue xPath
+                                      "Version"
+                                      []
+        
+        let packOptions options : DotNet.PackOptions = {
+            options with
+                MSBuildParams = { 
+                    options.MSBuildParams with
+                        Properties = 
+                            ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
+                            ("NoRegenerate","true") ::
+                            options.MSBuildParams.Properties
+                }
+        }
+        
+        projectFile |>
+        DotNet.pack packOptions
+    )
 )
 
 Target.create "Push" (fun _ ->
@@ -163,8 +188,7 @@ Target.create "Push" (fun _ ->
     }
     
     !! (getProvider args |> getFullName |> sprintf "**/%s.*.nupkg") |>
-    Seq.exactlyOne |>
-    DotNet.nugetPush pushOptions
+    Seq.iter (DotNet.nugetPush pushOptions)
 )
 
 Target.create "Default" ignore
