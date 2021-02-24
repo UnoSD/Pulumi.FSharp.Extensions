@@ -36,12 +36,12 @@ let infra () =
             replicas 1
 
             labelSelector { 
-                matchLabels [ "app", input "nginx" ]
+                matchLabels [ "app", "nginx" ]
             }
 
             podTemplateSpec {
                 objectMeta {
-                    labels [ "app", input "nginx" ]
+                    labels [ "app", "nginx" ]
                 }
 
                 podSpec {
