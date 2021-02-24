@@ -74,6 +74,12 @@ let getProjectFiles provider =
         
     !! projectPattern
 
+let traceNested func projFile =
+    Trace.useWith true
+                  (fun _ -> func projFile)
+                  (Trace.traceTarget projFile "" "")
+                  // traceTask, traceTag
+
 Target.create "Install" (fun _ ->
     DotNet.Options.Create() |>
     DotNet.install DotNet.Versions.FromGlobalJson |>
@@ -116,7 +122,7 @@ Target.create "Build" (fun _ ->
     
     getProvider args |>
     getProjectFiles |>
-    Seq.iter (DotNet.build buildOptions)
+    Seq.iter (traceNested (DotNet.build buildOptions))
 )
 
 Target.create "PublishGeneratedCode" (fun _ ->
@@ -162,7 +168,7 @@ Target.create "Pack" (fun _ ->
         }
         
         projectFile |>
-        DotNet.pack packOptions
+        traceNested (DotNet.pack packOptions)
     )
 )
 
