@@ -9,6 +9,11 @@ type SimplePat =
     /// str
     static member id(str) =
         SynSimplePat.Id(Ident.Create(str), None, false, false, false, range.Zero)
+        
+    static member typed(str, type' : string) =
+        SynSimplePat.Typed(SimplePat.id(str),
+                           SynType.CreateLongIdent(type'),
+                           range.Zero)
 
 type Pat =
     static member tuple(left, right) =

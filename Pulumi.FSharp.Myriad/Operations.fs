@@ -72,12 +72,6 @@ let private nReturnTuple =
 
 let private nameReturnTuple =
     Expr.tuple(Expr.ident("name"), listCons)
-    
-// This should be the same as the member arg (currently "n")
-let private returnTupleCache isType =
-    match isType with
-    | true  -> nReturnTuple
-    | false -> nameReturnTuple
 
 let private argsIdent =
     Expr.ident("args")
@@ -191,6 +185,36 @@ type PTypeDefinition =
         OperationName: string
     }
 
+// This should be the same as the member arg (currently "n")
+let private returnTupleCache argsType pType opName setRight =    
+    let set =
+        Expr.set($"args.{pType.Name}", setRight)
+    
+    let lambdaExpr =
+        Expr.sequential([
+            set
+            Expr.ident("args")
+        ])
+    
+    let lambda =
+        Expr.lambda([
+            SimplePat.typed("args", argsType)
+        ], lambdaExpr)
+    
+    let consArg =
+        Expr.paren(Expr.tuple(Expr.paren(lambda), Expr.ident("args")))
+    
+    let cons =
+        Expr.app(Expr.longIdent("List.Cons"), consArg)
+    
+    //  n, List.Cons((fun (a: ServicePrincipalOauth2PermissionArgs) -> a.Value <- io value; a), args)
+    let tuple nameStr =
+        Expr.tuple(Expr.ident(nameStr), cons)
+    
+    match pType.IsResource with    
+    | false -> tuple "n"
+    | true  -> tuple "name"
+
 let createOperationsFor' argsType pType =
     let (setRights, argType) =
         match pType with
@@ -207,19 +231,6 @@ let createOperationsFor' argsType pType =
         | { Type = PAny }
         | { Type = PAssetOrArchive } -> [ inputIdent ], None
     
-    let letExpr setRight =
-        Expr.let'("apply", [ Pat.typed("args", argsType) ],
-                  Expr.sequential([
-                      Expr.set("args." + pType.Name, SynExpr.CreateApp(setRight))
-                      argsIdent
-                  ]))
-    
-    let expr setExpr =
-        Expr.sequential([
-            setExpr
-            returnTupleCache (not pType.IsResource)
-        ])
-
     let snakeCaseName =
         if pType.Name = "Name" && pType.IsResource then
             "resourceName"
@@ -251,6 +262,12 @@ let createOperationsFor' argsType pType =
     let doc =
         String.split '\n' pType.Description |> Array.filter (((=)"") >> not)
     
+    let returnTupleCache' =
+        returnTupleCache argsType pType operationName
+    
+    let argNameExpr =
+        Expr.ident(argName)
+    
     setRights |>
-    List.map ((fun sr -> sr, operationName) >> letExpr >> expr) |>
+    List.map ((fun sr -> Expr.app(sr, argNameExpr)) >> returnTupleCache') |>
     List.mapi (fun i e -> createOperation'' doc nameArgName memberName pType.OperationName argName (i = 0) argType e)
