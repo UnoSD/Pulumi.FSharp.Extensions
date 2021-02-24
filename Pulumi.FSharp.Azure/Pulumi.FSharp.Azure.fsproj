@@ -46,7 +46,7 @@
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
         
-        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
+        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" PrivateAssets="All" />
         
         <Compile Include="Myriad.fs" />
 
