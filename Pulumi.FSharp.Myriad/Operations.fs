@@ -95,7 +95,7 @@ let private inputMapIdent =
     Expr.ident("inputMap")
 
 let private inputJson =
-    Expr.ident("Pulumi.InputJson.op_Implicit")
+    Expr.longIdent("Pulumi.InputJson.op_Implicit")
 
 let private resourceNameIdent =
     Expr.ident("resourceName")
