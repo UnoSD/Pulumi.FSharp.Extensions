@@ -45,22 +45,11 @@ let private funcIdent =
 let private yieldReturnExpr =
     Expr.list([ Expr.ident("id") ])
 
-let private matchExpr =
-    Expr.paren(
-        Expr.match'(Expr.tuple(Expr.ident("lName"), Expr.ident("rName")), [
-            Match.clause(Pat.tuple(Pat.null', Pat.null'), Expr.null')
-            Match.clause(Pat.tuple(Pat.null', Pat.ident("name")), Expr.ident("name"))
-            Match.clause(Pat.tuple(Pat.ident("name"), Pat.null'), Expr.ident("name"))
-            Match.clause(Pat.wild, Expr.failwith("Duplicate name"))
-        ]))
-
 let private combineExpr =
-    Expr.tuple(matchExpr,
-               Expr.paren(Expr.app("List.concat", (Expr.list [ "lArgs"; "rArgs" ]))))
+    Expr.app("_combine", "args")
 
 let private combineArgs =
-    Pat.paren (Pat.tuple ((Pat.paren (Pat.tuple ("lName", "lArgs"))),
-                          (Pat.paren (Pat.tuple ("rName", "rArgs")))))
+    Pat.ident("args")
     
 let private combineMember =
     createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineExpr
