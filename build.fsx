@@ -56,7 +56,7 @@ let getProvider args =
 
 let getProviders =
     function
-    | "All" -> DirectoryInfo.ofPath "." |>
+    | "*"   -> DirectoryInfo.ofPath "." |>
                DirectoryInfo.getSubDirectories |>
                Array.filter (fun d -> d.Name.StartsWith("Pulumi.FSharp.") &&
                                       not <| d.Name.EndsWith(".Test") &&
@@ -123,14 +123,21 @@ Target.create "Install" (fun _ ->
 
 Target.create "ForceRegeneration" (fun _ ->
     let myriadFiles =
-        !! (getProvider args |> getFullName |> sprintf "**/%s/Myriad.fs")
+        getProvider args |>
+        getProviders |>
+        Seq.map (fun provider -> provider, 
+                                 (!! (provider |>
+                                      getFullName |>
+                                      sprintf "**/%s/Myriad.fs"))
+                                 |> Seq.exactlyOne) |>
+        Map.ofSeq
 
     let random =
         DateTime.Now.Millisecond |>
         Random
     
-    let moduleDeclaration =
-        getProvider args |> sprintf "module private %s"
+    let moduleDeclaration provider =
+        sprintf "module private %s" provider
 
     let forceRebuild =
         match BuildServer.isLocalBuild with
@@ -138,7 +145,9 @@ Target.create "ForceRegeneration" (fun _ ->
         | false -> ""
     
     myriadFiles |>
-    Seq.iter (fun myriadFile -> File.WriteAllText(myriadFile, sprintf "%s\n\n%s" moduleDeclaration forceRebuild))
+    Map.iter (fun provider myriadFile -> 
+                File.WriteAllText(myriadFile, 
+                                  sprintf "%s\n\n%s" (moduleDeclaration provider) forceRebuild))
 )
 
 Target.create "Build" (fun _ ->
@@ -156,7 +165,8 @@ Target.create "Build" (fun _ ->
         }
     
     getProvider args |>
-    getProjectFiles |>
+    getProviders |>
+    Array.map (getProjectFiles >> Seq.exactlyOne) |>
     Seq.iter (traceNested (DotNet.build buildOptions))
 )
 
