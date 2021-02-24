@@ -39,8 +39,8 @@
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.Aws" Version="3.29.1" />
-        <PackageReference Include="Pulumi.FSharp" Version="2.21.1" />
+        <PackageReference Include="Pulumi.Aws" Version="3.30.0" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.21.2" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
