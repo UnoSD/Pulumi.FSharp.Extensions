@@ -80,6 +80,41 @@ let traceNested func projFile =
                   (Trace.traceTarget projFile "" "")
                   // traceTask, traceTag
 
+let vaultFile =
+    "Pulumi.FSharp.Extensions.vault.json"
+
+let nuGetApiKey = 
+    "nuGetApiKey"
+
+let confirm msg =
+    printf "%s [y/any]? " msg
+    Console.ReadKey().Key = ConsoleKey.Y
+
+Target.create "CreateVault" (fun _ ->
+    if not <| File.exists vaultFile ||
+       confirm "Vault file exists, do you want to overwrite it" then
+
+        printfn "\nEnter the NuGet API key: "
+
+        let variable : Vault.Variable = {
+            Name = nuGetApiKey
+            Secret = false // On Azure DevOps SecureFile is already encrypted
+            Value = Console.ReadLine()
+        }
+
+        let vaultFileContent = 
+            //let keyInfo = Some "keyFilePath" |> Vault.createKey
+            {| 
+                // Only if encrypted
+                //keyFile = keyInfo.KeyFile
+                //iv = keyInfo.Iv
+                values = [| variable |]
+            |} |> 
+            Newtonsoft.Json.JsonConvert.SerializeObject
+        
+        File.WriteAllText(vaultFile, vaultFileContent)
+)
+
 Target.create "Install" (fun _ ->
     DotNet.Options.Create() |>
     DotNet.install DotNet.Versions.FromGlobalJson |>
@@ -175,7 +210,7 @@ Target.create "Pack" (fun _ ->
 Target.create "Push" (fun _ ->
     let vaultFile =
         Environment.environVarOrNone "FAKEVAULTFILE_SECUREFILEPATH" |>
-        Option.defaultValue "Pulumi.FSharp.Extensions.vault.json" |>
+        Option.defaultValue vaultFile |>
         FileInfo
 
     let vault =
@@ -188,7 +223,7 @@ Target.create "Push" (fun _ ->
         options with
             PushParams = {
                 options.PushParams with
-                    ApiKey = Vault.tryGet "nuGetApiKey" vault
+                    ApiKey = Vault.tryGet nuGetApiKey vault
                     Source = Some "https://api.nuget.org/v3/index.json"
             }
     }
