@@ -14,21 +14,15 @@ open FSharp.Text.RegexProvider
 
 // "azure:compute/virtualMachine:VirtualMachine"
 // CloudProvider - Always the same for each schema (azure here)
-type ResourceInfoProvider =
+type InfoProvider =
     Regex<"(?<CloudProvider>[a-z-]+):(?<ResourceProviderNamespace>[A-Za-z0-9.]+)(/(?<SubNamespace>\w+))?:(?<ResourceType>\w+)">
 
-type TypeInfoProvider =
-    Regex<"(?<CloudProvider>[a-z-]+):(?<ResourceProviderNamespace>[A-Za-z0-9.]+)(/(?<SubNamespace>\w+))?:(?<ResourceType>\w+)">
+let typeInfoProvider =
+    InfoProvider(RegexOptions.Compiled)
 
-let resourceInfo =
-    ResourceInfoProvider(RegexOptions.Compiled)
-
-let typeInfo =
-    TypeInfoProvider(RegexOptions.Compiled)
-    
 type BuilderType =
-    | Type of TypeInfoProvider.MatchType
-    | Resource of ResourceInfoProvider.MatchType
+    | Type of InfoProvider.MatchType
+    | Resource of InfoProvider.MatchType
 
 let private argIdent =
     Pat.ident("arg")

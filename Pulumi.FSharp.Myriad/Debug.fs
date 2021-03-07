@@ -129,10 +129,10 @@ let private filters = join [ azureFilters; awsFilters; kubernetesFilters; azureA
 
 let private typeSelector builderType =
     match (builderType, filters.Types, filters.Resources) with
-    | (Type     t, Include ts, _         ) -> List.contains t.ResourceType.Value ts
-    | (Type     t, Exclude ts, _         ) -> not <| List.contains t.ResourceType.Value ts
-    | (Resource r, _         , Include rs) -> List.contains r.ResourceType.Value rs
-    | (Resource r, _         , Exclude rs) -> not <| List.contains r.ResourceType.Value rs
+    | (Type     t, Include it, _         )
+    | (Resource t, _         , Include it) -> List.contains t.ResourceType.Value it
+    | (Type     t, Exclude et, _         )
+    | (Resource t, _         , Exclude et) -> not <| List.contains t.ResourceType.Value et
 
 let private providerSelector provider =
     match filters.Providers with

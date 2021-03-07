@@ -1,8 +1,9 @@
 module AstModules
 
-open AstOperations
-open BuilderInstance
+open System.Text.RegularExpressions
 open FSharp.Compiler.SyntaxTree
+open BuilderInstance
+open AstOperations
 open FSharp.Data
 open AstHelpers
 open AstBuilder
@@ -319,23 +320,33 @@ let createTypes (schema : JsonValue) =
         f y x
         
     let resources =
-        typedMatches "resources" resourceInfo Resource <|
+        typedMatches "resources" typeInfoProvider Resource <|
         Array.filter (fun (_, v) -> v.TryGetProperty("deprecationMessage").IsNone)
         
     let types =
-        typedMatches "types" typeInfo Type <|
+        typedMatches "types" typeInfoProvider Type <|
         Array.filter (fst >> (flip List.contains) allNestedTypes)
     
-    let resourceProvider (builder, _) =
-        match builder with
-        | Type t     -> if t.SubNamespace.Success && t.SubNamespace.Value <> t.ResourceType.Value then
-                            t.ResourceProviderNamespace.Value + "/" + t.SubNamespace.Value
-                        else
-                            t.ResourceProviderNamespace.Value
-        | Resource r -> if r.SubNamespace.Success && (r.SubNamespace.Value |> toPascalCase) <> r.ResourceType.Value then
-                            r.ResourceProviderNamespace.Value + "/" + r.SubNamespace.Value
-                        else
-                            r.ResourceProviderNamespace.Value
+    let tryGetMatch (regexMatch : Group) =
+        if regexMatch.Success then
+            Some regexMatch.Value
+        else    
+            None
+    
+    let getProvider builder =
+        let (t, subNamespaceOrName) = 
+            match builder with
+            | Type     t -> t, tryGetMatch t.SubNamespace
+            | Resource t -> t, tryGetMatch t.SubNamespace |> Option.map toPascalCase
+        
+        let namespace' =
+            t.ResourceProviderNamespace.Value
+        
+        subNamespaceOrName |>
+        Option.bind (function
+                     | name when name = t.ResourceType.Value -> None
+                     | _                                     -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
+        Option.defaultValue namespace'
     
     let namespaces =
         schema.["language"]
@@ -385,9 +396,12 @@ let createTypes (schema : JsonValue) =
             |]
     
     let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
-        match typeInfo with
-        | Type t     -> create allTypes jsonValue "properties" t.ResourceType.Value true
-        | Resource r -> create allTypes jsonValue "inputProperties" r.ResourceType.Value false
+        let typeName, isType, propertiesPropertyName =
+            match typeInfo with
+            | Type t     -> t.ResourceType.Value, true, "properties"
+            | Resource t -> t.ResourceType.Value, false, "inputProperties"
+        
+        create allTypes jsonValue propertiesPropertyName typeName isType
     
     let invalidProvidersList =
         [ "config"; "" ]
@@ -404,7 +418,7 @@ let createTypes (schema : JsonValue) =
         Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
     let createBuildersParallelFiltered allTypes typesOrResources =
-        Array.groupBy resourceProvider typesOrResources |>
+        Array.groupBy (fst >> getProvider) typesOrResources |>
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
