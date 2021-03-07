@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi.FSharp" Version="2.22.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Pulumi.FSharp.Aws\Pulumi.FSharp.Aws.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.AzureAD\Pulumi.FSharp.AzureAD.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
