@@ -27,6 +27,8 @@ ProjectSection(SolutionItems) = preProject
 	FAKE.yml = FAKE.yml
 EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative", "Pulumi.FSharp.AzureNative\Pulumi.FSharp.AzureNative.fsproj", "{82654FE1-17B2-45B0-A967-19546970D378}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,5 +67,9 @@ Global
 		{D743DF85-53C4-4E5B-B7E0-8A3AE58B7B3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D743DF85-53C4-4E5B-B7E0-8A3AE58B7B3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D743DF85-53C4-4E5B-B7E0-8A3AE58B7B3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82654FE1-17B2-45B0-A967-19546970D378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82654FE1-17B2-45B0-A967-19546970D378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82654FE1-17B2-45B0-A967-19546970D378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82654FE1-17B2-45B0-A967-19546970D378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

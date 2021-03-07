@@ -31,7 +31,16 @@ type PulumiFSharpGenerator() =
                                    else
                                        None)
 
-            loadSchema provider version |>
+            let providerRepositoryNameOverride =
+                Map.empty
+                   .Add("AzureNative", "azure-native")
+            
+            let providerRepository =
+                providerRepositoryNameOverride |>
+                Map.tryFind provider |>
+                Option.defaultValue provider
+            
+            loadSchema providerRepository version |>
             createTypes |>
             createModules provider |>
             createNamespace |>

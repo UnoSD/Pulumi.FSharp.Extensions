@@ -38,6 +38,31 @@ let private azureFilters = {
         ]                        
     }
 
+let private azureNativeFilters = {
+        Types     = Include [
+            "WindowsVirtualMachineSourceImageReference"
+            "WindowsVirtualMachineOsDisk"
+            "NetworkInterfaceIpConfiguration"
+        ]
+        Resources = Include [
+            "Blob"
+            "WindowsVirtualMachine"
+            "NetworkInterface"
+            "Subnet"
+            "VirtualNetwork"
+            "ResourceGroup"
+            "Subnet"
+            "Account"
+            "Container"
+        ]
+        Providers = Include [
+            "compute"
+            "storage"
+            "network"
+            "core"
+        ]                        
+    }
+
 let private azureAdFilters = {
         Types     = Include [
         ]
@@ -100,7 +125,7 @@ let private join filtersList =
     }
 
 let private isDebug = false
-let private filters = join [ azureFilters; awsFilters; kubernetesFilters; azureAdFilters ]
+let private filters = join [ azureFilters; awsFilters; kubernetesFilters; azureAdFilters; azureNativeFilters ]
 
 let private typeSelector builderType =
     match (builderType, filters.Types, filters.Resources) with

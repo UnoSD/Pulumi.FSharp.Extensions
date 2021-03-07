@@ -85,6 +85,14 @@ let private (|PTUnion|_|) =
         -> Some (one, two)
     | _ -> None
     
+let private (|PTUnionMany|_|) =
+    function
+    | Property("oneOf") (JsonValue.Array(records)) when records |> Array.length > 2
+        -> records |>
+           Array.map (function | JsonValue.Record(x) -> x | _ -> failwith "Malformed union") |>
+           Some
+    | _ -> None
+    
 let private (|PTRef|_|) =
     function
     | Property("type") (JsonValue.String("string")) &
@@ -130,7 +138,9 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
                | one, two when one = two                              -> one
                | (PRef refType, other)
                | (other, PRef refType) when not <| typeExists refType -> other
-               | one, two                                             -> PType.PUnion (one, two)          
+               | one, two                                             -> PType.PUnion (one, two)
+        | PTUnionMany _
+            -> PType.PAny
         | x -> failwith $"Missing type pattern for {x}"
             
     let (Property("description") (JsonValue.String(description)), _) |
@@ -146,17 +156,14 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
         | Property("deprecationMessage") (JsonValue.String(message)) -> Deprecated message
         | _                                                          -> Current
     
-    let snakeCaseName =
-        if name = "Name" && (not isType) then
-            "resourceName"
-        else 
-            toCamelCase name
-    
     let customOperationName =
-        match snakeCaseName with
+        match name |> toCamelCase with
+        | "name" when not isType -> "resourceName"
+        | "resourceName"         -> "resourceName'"
+        | "resourceType"         -> "resourceType'"
+        | "resourceGroup"        -> "resourceGroup'"
         | "resourceGroupName"    -> "resourceGroup"
         | "type"                 -> "resourceType"
-        | "name" when not isType -> "resourceName"
         | x -> x
     
     {
@@ -246,7 +253,8 @@ let createTypes (schema : JsonValue) =
                                                      List.append <!> (getRefType a) <*> (getRefType b)
                                                      
         | PTMap t                                 -> getRefType t
-                                                  
+
+        | PTUnionMany _                                                  
         | PTBase _                                
         | PTJson                                  -> None
         | x                                       -> failwith $"Pattern not matched {x}"
@@ -290,14 +298,14 @@ let createTypes (schema : JsonValue) =
     
     let resourceProvider (builder, _) =
         match builder with
-        | Type t     -> if t.SubNamespace.Value = t.ResourceType.Value then
-                            t.ResourceProviderNamespace.Value
-                        else
+        | Type t     -> if t.SubNamespace.Success && t.SubNamespace.Value <> t.ResourceType.Value then
                             t.ResourceProviderNamespace.Value + "/" + t.SubNamespace.Value
-        | Resource r -> if (r.SubNamespace.Value |> toPascalCase) = r.ResourceType.Value then
-                            r.ResourceProviderNamespace.Value
                         else
+                            t.ResourceProviderNamespace.Value
+        | Resource r -> if r.SubNamespace.Success && (r.SubNamespace.Value |> toPascalCase) <> r.ResourceType.Value then
                             r.ResourceProviderNamespace.Value + "/" + r.SubNamespace.Value
+                        else
+                            r.ResourceProviderNamespace.Value
     
     let namespaces =
         schema.["language"]
@@ -308,12 +316,11 @@ let createTypes (schema : JsonValue) =
         Map.map (fun _ jv -> jv.AsString() |> Some) |>
         Map.add "index" None
     
-    let create allTypes (propertiesFromResource : JsonValue option) (jsonValue : JsonValue) (propertyName : string) typeName isType =
+    let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =
-            match isType, propertiesFromResource, lazy(jsonValue.TryGetProperty(propertyName)) with
-            | true,  Some rip, _             -> rip.Properties()
-            | _   ,  _       , Lazy(Some ip) -> ip.Properties()
-            | _   ,  _       , Lazy(None)    -> [||]
+            match jsonValue.TryGetProperty(propertyName) with
+            | Some ip -> ip.Properties()
+            | None    -> [||]
             
         let description =
             match jsonValue.Properties() with
@@ -322,6 +329,9 @@ let createTypes (schema : JsonValue) =
             
         let pTypes =
             createPTypes isType allTypes properties
+            
+        let typeName =
+            typeName |> toPascalCase
             
         // Enums will fall into this category E.G. "kubernetes:core/v1:ServiceSpecType"
         // Not required as it will use an operation: type Pulumi.Kubernetes.Input.Types.Core.V1.ServiceSpecType.NodePort
@@ -334,13 +344,10 @@ let createTypes (schema : JsonValue) =
                 createBuilderInstance description typeName pTypes
             |]
     
-    let createBuilders allTypes (schema : JsonValue) (typeInfo, (jsonValue : JsonValue)) =
+    let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
         match typeInfo with
-        | Type t     -> let propertiesFromResource =
-                            schema.["resources"].TryGetProperty(t.Value) |>
-                            Option.bind (fun r -> r.TryGetProperty("inputProperties"))
-                        create allTypes propertiesFromResource jsonValue "properties" t.ResourceType.Value true
-        | Resource r -> create allTypes None jsonValue "inputProperties" r.ResourceType.Value false
+        | Type t     -> create allTypes jsonValue "properties" t.ResourceType.Value true
+        | Resource r -> create allTypes jsonValue "inputProperties" r.ResourceType.Value false
     
     let invalidProvidersList =
         [ "config"; "" ]
@@ -356,19 +363,19 @@ let createTypes (schema : JsonValue) =
         Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
         Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
-    let createBuildersParallelFiltered allTypes typesOrResources schema =
+    let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy resourceProvider typesOrResources |>
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
-                                           Array.Parallel.collect (createBuilders allTypes schema))
+                                           Array.Parallel.collect (createBuilders allTypes))
         
     let typeBuilders =
-        createBuildersParallelFiltered allAvailableTypes types schema
+        createBuildersParallelFiltered allAvailableTypes types
         
     let resourceBuilders =
-        createBuildersParallelFiltered allAvailableTypes resources schema
+        createBuildersParallelFiltered allAvailableTypes resources
     
     let cloudProviderNamespace =
         match namespaces.TryGetValue(pulumiProviderName) with
