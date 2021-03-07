@@ -112,7 +112,7 @@ let private (|PTBase|_|) =
         -> Some baseType
     | _ -> None
 
-let private nameAndType isType allTypes name (properties : (string * JsonValue) []) =
+let private nameAndType allPropertyNames isType allTypes name (properties : (string * JsonValue) []) =
     let typeMap =
         [ "string" , PString
           "number" , PFloat
@@ -158,12 +158,12 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
     
     let customOperationName =
         match name |> toCamelCase with
-        | "name" when not isType -> "resourceName"
-        | "resourceName"         -> "resourceName'"
-        | "resourceType"         -> "resourceType'"
-        | "resourceGroup"        -> "resourceGroup'"
-        | "resourceGroupName"    -> "resourceGroup"
-        | "type"                 -> "resourceType"
+        | "name"          when not isType                                             -> "resourceName"
+        | "resourceName"  when not isType                                             -> "providerResourceName"
+        | "resourceType"  when allPropertyNames |> Array.contains "type"              -> "providerResourceType"
+        | "resourceGroup" when allPropertyNames |> Array.contains "resourceGroupName" -> "providerResourceGroup"
+        | "resourceGroupName"                                                         -> "resourceGroup"
+        | "type"                                                                      -> "resourceType"
         | x -> x
     
     {
@@ -177,9 +177,12 @@ let private nameAndType isType allTypes name (properties : (string * JsonValue) 
     }
 
 let private createPTypes isType allTypes properties =
+    let allPropertyNames =
+        properties |> Array.map fst
+    
     let nameAndTypes =
         properties |>
-        Array.map (fun (x, y : JsonValue) -> nameAndType isType allTypes x (y.Properties()))
+        Array.map (fun (x, y : JsonValue) -> nameAndType allPropertyNames isType allTypes x (y.Properties()))
         
     let (propOfSameComplexType, otherProperties) =
         nameAndTypes |>
@@ -197,6 +200,33 @@ let private createPTypes isType allTypes properties =
         
     Array.append propOfSameComplexTypeIgnoreComplex otherProperties |>
     Array.sortBy (fun n -> order |> Array.findIndex ((=)n.Name))
+
+let private missingStatusTypes =
+    [|
+        "VolumeAttachment"
+        "PodDisruptionBudget"
+        "Ingress"
+        "FlowSchema"
+        "PriorityLevelConfiguration"
+        "DaemonSet"
+        "Deployment"
+        "ReplicaSet"
+        "Namespace"
+        "Node"
+        "PersistentVolume"
+        "PersistentVolumeClaim"
+        "Pod"
+        "ReplicationController"
+        "ResourceQuota"
+        "Service"
+        "CertificateSigningRequest"
+        "CronJob"
+        "Job"
+        "HorizontalPodAutoscaler"
+        "StatefulSet"
+        "APIService"
+        "CustomResourceDefinition"
+    |]
 
 let createTypes (schema : JsonValue) =
     let allAvailableTypes =
@@ -321,7 +351,17 @@ let createTypes (schema : JsonValue) =
             match jsonValue.TryGetProperty(propertyName) with
             | Some ip -> ip.Properties()
             | None    -> [||]
-            
+        
+        // Schema does not seem to match the library only for this particular
+        // property and only in the Kubernetes provider. I hate to add exceptions
+        // but I can't figure our why this happens; will ask the Pulumi team
+        let properties =
+            match pulumiProviderName, isType, typeName with
+            | "kubernetes", true, x when missingStatusTypes |> Array.contains x
+                -> properties |> Array.filter (function (pName, _) -> pName <> "status")
+            | _
+                -> properties
+        
         let description =
             match jsonValue.Properties() with
             | Property("description") (JsonValue.String(d)) -> d
