@@ -3,13 +3,15 @@
 open Pulumi.FSharp.Kubernetes.Apps.V1.Inputs
 open Pulumi.FSharp.Kubernetes.Core.V1.Inputs
 open Pulumi.FSharp.Kubernetes.Meta.V1.Inputs
-open Pulumi.FSharp.Azure.Compute.Inputs
-open Pulumi.FSharp.Azure.Network.Inputs
-open Pulumi.FSharp.Azure.Compute
-open Pulumi.FSharp.Azure.Network
-open Pulumi.FSharp.Azure.Storage
+open Pulumi.FSharp.AzureNative.Compute.Inputs
+open Pulumi.FSharp.AzureNative.Network.Inputs
+open Pulumi.FSharp.AzureNative.Resources
+open Pulumi.FSharp.AzureNative.Storage
+open Pulumi.FSharp.AzureNative.Network
+open Pulumi.FSharp.AzureNative.Compute
 open Pulumi.FSharp.Aws.S3.Inputs
-open Pulumi.FSharp.Azure.Core
+open Pulumi.AzureNative.Storage
+open Pulumi.AzureNative.Compute
 open Pulumi.FSharp.AzureAD
 open Pulumi.FSharp.Assets
 open Pulumi.FSharp.Aws.S3
@@ -19,13 +21,16 @@ open Pulumi.FSharp
 
 let deployment = Kubernetes.Apps.V1.deployment
 let container = Kubernetes.Core.V1.Inputs.container
-let storageContainer = Azure.Storage.container
+let nicSubnet = AzureNative.Network.Inputs.subnet
+let sku = AzureNative.Storage.Inputs.sku
+let networkProfile = AzureNative.Compute.Inputs.networkProfile
+let azureLegacyStorageAccount = Azure.Storage.account
 
 (*
 Backup
-$ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'cp Pulumi.FSharp.{}/Generated.fs $(find Pulumi.FSharp.{} -name "Generated.*.fs")'
+$ echo -n "Aws Azure AzureNative AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'cp Pulumi.FSharp.{}/Generated.fs $(find Pulumi.FSharp.{} -name "Generated.*.fs")'
 Test difference with backup copy:
-$ echo -n "Aws Azure AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
+$ echo -n "Aws Azure AzureNative AzureAD Kubernetes" | xargs -I{} -n1 -d' ' bash -c 'diff -qs $(find Pulumi.FSharp.{} -name "Generated.*.fs") Pulumi.FSharp.{}/Generated.fs'
 *)
 
 let infra () =
@@ -77,60 +82,76 @@ let infra () =
             location "West Europe"
         }
 
+    azureLegacyStorageAccount {
+        resourceGroup          rg.Name
+        location               rg.Location
+        name                   "stlegacyexample"
+        accountTier            "Standard"
+        accountReplicationType "LRS"
+    }
+
     let storage =
-        account {
+        storageAccount {
             resourceGroup          rg.Name
             location               rg.Location
-            name                   "stexample"
-            accountTier            "Standard"
-            accountReplicationType "LRS"
+            name                   "stexample"            
+            sku                    { name "LRS" }            
+            kind                   Kind.StorageV2
         }
 
     let container =
-        storageContainer { 
-            storageAccountName  storage.Name
-            name                "example"
-            containerAccessType "private"
+        blobContainer { 
+            accountName   storage.Name
+            resourceGroup rg.Name
+            name         "example"
+            
+            PublicAccess.None
         }
 
     blob {
-        name                 "file-blob"
-        resourceType         "Block"
-        storageContainerName container.Name
-        storageAccountName   storage.Name
-        source               { Path = "Program.fs" }.ToPulumiType
+        name          "file-blob"
+        containerName container.Name
+        resourceGroup rg.Name
+        accountName   storage.Name
+        source        { Path = "Program.fs" }.ToPulumiType
+        
+        BlobType.Block
     }
 
     blob {
         name                 "url-blob"
-        resourceType         "Block"
-        storageContainerName container.Name
-        storageAccountName   storage.Name
+        containerName container.Name
+        resourceGroup rg.Name
+        accountName   storage.Name
 
         source {
             Uri = "https://raw.githubusercontent.com/UnoSD/Pulumi.FSharp.Extensions/master/README.md"
         }.ToPulumiType
+        
+        BlobType.Block
     }
 
     blob {
-        name                 "archive-blob"
-        resourceType         "Block"
-        storageContainerName container.Name
-        storageAccountName   storage.Name
+        name          "archive-blob"
+        containerName container.Name
+        resourceGroup rg.Name
+        accountName   storage.Name
 
         source { 
             Assets = Map.empty
                         .Add("pr.fs", File   { Path = "Program.fs" })
                         .Add("p.txt", String { Text = "text!!!!!!" }) 
         }.ToPulumiType
+        
+        BlobType.Block
     }
 
     let vnet =
         virtualNetwork {
             name          "vnet-example"
-            addressSpaces "10.0.0.0/16"
             location      rg.Location
-            resourceGroup rg.Name
+            resourceGroup rg.Name            
+            addressSpace  { addressPrefixes "10.0.0.0/16" }
         }
 
     let subnet =
@@ -148,52 +169,69 @@ let infra () =
             resourceGroup rg.Name
 
             ipConfigurations [ 
-                networkInterfaceIpConfiguration {
-                    name                       "internal"
-                    subnetId                   subnet.Id
-                    privateIpAddressAllocation "Dynamic"
+                networkInterfaceIPConfiguration {
+                    name                      "internal"
+                    privateIPAllocationMethod "Dynamic"                    
+                    nicSubnet                 { id subnet.Id }
                 }
             ]
         }
-
-    let vm =
-        windowsVirtualMachine {
-            name                "vm-example"
-            resourceName        "vm-example"
-            size                "Standard_A1_v2"
-            location            rg.Location
-            resourceGroup       rg.Name
-            networkInterfaceIds nic.Id            
-
-            windowsVirtualMachineOsDisk {
-                name               "osdiskexample"
-                caching            "ReadWrite"
-                storageAccountType "Standard_LRS"
-            }
-
+    
+    virtualMachine {
+        name                "vm-example"
+        vmName              "vm-example"
+        location            rg.Location
+        resourceGroup       rg.Name
+        
+        hardwareProfile {
+            vmSize "Standard_A1_v2"    
+        }
+        
+        networkProfile {
+            networkInterfaces [
+                networkInterfaceReference { id nic.Id }
+            ]
+        }
+        
+        oSProfile {
             adminUsername config.["vmUser"]
             adminPassword secret.["vmPass"]
-
-            windowsVirtualMachineSourceImageReference {
+        }
+        
+        storageProfile {
+            oSDisk {
+                name                  "osdiskexample"
+                createOption          DiskCreateOptionTypes.FromImage
+                managedDiskParameters { storageAccountType "Standard_LRS" }
+                
+                CachingTypes.ReadWrite
+            }
+            
+            imageReference {
                 offer     "WindowsServer"
                 publisher "MicrosoftWindowsServer"
                 sku       "2016-Datacenter"
                 version   "latest"
             }
         }
+    }
 
-    let secretValue =
-        secretOutput { return vm.PrivateIpAddress }
-
-    let pipCird =
+    let privateIp =
         output {
-            let! pip = vm.PrivateIpAddress
+            let! ipConfigs = nic.IpConfigurations
+            
+            return ipConfigs.[0].PrivateIPAddress
+        }
+
+    let secretPipCird =
+        secretOutput {
+            let! pip = privateIp
             
             return $"{pip}/32"
         }
 
-    dict [ "SecretPrivateIP"     , secretValue            :> obj
-           "VisiblePrivateIPCIDR", pipCird                :> obj ]
+    dict [ "VisiblePrivateIP"   , privateIp     :> obj
+           "SecretPrivateIPCIDR", secretPipCird :> obj ]
 
 [<EntryPoint>]
 let main _ = Deployment.run infra
