@@ -6,6 +6,7 @@ F# computational expressions to reduce boilerplate in Pulumi code
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Kubernetes)](https://www.nuget.org/packages/Pulumi.FSharp.Kubernetes)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureAD)](https://www.nuget.org/packages/Pulumi.FSharp.AzureAD)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Core)](https://www.nuget.org/packages/Pulumi.FSharp.Core)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureNative)](https://www.nuget.org/packages/Pulumi.FSharp.AzureNative)
 
 # Packages examples
 
@@ -95,6 +96,27 @@ application {
             }
         ]
     }
+}
+```
+
+## Pulumi.FSharp.AzureNative
+
+```f#
+let storage =
+    storageAccount {
+        resourceGroup rg.Name
+        location      rg.Location
+        name          "StorageAccount"            
+        sku           { name "LRS" }            
+        kind          Kind.StorageV2
+    }
+
+blobContainer { 
+    accountName   storage.Name
+    resourceGroup rg.Name
+    name          "StorageContainer"
+    
+    PublicAccess.None
 }
 ```
 
@@ -299,5 +321,6 @@ Given that changes to the `Pulumi.FSharp.Myriad` project do not trigger re-gener
 git update-index --skip-worktree Pulumi.FSharp.Aws/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Azure/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.AzureAD/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.AzureNative/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Kubernetes/Myriad.fs
 ```
