@@ -159,7 +159,7 @@ let infra () =
             name               "internal"
             resourceGroup      rg.Name
             virtualNetworkName vnet.Name
-            addressPrefixes    "10.0.2.0/24"
+            addressPrefix      "10.0.2.0/24"
         }
 
     let nic =
