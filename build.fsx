@@ -1,9 +1,12 @@
+open Fake.Net
+
 #r "paket:
 nuget FSharp.Core 4.7.0
 nuget Fake.DotNet.Cli
 nuget Fake.IO.FileSystem
 nuget Fake.BuildServer.TeamFoundation
 nuget Fake.Core.CommandLineParsing
+nuget Newtonsoft.Json
 nuget Fake.Core.Xml
 nuget Fake.Core.Target //"
 #load ".fake/build.fsx/intellisense.fsx"
@@ -12,6 +15,7 @@ open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
 open Fake.DotNet.NuGet
 open Fake.BuildServer
+open Newtonsoft.Json
 open Fake.Core.Xml
 open Fake.DotNet
 open Fake.Core
@@ -175,14 +179,35 @@ Target.create "PublishGeneratedCode" (fun _ ->
     Seq.iter (Trace.publish ImportData.BuildArtifact)
 )
 
+type NuGetVersions =
+    {
+        versions: string[]
+    }
+
 Target.create "Pack" (fun _ ->
     getProvider args |>
     getProviders |>
-    Seq.iter (fun provider -> 
+    Seq.iter (fun provider ->
+        let tempJsonFile =
+            getFullName provider |>
+            (fun x -> x.ToLower()) |>
+            sprintf "https://api.nuget.org/v3-flatcontainer/%s/index.json" |>
+            Http.downloadFile (Path.GetTempFileName())
+            
+        let data =
+            File.readAsString tempJsonFile |>
+            JsonConvert.DeserializeObject<NuGetVersions> |>
+            (fun x -> x.versions) |>
+            Array.last |>
+            (fun x -> x.Split('.'))
+        
+        File.delete tempJsonFile
+            
         let nextExtensionsVersion =
-            getFullName provider |> 
-            NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
-            (fun x -> x.Version.Split('.')) |>
+            data |>
+            //getFullName provider |> 
+            //NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
+            //(fun x -> x.Version.Split('.')) |>
             Array.last |>
             Int32.Parse |>
             (+)1
