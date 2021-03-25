@@ -1,4 +1,4 @@
-module Pulumi.FSharp.Output
+module Pulumi.FSharp.Outputs
 
 open Pulumi
 open System.Threading.Tasks
