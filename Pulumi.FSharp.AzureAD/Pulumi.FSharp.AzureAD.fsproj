@@ -15,13 +15,10 @@
         <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>
 
-    <UsingTask
-            TaskName="ForceRegenerate"
-            TaskFactory="RoslynCodeTaskFactory"
-            AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+    <UsingTask TaskName="ForceRegenerate" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
         <Task>
-            <Using Namespace="System"/>
-            <Using Namespace="System.IO"/>
+            <Using Namespace="System" />
+            <Using Namespace="System.IO" />
             <Code Type="Fragment" Language="cs"><![CDATA[
                 var number = new Random(DateTime.Now.Millisecond).Next();
                 File.WriteAllText("Myriad.fs", $"module private AzureAD\n\nmodule Force = let private nonce = {number}");
@@ -39,8 +36,8 @@
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.AzureAD" Version="3.4.0" />
-        <PackageReference Include="Pulumi.FSharp" Version="2.22.0" />
+        <PackageReference Include="Pulumi.AzureAD" Version="3.5.1" />
+        <PackageReference Include="Pulumi.FSharp" Version="2.23.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
