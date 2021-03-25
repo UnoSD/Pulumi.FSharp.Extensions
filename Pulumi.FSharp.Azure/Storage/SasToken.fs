@@ -1,7 +1,7 @@
 module Pulumi.FSharp.AzureStorageSasToken
 
 open Pulumi.Azure.Storage.Inputs
-open Pulumi.FSharp.Output
+open Pulumi.FSharp.Outputs
 open Pulumi.Azure.Storage
 open System
 
