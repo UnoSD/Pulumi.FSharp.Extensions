@@ -41,6 +41,8 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: Run FAKE
+  env:
+    FAKE_DETAILED_ERRORS: true
   inputs:
     command: custom
     custom: fake
