@@ -25,6 +25,7 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+steps:
 - task: DownloadSecureFile@1
   name: FakeVaultFile
   displayName: Download FAKE Vault file
