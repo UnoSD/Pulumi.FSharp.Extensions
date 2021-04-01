@@ -6,6 +6,7 @@
         <Copyright>Copyright 2021</Copyright>
         <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
         <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
+        <Title>$(MSBuildProjectName)</Title>
         <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
         <PackageTags>fsharp pulumi azuread</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
