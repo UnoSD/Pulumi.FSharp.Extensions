@@ -26,6 +26,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: DotNetCoreCLI@2
+  displayName: Install FAKE
+  inputs:
+    command: custom
+    custom: tool
+    arguments: restore
+
 - task: DownloadSecureFile@1
   name: FakeVaultFile
   displayName: Download FAKE Vault file
