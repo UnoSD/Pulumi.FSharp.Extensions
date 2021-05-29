@@ -1,5 +1,5 @@
 #r "paket:
-nuget FSharp.Core 4.7.0
+nuget FSharp.Core 4.7.2
 nuget Fake.DotNet.Cli
 nuget Fake.IO.FileSystem
 nuget Fake.BuildServer.TeamFoundation
@@ -57,7 +57,7 @@ Target.create "Build" (fun _ ->
 
 Target.create "Pack" (fun _ ->
     getProjectFile () |>
-    DotNet.pack id
+    DotNet.pack (fun po -> { po with MSBuildParams = { po.MSBuildParams with DisableInternalBinLog = true } })
 )
 
 Target.create "Push" (fun _ ->
