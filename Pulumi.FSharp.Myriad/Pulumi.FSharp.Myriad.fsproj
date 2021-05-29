@@ -41,7 +41,7 @@
     <ItemGroup>
         <PackageReference Include="FsAst" Version="0.7.0" />
         <PackageReference Include="FSharp.Core" Version="5.0.1" />
-        <PackageReference Include="FSharp.Data" Version="4.0.1" />
+        <PackageReference Include="FSharp.Data" Version="4.1.1" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
         <PackageReference Include="Myriad.Core" Version="0.5.0" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" />
