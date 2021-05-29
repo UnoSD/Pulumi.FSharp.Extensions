@@ -13,10 +13,10 @@ open Pulumi.FSharp.Aws.S3.Inputs
 open Pulumi.AzureNative.Storage
 open Pulumi.AzureNative.Compute
 open Pulumi.FSharp.AzureAD
+open Pulumi.FSharp.Outputs
 open Pulumi.FSharp.Assets
 open Pulumi.FSharp.Aws.S3
 open Pulumi.FSharp.Config
-open Pulumi.FSharp.Output
 open Pulumi.FSharp
 
 let deployment = Kubernetes.Apps.V1.deployment
