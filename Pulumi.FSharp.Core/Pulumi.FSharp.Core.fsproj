@@ -19,7 +19,7 @@
     
     <ItemGroup>
         <PackageReference Include="Pulumi.FSharp" Version="3.10.2" />
-        <PackageReference Include="FSharp.Core" Version="5.0.1" />
+        <PackageReference Include="FSharp.Core" Version="5.0.2" />
 
         <None Include="build.fsx" />
         <Content Include="FAKE.yml" />

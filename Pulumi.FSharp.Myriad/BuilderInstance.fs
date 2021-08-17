@@ -35,11 +35,10 @@ let createBuilderInstance description typeName pTypes =
     let ccTypeName =
         if typeName = "Input" then "input'" else typeName  |> toCamelCase
     
-    seq {
-        yield  descriptionShort
-        yield  ""
-        yield  title "Operations"
-        yield! ops |> Array.map (fun x -> listItem x.OperationName) |> Array.collect (fun x -> [| ""; x |])
-        yield! builderNamesSection |> List.collect (fun x -> [ ""; x ]) } |>
+    [ yield  descriptionShort
+      yield  ""
+      yield  title "Operations"
+      yield! ops |> Array.map (fun x -> listItem x.OperationName) |> Array.collect (fun x -> [| ""; x |])
+      yield! builderNamesSection |> List.collect (fun x -> [ ""; x ]) ] |>
     createLet ccTypeName
               (createInstance $"{typeName}Builder" SynExpr.CreateUnit)

@@ -39,8 +39,8 @@
     <ItemGroup>
         <PackageReference Include="Pulumi.Kubernetes" Version="3.6.0" />
         <PackageReference Include="Pulumi.FSharp" Version="3.10.2" />
-        <PackageReference Include="FSharp.Core" Version="5.0.1" />
-        <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
+        <PackageReference Include="FSharp.Core" Version="5.0.2" />
+        <PackageReference Include="Myriad.Sdk" Version="0.5.3" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
         

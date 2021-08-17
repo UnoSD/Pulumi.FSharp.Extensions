@@ -42,7 +42,7 @@ let argsTuple' nameVarName withParen =
     createTuple [ nvn
                   argsPattern ] withParen
 
-let private createOperation'' (xmlDoc : seq<string>) nameVarName name coName argName hasAttribute typ =
+let private createOperation'' (xmlDoc : string list) nameVarName name coName argName hasAttribute typ =
     let attributes =
         if hasAttribute then
             [ createAttributeWithArg "CustomOperation" coName ]
@@ -260,7 +260,7 @@ let createOperationsFor' argsType pType =
         pType.OperationName |> toPascalCase
     
     let doc =
-        String.split '\n' pType.Description |> Array.filter (((=)"") >> not)
+        String.split '\n' pType.Description |> Array.filter (((=)"") >> not) |> List.ofArray
     
     let returnTupleCache' =
         returnTupleCache argsType pType operationName

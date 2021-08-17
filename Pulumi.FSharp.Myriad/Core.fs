@@ -20,7 +20,7 @@ let toPascalCase =
     changeInitial Char.ToUpper
     
 let createPattern name args =
-    SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
+    SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args |> List.map SynPatRcd.CreateParen)
     
 let (|Lazy|) (lazy' : Lazy<'a>) =
     lazy'.Value

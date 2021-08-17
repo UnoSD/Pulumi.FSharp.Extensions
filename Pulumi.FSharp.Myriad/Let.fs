@@ -4,7 +4,7 @@ open FSharp.Compiler.SyntaxTree
 open FSharp.Compiler.XmlDoc
 open FsAst
 
-let createLet name expr (docs : string seq) =
+let createLet name expr (docs : string list) =
     SynModuleDecl.CreateLet
         [ { SynBindingRcd.Let with
                 Pattern = SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString name, [])
