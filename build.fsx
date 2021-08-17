@@ -211,6 +211,7 @@ Target.create "Pack" (fun _ ->
             options with
                 MSBuildParams = { 
                     options.MSBuildParams with
+                        DisableInternalBinLog = true
                         Properties = 
                             ("PackageVersion", sprintf "%s.%i" pulumiNuGetVersion nextExtensionsVersion) ::
                             ("NoRegenerate","true") ::
