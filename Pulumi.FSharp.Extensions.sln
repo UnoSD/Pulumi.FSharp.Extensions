@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Myriad", "Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj", "{EDDFE9E5-9B82-4ECF-AB23-86F3347D77EC}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Azure", "Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj", "{0CDB4B8E-343B-45A5-A1C6-951470C965F9}"
@@ -15,19 +16,21 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Kubernetes", "Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj", "{8E9160DC-5EE5-4D66-AE13-66183C04A6C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{DA33B8DE-E8FB-49FB-B79A-D156179C56CA}"
-ProjectSection(SolutionItems) = preProject
-	README.md = README.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureAD", "Pulumi.FSharp.AzureAD\Pulumi.FSharp.AzureAD.fsproj", "{D743DF85-53C4-4E5B-B7E0-8A3AE58B7B3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{19133DA2-F039-47AB-A225-6435EC14A67B}"
-ProjectSection(SolutionItems) = preProject
-	build.fsx = build.fsx
-	FAKE.yml = FAKE.yml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		build.fsx = build.fsx
+		FAKE.yml = FAKE.yml
+	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative", "Pulumi.FSharp.AzureNative\Pulumi.FSharp.AzureNative.fsproj", "{82654FE1-17B2-45B0-A967-19546970D378}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Gcp", "Pulumi.FSharp.Gcp\Pulumi.FSharp.Gcp.fsproj", "{ECDC532C-B7E2-4C3F-87BA-0933C4C269A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,5 +74,9 @@ Global
 		{82654FE1-17B2-45B0-A967-19546970D378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82654FE1-17B2-45B0-A967-19546970D378}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82654FE1-17B2-45B0-A967-19546970D378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECDC532C-B7E2-4C3F-87BA-0933C4C269A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDC532C-B7E2-4C3F-87BA-0933C4C269A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDC532C-B7E2-4C3F-87BA-0933C4C269A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDC532C-B7E2-4C3F-87BA-0933C4C269A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

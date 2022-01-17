@@ -10,41 +10,34 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="build\Pulumi.FSharp.Myriad.props">
-            <Pack>true</Pack>
-            <PackagePath>%(Identity)</PackagePath>
-            <Visible>true</Visible>
-        </Content>
-        <Content Include="build\Pulumi.FSharp.Myriad.InTest.props" />
+      <Content Include="build\Pulumi.FSharp.Myriad.props">
+        <Pack>true</Pack>
+        <PackagePath>%(Identity)</PackagePath>
+        <Visible>true</Visible>
+      </Content>
+      <Content Include="build\Pulumi.FSharp.Myriad.InTest.props" />
+      <Compile Include="Core.fs" />
+      <Compile Include="AstHelpers.fs" />
+      <Compile Include="Member.fs" />
+      <Compile Include="Attribute.fs" />
+      <Compile Include="Yield.fs" />
+      <Compile Include="Operations.fs" />
+      <Compile Include="Instance.fs" />
+      <Compile Include="Run.fs" />
+      <Compile Include="Let.fs" />
+      <Compile Include="Builder.fs" />
+      <Compile Include="Debug.fs" />
+      <Compile Include="BuilderInstance.fs" />
+      <Compile Include="Modules.fs" />
+      <Compile Include="Namespace.fs" />
+      <Compile Include="Schema.fs" />
+      <Compile Include="IndexModule.fs" />
+      <Compile Include="Generator.fs" />
+      <PackageReference Include="FsAst" Version="0.8.0" />
+      <PackageReference Include="FSharp.Core" Version="5.0.2" />
+      <PackageReference Include="FSharp.Data" Version="4.2.2" />
+      <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
+      <PackageReference Include="Myriad.Core" Version="0.5.3" />
+      <PackageReference Include="Myriad.Sdk" Version="0.5.3" />
     </ItemGroup>
-    
-    <ItemGroup>
-        <Compile Include="Core.fs" />
-        <Compile Include="AstHelpers.fs" />
-        <Compile Include="Member.fs" />
-        <Compile Include="Attribute.fs" />
-        <Compile Include="Yield.fs" />
-        <Compile Include="Operations.fs" />
-        <Compile Include="Instance.fs" />
-        <Compile Include="Run.fs" />
-        <Compile Include="Let.fs" />
-        <Compile Include="Builder.fs" />
-        <Compile Include="Debug.fs" />
-        <Compile Include="BuilderInstance.fs" />
-        <Compile Include="Modules.fs" />
-        <Compile Include="Namespace.fs" />
-        <Compile Include="Schema.fs" />
-        <Compile Include="IndexModule.fs" />
-        <Compile Include="Generator.fs" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="FsAst" Version="0.8.0" />
-        <PackageReference Include="FSharp.Core" Version="5.0.2" />
-        <PackageReference Include="FSharp.Data" Version="4.2.2" />
-        <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
-        <PackageReference Include="Myriad.Core" Version="0.5.3" />
-        <PackageReference Include="Myriad.Sdk" Version="0.5.3" />
-    </ItemGroup>
-    
 </Project>
