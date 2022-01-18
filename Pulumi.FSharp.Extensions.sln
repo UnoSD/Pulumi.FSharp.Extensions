@@ -31,6 +31,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative",
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Gcp", "Pulumi.FSharp.Gcp\Pulumi.FSharp.Gcp.fsproj", "{FB88475F-F6DE-4E2D-965B-8E06514F89E3}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Tls", "Pulumi.FSharp.Tls\Pulumi.FSharp.Tls.fsproj", "{C7ACAED9-A76D-4C83-A5CF-6583B5705F95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,5 +79,9 @@ Global
 		{FB88475F-F6DE-4E2D-965B-8E06514F89E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB88475F-F6DE-4E2D-965B-8E06514F89E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB88475F-F6DE-4E2D-965B-8E06514F89E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7ACAED9-A76D-4C83-A5CF-6583B5705F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7ACAED9-A76D-4C83-A5CF-6583B5705F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7ACAED9-A76D-4C83-A5CF-6583B5705F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7ACAED9-A76D-4C83-A5CF-6583B5705F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
