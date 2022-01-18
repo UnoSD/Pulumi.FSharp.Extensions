@@ -253,6 +253,8 @@ let createOperationsFor' argsType pType =
     let nameArgName =
         if pType.IsResource then
             "name"
+        elif pType.OperationName = "n" then
+            "nx"
         else
             "n"
     

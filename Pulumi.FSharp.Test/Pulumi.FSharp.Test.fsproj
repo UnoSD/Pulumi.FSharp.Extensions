@@ -14,7 +14,9 @@
     <ProjectReference Include="..\Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.AzureNative\Pulumi.FSharp.AzureNative.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" />
+    <ProjectReference Include="..\Pulumi.FSharp.Gcp\Pulumi.FSharp.Gcp.fsproj" />
     <ProjectReference Include="..\Pulumi.FSharp.Kubernetes\Pulumi.FSharp.Kubernetes.fsproj" />
+    <ProjectReference Include="..\Pulumi.FSharp.Tls\Pulumi.FSharp.Tls.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

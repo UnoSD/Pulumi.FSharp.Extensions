@@ -18,7 +18,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="3.10.2" />
+        <PackageReference Include="Pulumi.FSharp" Version="3.22.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.2" />
 
         <None Include="build.fsx" />

@@ -38,7 +38,7 @@
     
     <ItemGroup>
         <PackageReference Include="Pulumi.Tls" Version="4.1.0" />
-        <PackageReference Include="Pulumi.FSharp" Version="3.10.2" />
+        <PackageReference Include="Pulumi.FSharp" Version="3.22.1" />
         <PackageReference Include="FSharp.Core" Version="5.0.2" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.3" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
