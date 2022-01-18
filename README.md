@@ -321,8 +321,10 @@ Given that changes to the `Pulumi.FSharp.Myriad` project do not trigger re-gener
 
 ```bash
 git update-index --skip-worktree Pulumi.FSharp.Aws/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.Gcp/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.Tls/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Azure/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.AzureAD/Myriad.fs
-git update-index --skip-worktree Pulumi.FSharp.AzureNative/Myriad.fs
 git update-index --skip-worktree Pulumi.FSharp.Kubernetes/Myriad.fs
+git update-index --skip-worktree Pulumi.FSharp.AzureNative/Myriad.fs
 ```
