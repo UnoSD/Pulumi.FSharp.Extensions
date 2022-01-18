@@ -18,7 +18,6 @@ open Pulumi.FSharp.Assets
 open Pulumi.FSharp.Aws.S3
 open Pulumi.FSharp.Config
 open Pulumi.FSharp
-open Pulumi.FSharp.Gcp
 
 let deployment = Kubernetes.Apps.V1.deployment
 let container = Kubernetes.Core.V1.Inputs.container
