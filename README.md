@@ -7,6 +7,8 @@ F# computational expressions to reduce boilerplate in Pulumi code
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureAD)](https://www.nuget.org/packages/Pulumi.FSharp.AzureAD)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Core)](https://www.nuget.org/packages/Pulumi.FSharp.Core)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureNative)](https://www.nuget.org/packages/Pulumi.FSharp.AzureNative)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureNative)](https://www.nuget.org/packages/Pulumi.FSharp.Gcp)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.AzureNative)](https://www.nuget.org/packages/Pulumi.FSharp.Tls)
 
 # Packages examples
 
