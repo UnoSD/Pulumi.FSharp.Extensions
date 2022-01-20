@@ -352,5 +352,5 @@ MigrationBackup/
 .idea/
 
 /Generated.fs
-/gcp.*.json
+/tls.*.json
 /Generated.*.fs
