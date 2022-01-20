@@ -13,7 +13,7 @@ type PulumiFSharpGenerator() =
     interface IMyriadGenerator with
         member _.Generate(context) =            
             let projectFile =
-                FileInfo(context.InputFilename).Directory.EnumerateFiles("*.fsproj") |>
+                FileInfo(context.InputFileName).Directory.EnumerateFiles("*.fsproj") |>
                 Seq.exactlyOne
 
             let provider =
