@@ -404,7 +404,7 @@ let createTypes (schema : JsonValue) =
         create allTypes jsonValue propertiesPropertyName typeName isType
     
     let invalidProvidersList =
-        [ "config"; "" ]
+        [ "config"; ""; "kustomize"; "apiextensions.k8s.io"; "yaml"; "helm.sh/v2" ]
     
     let doesNot =
         not
@@ -417,12 +417,21 @@ let createTypes (schema : JsonValue) =
         Array.filter (fun (_, builders) -> not <| Array.isEmpty builders) >>
         Array.filter (fun (provider, _) -> invalidProvidersList |> (doesNot << contain provider))
     
+    let filterKubernetesProblematicTypes types =
+        types |>
+        Array.filter (fun (bt, _) -> match bt with
+                                     | Type     t -> not (t.ResourceType.Value = "FetchOpts" &&
+                                                          t.ResourceProviderNamespace.Value = "helm.sh") 
+                                     | Resource r -> not (r.ResourceType.Value = "Chart" &&
+                                                          r.ResourceProviderNamespace.Value = "helm.sh"))
+    
     let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy (fst >> getProvider) typesOrResources |>
         filters |>
         Map.ofArray |>
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
+                                           filterKubernetesProblematicTypes |>
                                            Array.Parallel.collect (createBuilders allTypes))
         
     let typeBuilders =
