@@ -10,6 +10,18 @@ F# computational expressions to reduce boilerplate in Pulumi code
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Gcp)](https://www.nuget.org/packages/Pulumi.FSharp.Gcp)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/Pulumi.FSharp.Tls)](https://www.nuget.org/packages/Pulumi.FSharp.Tls)
 
+# Readability difference
+
+## Pulumi.Tls self signed certificate
+
+![Pulumi.Tls](Pulumi.Tls.png)
+
+## Pulumi.FSharp.Tls self signed certificate
+
+![Pulumi.FSharp.Tls](Pulumi.FSharp.Tls.png)
+
+Redundant parenthesis, input/io/inputList helpers, equal signs, lists for single input, subitems boilerplate are all removed.
+
 # Packages examples
 
 ## Pulumi.FSharp.Aws
