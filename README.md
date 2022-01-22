@@ -12,13 +12,9 @@ F# computational expressions to reduce boilerplate in Pulumi code
 
 # Readability difference
 
-## Pulumi.Tls self signed certificate
+## **Pulumi.Tls** vs **Pulumi.FSharp.Tls** for a self signed certificate
 
-![Pulumi.Tls](Pulumi.Tls.png)
-
-## Pulumi.FSharp.Tls self signed certificate
-
-![Pulumi.FSharp.Tls](Pulumi.FSharp.Tls.png)
+![Pulumi.Tls](readability.png)
 
 Redundant parenthesis, input/io/inputList helpers, equal signs, lists for single input, subitems boilerplate are all removed.
 
