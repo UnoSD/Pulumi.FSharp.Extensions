@@ -16,7 +16,7 @@ F# computational expressions to reduce boilerplate in Pulumi code
 
 ![Pulumi.Tls](readability.png)
 
-Redundant parenthesis, input/io/inputList helpers, equal signs, lists for single input, subitems boilerplate are all removed.
+The computational expression syntax removes redundant parenthesis, `input`/`io`/`inputList` helpers, equal signs, lists for single input, subitems boilerplate.
 
 # Packages examples
 
