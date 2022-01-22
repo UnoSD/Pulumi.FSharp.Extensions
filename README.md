@@ -311,6 +311,10 @@ let main _ =
   Deployment.run infra
 ```
 
+# Examples library
+
+[https://github.com/UnoSD/Pulumi.FSharp.Extensions.Examples](https://github.com/UnoSD/Pulumi.FSharp.Extensions.Examples)
+
 # Example project using the library
 
 [https://github.com/UnoSD/UnoCash](https://github.com/UnoSD/UnoCash/blob/master/UnoCash.Pulumi/Program.fs)
