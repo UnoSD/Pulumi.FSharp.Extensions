@@ -21,6 +21,9 @@ let private createTuple items withParen =
 let private argsPattern =
     createPattern "args" []
 
+let private crosPattern =
+    createPattern "cros" []
+
 let private nPattern =
     createPattern "n" []
 
@@ -33,16 +36,26 @@ let createPatternFromCache nameVarName =
     | "name" -> namePattern
     | _      -> createPattern nameVarName []
 
-let argsTuple' nameVarName withParen =
+let argsTuple' isResource nameVarName withParen =
     let nvn =
         match nameVarName with
         | null -> SynPatRcd.CreateWild
         | _    -> createPatternFromCache nameVarName
     
     createTuple [ nvn
+                  argsPattern
+                  if isResource then crosPattern ] withParen
+
+let argsTupleResource withParen =
+    createTuple [ namePattern
+                  argsPattern
+                  crosPattern ] withParen
+
+let argsTupleType withParen =
+    createTuple [ SynPatRcd.CreateWild
                   argsPattern ] withParen
 
-let private createOperation'' (xmlDoc : string list) nameVarName name coName argName hasAttribute typ =
+let private createOperation'' isResource (xmlDoc : string list) nameVarName name coName argName hasAttribute typ =
     let attributes =
         if hasAttribute then
             [ createAttributeWithArg "CustomOperation" coName ]
@@ -51,7 +64,7 @@ let private createOperation'' (xmlDoc : string list) nameVarName name coName arg
     
     let patterns = [
         createTuple [
-            argsTuple' nameVarName true
+            argsTuple' isResource nameVarName true
             match typ with | None -> createPattern argName [] | Some typ -> createPatternTyped argName [] typ
         ] true
     ]
@@ -62,7 +75,7 @@ let private createOperation'' (xmlDoc : string list) nameVarName name coName arg
     createMember'' doc name patterns attributes
 
 let createNameOperation newNameExpr =
-    createOperation'' ["Pulumi logical resource name"] null "Name" "name" "newName" true None newNameExpr
+    createOperation'' true ["Pulumi logical resource name"] null "Name" "name" "newName" true None newNameExpr
 
 let private listCons =
     Expr.appTuple("List.Cons", [ "apply"; "args" ])
@@ -207,13 +220,9 @@ let private returnTupleCache argsType pType opName setRight =
     let cons =
         Expr.app(Expr.longIdent("List.Cons"), consArg)
     
-    //  n, List.Cons((fun (a: ServicePrincipalOauth2PermissionArgs) -> a.Value <- io value; a), args)
-    let tuple nameStr =
-        Expr.tuple(Expr.ident(nameStr), cons)
-    
     match pType.IsResource with    
-    | false -> tuple "n"
-    | true  -> tuple "name"
+    | false -> Expr.tuple(Expr.ident("n"), cons)
+    | true  -> Expr.tuple(Expr.ident("name"), cons, Expr.ident("cros"))
 
 let createOperationsFor' argsType pType =
     let (setRights, argType) =
@@ -272,4 +281,46 @@ let createOperationsFor' argsType pType =
     
     setRights |>
     List.map ((fun sr -> Expr.app(sr, argNameExpr)) >> returnTupleCache') |>
-    List.mapi (fun i e -> createOperation'' doc nameArgName memberName pType.OperationName argName (i = 0) argType e)
+    List.mapi (fun i e -> createOperation'' pType.IsResource doc nameArgName memberName pType.OperationName argName (i = 0) argType e)
+    
+    
+let croOperation operationName description argumentName (setAssignmentExpression : SynExpr) =
+    let attributes =
+        [ createAttributeWithArg "CustomOperation" (operationName |> toCamelCase) ]
+    
+    let patterns = [
+        createTuple [
+            argsTupleResource true
+            createPattern argumentName []
+        ] true
+    ]
+    
+    let doc =
+        PreXmlDoc.Create([ description ]) |> Some
+    
+    let updateCrosExpression setAssignmentExpression =
+        let setExpression =
+            Expr.set($"cros.{operationName}", setAssignmentExpression)
+        
+        let lambdaExpression =
+            Expr.sequential([
+                setExpression
+                Expr.ident("cros")
+            ])
+        
+        let listConsLambdaFirstExpression =
+            Expr.lambda([
+                SimplePat.typed("cros", "CustomResourceOptions")
+            ], lambdaExpression)
+        
+        let listConsExpressions =
+            Expr.paren(Expr.tuple(Expr.paren(listConsLambdaFirstExpression), Expr.ident("cros")))
+        
+        Expr.app(Expr.longIdent("List.Cons"), listConsExpressions)
+    
+    let expression =
+        Expr.tuple(Expr.ident("name"),
+                   Expr.ident("args"),
+                   updateCrosExpression setAssignmentExpression)
+    
+    createMember'' doc operationName patterns attributes expression

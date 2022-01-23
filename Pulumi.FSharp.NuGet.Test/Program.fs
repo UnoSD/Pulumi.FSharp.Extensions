@@ -152,6 +152,7 @@ let infra () =
             location      rg.Location
             resourceGroup rg.Name            
             addressSpace  { addressPrefixes "10.0.0.0/16" }
+            dependsOn     container
         }
 
     let subnet =

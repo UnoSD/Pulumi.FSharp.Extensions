@@ -40,13 +40,24 @@ let private azureFilters = {
 
 let private azureNativeFilters = {
         Types     = Include [
-            "WindowsVirtualMachineSourceImageReference"
-            "WindowsVirtualMachineOsDisk"
-            "NetworkInterfaceIpConfiguration"
+            "VirtualMachineSourceImageReference"
+            "VirtualMachineOsDisk"
+            "NetworkInterfaceIPConfiguration"
+            "AddressSpace"
+            "HardwareProfile"
+            "NetworkProfile"
+            "StorageProfile"
+            "OSProfile"
+            "Subnet"
+            "NetworkInterfaceReference"
+            "ImageReference"
+            "OSDisk"
+            "Sku"
+            "ManagedDiskParameters"
         ]
         Resources = Include [
             "Blob"
-            "WindowsVirtualMachine"
+            "VirtualMachine"
             "NetworkInterface"
             "Subnet"
             "VirtualNetwork"
@@ -54,12 +65,16 @@ let private azureNativeFilters = {
             "Subnet"
             "Account"
             "Container"
+            "ResourceGroup"
+            "BlobContainer"
+            "StorageAccount"
         ]
         Providers = Include [
             "compute"
             "storage"
             "network"
             "core"
+            "resources"
         ]                        
     }
 

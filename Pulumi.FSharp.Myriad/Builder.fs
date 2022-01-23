@@ -42,11 +42,17 @@ let private yieldReturnExpr =
 let private combineExpr =
     Expr.app("_combine", "args")
 
+let private combineCrosExpr =
+    Expr.app("_combineCros", "args")
+
 let private combineArgs =
     Pat.ident("args")
     
 let private combineMember =
     createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineExpr
+    
+let private combineCrosMember =
+    createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineCrosExpr
     
 let private forArgs =
     Pat.paren (Pat.tuple ("args", "delayedArgs"))
@@ -63,21 +69,19 @@ let private delayMember =
     createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.app("f", []))
 
 let private zeroMember =
-    createMember "Zero" [Pat.wild.ToRcd] [] (Expr.unit)
+    createMember "Zero" [Pat.wild.ToRcd] [] Expr.unit
     
-let private yieldMember =
-    createYield yieldReturnExpr
+let private yieldMember isType =
+    createYield isType yieldReturnExpr yieldReturnExpr
     
 let private newNameExpr =
     Expr.tuple(Expr.ident("newName"),
-               Expr.ident("args"))
+               Expr.ident("args"),
+               Expr.ident("cros"))
 
 let private nameMember =
     createNameOperation newNameExpr
     
-let private identArgExpr =
-    Expr.ident("arg")
-
 let createYieldFor argsType propType =
     let setExpr =
         Expr.sequential([
@@ -95,7 +99,10 @@ let createYieldFor argsType propType =
             )
         ])
     
-    [ createYield' argIdent expr ]
+    let cros =
+        Expr.list([Expr.ident("id")])
+    
+    [ createYield' (not propType.IsResource) argIdent expr cros ]
 
 let mapOperationType yieldSelector opsSelector =
     function
@@ -117,18 +124,19 @@ let createBuilderClass isType name pTypes =
     let argsType =
         name + "Args"
 
-    let apply =
+    let apply varname =
         Expr.app("List.fold", [
-            Expr.paren(Expr.lambda([ "args"; "f" ], Expr.app("f", "args")))
-            Expr.paren(createInstance argsType Expr.unit)
-            Expr.ident("args")
+            Expr.paren(Expr.lambda([ varname; "f" ], Expr.app("f", varname)))
+            Expr.paren(createInstance (match varname with | "args" -> argsType | _ -> "CustomResourceOptions") Expr.unit)
+            Expr.ident(varname)
         ])
        
     let resourceRunExp () =
         Expr.paren(
             Expr.tuple(
                 Expr.ident("name"),
-                Expr.paren(apply)
+                Expr.paren(apply "args"),
+                Expr.paren(apply "cros")
             )) |>
         createInstance name
         
@@ -140,17 +148,22 @@ let createBuilderClass isType name pTypes =
         pTypes |>
         Seq.collect createOperations
         
+    let inputListOfInput argName =
+        Expr.app(Expr.ident("inputList"),
+                 Expr.list([Expr.app(Expr.ident("input"),
+                                     Expr.ident(argName))]))
+        
     Module.type'(name + "Builder", [
         Type.ctor()
         
-        yieldMember
+        yieldMember isType
         
         if isType then
-            apply            |> createRun null
+            apply "args"     |> createRunType
         else
-            resourceRunExp() |> createRun "name"
+            resourceRunExp() |> createRunResource
             
-        combineMember
+        if isType then combineMember else combineCrosMember
         forMember
         delayMember
         zeroMember
@@ -158,4 +171,10 @@ let createBuilderClass isType name pTypes =
         yield! if isType then [] else [ nameMember ]
         
         yield! operations
+        
+        if not isType then
+            croOperation "DependsOn"
+                         "Ensure this resource gets created after its dependency"
+                         "dependency"
+                         (inputListOfInput "dependency")
     ])

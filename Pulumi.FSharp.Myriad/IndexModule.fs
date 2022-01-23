@@ -84,10 +84,41 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
                                        Pattern = fromRcd.ToRcd
                                        Expr = expr }])
     
+    let letCombineCrosImplementation = 
+        let fromRcd =
+            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString("_combineCros"),[
+                Pat.paren(Pat.tuple(Pat.paren(Pat.tuple("rName", "rArgs", "rCros")),
+                                    Pat.paren(Pat.tuple("lName", "lArgs", "lCros")))).ToRcd
+            ]).FromRcd
+
+        let matchExpr =
+            Expr.paren(
+                Expr.match'(Expr.tuple(Expr.ident("lName"), Expr.ident("rName")), [
+                    Match.clause(Pat.tuple(Pat.null', Pat.null'), Expr.null')
+                    Match.clause(Pat.tuple(Pat.null', Pat.ident("name")), Expr.ident("name"))
+                    Match.clause(Pat.tuple(Pat.ident("name"), Pat.null'), Expr.ident("name"))
+                    Match.clause(Pat.wild, Expr.failwith("Duplicate name"))
+                ]))
+
+        let combineExpr =
+            Expr.tuple(matchExpr,
+                       Expr.paren(Expr.app("List.concat", (Expr.list [ "lArgs"; "rArgs" ]))),
+                       Expr.paren(Expr.app("List.concat", (Expr.list [ "lCros"; "rCros" ]))))
+            
+        let expr =
+            combineExpr
+
+        SynModuleDecl.CreateLet([{ SynBindingRcd.Let with
+                                       Access = Some SynAccess.Private // Does not work, fix it
+                                       Pattern = fromRcd.ToRcd
+                                       Expr = expr }])
+    
     Module.module'(provider, [
         Module.open'($"Pulumi.{provider}")
         
         letCombineImplementation
+        
+        letCombineCrosImplementation
         
         yield! indexTypesAsts
         

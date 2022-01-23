@@ -22,6 +22,13 @@ type Pat =
             SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(right), [])
         ]).FromRcd
     
+    static member tuple(one, two, three) =
+        SynPatRcd.CreateTuple([
+            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(one), [])
+            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(two), [])
+            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(three), [])
+        ]).FromRcd
+    
     static member tuple(left : SynPat, right : SynPat) =
         SynPatRcd.CreateTuple([
             left.ToRcd
@@ -78,6 +85,14 @@ type Expr =
         SynExpr.CreateTuple([
             left
             right
+        ])
+        
+    /// (left, right)
+    static member tuple(one, two, three) =
+        SynExpr.CreateTuple([
+            one
+            two
+            three
         ])
         
     /// (a, b, c, ...)

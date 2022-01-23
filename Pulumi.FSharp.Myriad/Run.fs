@@ -3,5 +3,8 @@ module AstRun
 open AstMember
 open AstOperations
 
-let createRun nameArgName =
-    createMember "Run" [(argsTuple' nameArgName) true] []
+let createRunResource =
+    createMember "Run" [argsTupleResource true] []
+    
+let createRunType =
+    createMember "Run" [argsTupleType true] []

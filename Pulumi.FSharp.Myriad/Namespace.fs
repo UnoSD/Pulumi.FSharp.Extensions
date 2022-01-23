@@ -5,6 +5,7 @@ open AstHelpers
 let createNamespace module' = 
     Namespace.namespace'("Pulumi.FSharp", [
         Module.open'("Pulumi.FSharp")
+        Module.open'("Pulumi")
      
         module'
    ])
