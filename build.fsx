@@ -191,7 +191,7 @@ Target.create "Pack" (fun _ ->
             (fun x -> x.Version.Split('.')) |>
             Array.last |>
             Int32.Parse |>
-            (+)4
+            (+)1
             
         let xPath =
             sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']" provider
