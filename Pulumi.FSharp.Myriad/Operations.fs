@@ -284,9 +284,9 @@ let createOperationsFor' argsType pType =
     List.mapi (fun i e -> createOperation'' pType.IsResource doc nameArgName memberName pType.OperationName argName (i = 0) argType e)
     
     
-let croOperation operationName description argumentName (setAssignmentExpression : SynExpr) =
+let croOperation operationName description argumentName (setAssignmentExpression : SynExpr) withAttribute =
     let attributes =
-        [ createAttributeWithArg "CustomOperation" (operationName |> toCamelCase) ]
+        [ if withAttribute then createAttributeWithArg "CustomOperation" (operationName |> toCamelCase) ]
     
     let patterns = [
         createTuple [

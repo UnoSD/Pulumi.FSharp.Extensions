@@ -153,6 +153,12 @@ let createBuilderClass isType name pTypes =
                  Expr.list([Expr.app(Expr.ident("input"),
                                      Expr.ident(argName))]))
         
+    let inputListOfResources argName =
+        Expr.app(Expr.ident("inputList"),
+                 Expr.paren(Expr.app(Expr.longIdent("Seq.map"),
+                                     Expr.app(Expr.ident("input"),
+                                              Expr.ident(argName)))))
+        
     Module.type'(name + "Builder", [
         Type.ctor()
         
@@ -177,4 +183,12 @@ let createBuilderClass isType name pTypes =
                          "Ensure this resource gets created after its dependency"
                          "dependency"
                          (inputListOfInput "dependency")
+                         true
+                         
+        if not isType then
+            croOperation "DependsOn"
+                         "Ensure this resource gets created after its dependency"
+                         "dependency"
+                         (inputListOfResources "dependency")
+                         false
     ])
