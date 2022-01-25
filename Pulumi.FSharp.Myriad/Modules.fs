@@ -338,14 +338,21 @@ let createTypes (schema : JsonValue) =
                      | _                                     -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
         Option.defaultValue namespace'
     
+    let namespacesJson =
+        match schema.["language"]
+                    .["csharp"]
+                    .TryGetProperty("namespaces") with
+        | Some ns -> ns.Properties()
+        | None    -> [||]
+    
     let namespaces =
-        schema.["language"]
-              .["csharp"]
-              .["namespaces"]
-              .Properties() |>
+        namespacesJson |>
         Map.ofArray |>
         Map.map (fun _ jv -> jv.AsString() |> Some) |>
-        Map.add "index" None
+        Map.add "index" None |>
+        // Namespaces missing in the Pulumi.Command schema
+        Map.add "local" (Some("Local")) |>
+        Map.add "remote" (Some("Remote"))
     
     let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
         let properties =

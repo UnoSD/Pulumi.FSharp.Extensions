@@ -35,6 +35,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Tls", "Pulumi
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Random", "Pulumi.FSharp.Random\Pulumi.FSharp.Random.fsproj", "{D3ABE35A-70D4-4D9E-882B-21E706D871E1}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Command", "Pulumi.FSharp.Command\Pulumi.FSharp.Command.fsproj", "{5EB201F8-FC48-4F8B-B50D-780FA6FADDD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,5 +91,9 @@ Global
 		{D3ABE35A-70D4-4D9E-882B-21E706D871E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3ABE35A-70D4-4D9E-882B-21E706D871E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3ABE35A-70D4-4D9E-882B-21E706D871E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB201F8-FC48-4F8B-B50D-780FA6FADDD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB201F8-FC48-4F8B-B50D-780FA6FADDD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB201F8-FC48-4F8B-B50D-780FA6FADDD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB201F8-FC48-4F8B-B50D-780FA6FADDD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
