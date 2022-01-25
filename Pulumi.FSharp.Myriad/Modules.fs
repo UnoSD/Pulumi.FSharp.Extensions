@@ -126,7 +126,7 @@ let private nameAndType allPropertyNames isType allTypes name (properties : (str
     let typeExists typeName =
         Array.contains typeName allTypes
         
-    let rec getTypeInfo : ((string * JsonValue) []) -> PType =
+    let rec getTypeInfo : (string * JsonValue) [] -> PType =
         function
         | PTArray itemType                                         -> getTypeInfo itemType |> PType.PArray
         | PTMap   itemType                                         -> getTypeInfo itemType |> PType.PMap
@@ -137,19 +137,19 @@ let private nameAndType allPropertyNames isType allTypes name (properties : (str
         | PTUnion (one, two)
             -> match (getTypeInfo one, getTypeInfo two) with
                | one, two when one = two                              -> one
-               | (PRef refType, other)
-               | (other, PRef refType) when not <| typeExists refType -> other
+               | PRef refType, other
+               | other, PRef refType when not <| typeExists refType -> other
                | one, two                                             -> PType.PUnion (one, two)
         | PTUnionMany _
             -> PType.PAny
         | x -> failwith $"Missing type pattern for {x}"
             
-    let (Property("description") (JsonValue.String(description)), _) |
-        (_, description) =
+    let Property("description") (JsonValue.String(description)), _ |
+        _, description =
         properties, ""
     
-    let (Property("language") (JsonValue.Record((Property("csharp") (JsonValue.Record(Property("name") (JsonValue.String(name))))))), _) |
-        (_, name) =
+    let Property("language") (JsonValue.Record(Property("csharp") (JsonValue.Record(Property("name") (JsonValue.String(name)))))), _ |
+        _, name =
         properties, name |> toPascalCase
     
     let deprecation =
@@ -185,10 +185,10 @@ let private createPTypes isType allTypes properties =
         properties |>
         Array.map (fun (x, y : JsonValue) -> nameAndType allPropertyNames isType allTypes x (y.Properties()))
         
-    let (propOfSameComplexType, otherProperties) =
+    let propOfSameComplexType, otherProperties =
         nameAndTypes |>
         Array.groupBy (fun pt -> pt.Type) |>
-        Array.partition (function | (PRef _, props) -> Array.length props > 1 | _ -> false) |>
+        Array.partition (function | PRef _, props -> Array.length props > 1 | _ -> false) |>
         (fun (l, r) -> (l |> Array.collect snd,
                         r |> Array.collect snd))
         
@@ -230,29 +230,22 @@ let private missingStatusTypes =
     |]
 
 let createTypes (schema : JsonValue) =
-    let allAvailableTypes =
-        schema.["types"].Properties() |> Array.map fst
+    let typesJson =
+        match schema.TryGetProperty("types") with
+        | Some types -> types.Properties()
+        | None       -> [||]
     
     let allTypes =
-        schema.["types"].Properties() |>
-        Map.ofArray
+        typesJson |> Map.ofArray
+
+    let allAvailableTypes =
+        typesJson |> Array.map fst
    
     let getPropertiesValues =
         function
         | JsonValue.Record(Property("inputProperties") (JsonValue.Record(jv)))
         | JsonValue.Record(Property("properties")      (JsonValue.Record(jv))) -> jv |> Array.map (snd >> (fun x -> x.Properties()))
         | _                                                                    -> [||]
-        
-    //let optionApply func =
-    //    // Option.fold (fun o2 v1 -> o2 |> Option.map (func v1) |> Option.orElse (Some v1)) o2 o1
-    //    function
-    //    | Some value1, Some value2 -> func value1 value2 |> Some
-    //    | None       , Some value
-    //    | Some value , None        -> value |> Some
-    //    | None       , None        -> None
-                
-    //let tupleMap f (one, two) =
-    //    (f one, f two)
         
     let (<*>) fOpt xOpt =
         match fOpt, xOpt with
@@ -262,12 +255,6 @@ let createTypes (schema : JsonValue) =
         
     let (<!>) =
         Option.map
-                
-    //let lift2 f xOpt yOpt =
-    //    f <!> xOpt <*> yOpt
-
-    //let (<*) x y =
-    //    lift2 List.append x y
     
     let rec getRefType =
         function
@@ -301,18 +288,21 @@ let createTypes (schema : JsonValue) =
                                                    | false -> allTypes.[refType] |>
                                                               getAllNestedTypes (refType :: refTypes)))
         
+    let resourcesJson =
+        schema.["resources"].Properties()
+        
     let allNestedTypes =
-        schema.["resources"].Properties() |>
+        resourcesJson |>
         Array.map (snd >> getAllNestedTypes []) |>
         List.concat        
     
     let pulumiProviderName =
         schema.["name"].AsString()
     
-    let inline typedMatches (property : string) (regex : ^a) builderType filter =
+    let inline typedMatches jsonsArray (regex : ^a) builderType filter =
         let getTypedMatch type' = (^a : (member TypedMatch : string -> 'b) (regex, type'))
         
-        schema.[property].Properties() |>
+        jsonsArray |>
         filter |>
         Array.map (fun (type', jsonValue) -> getTypedMatch type' |> builderType, jsonValue)
         
@@ -320,11 +310,11 @@ let createTypes (schema : JsonValue) =
         f y x
         
     let resources =
-        typedMatches "resources" typeInfoProvider Resource <|
+        typedMatches resourcesJson typeInfoProvider Resource <|
         Array.filter (fun (_, v) -> v.TryGetProperty("deprecationMessage").IsNone)
         
     let types =
-        typedMatches "types" typeInfoProvider Type <|
+        typedMatches typesJson typeInfoProvider Type <|
         Array.filter (fst >> (flip List.contains) allNestedTypes)
     
     let tryGetMatch (regexMatch : Group) =
@@ -334,7 +324,7 @@ let createTypes (schema : JsonValue) =
             None
     
     let getProvider builder =
-        let (t, subNamespaceOrName) = 
+        let t, subNamespaceOrName = 
             match builder with
             | Type     t -> t, tryGetMatch t.SubNamespace
             | Resource t -> t, tryGetMatch t.SubNamespace |> Option.map toPascalCase
@@ -369,7 +359,7 @@ let createTypes (schema : JsonValue) =
         let properties =
             match pulumiProviderName, isType, typeName with
             | "kubernetes", true, x when missingStatusTypes |> Array.contains x
-                -> properties |> Array.filter (function (pName, _) -> pName <> "status")
+                -> properties |> Array.filter (function pName, _ -> pName <> "status")
             | _
                 -> properties
         
@@ -395,7 +385,7 @@ let createTypes (schema : JsonValue) =
                 createBuilderInstance description typeName pTypes
             |]
     
-    let createBuilders allTypes (typeInfo, (jsonValue : JsonValue)) =
+    let createBuilders allTypes (typeInfo, jsonValue : JsonValue) =
         let typeName, isType, propertiesPropertyName =
             match typeInfo with
             | Type t     -> t.ResourceType.Value, true, "properties"
@@ -442,7 +432,7 @@ let createTypes (schema : JsonValue) =
     
     let cloudProviderNamespace =
         match namespaces.TryGetValue(pulumiProviderName) with
-        | (true, Some value) -> value
+        | true, Some value -> value
         | _                  -> pulumiProviderName |> toPascalCase
     
     let folder modules resourceProvider resourceBuilders =
