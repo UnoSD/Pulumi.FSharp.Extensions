@@ -9,7 +9,7 @@ module Region =
     // az account list-locations -o json | sed "s/$(az account show --query id -o tsv)/00000000-0000-0000-0000-000000000000/" > locations.json
     type private LocationsProvider =
         JsonProvider<"../Pulumi.FSharp.AzureNative/locations.json",
-                     EmbeddedResource="Pulumi.FSharp.AzureNative, Pulumi.FSharp.AzureNative.locations.json">
+                     EmbeddedResource="Pulumi.FSharp.AzureNative, locations.json">
     
     let private locationsJson = LocationsProvider.GetSamples()
 
