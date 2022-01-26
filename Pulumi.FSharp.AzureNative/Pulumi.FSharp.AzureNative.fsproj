@@ -56,7 +56,7 @@
 
         <Compile Include="NamingConventions.fs" />
 
-        <None Include="locations.json" />
+        <EmbeddedResource Include="locations.json" />
     </ItemGroup>
 
 </Project>
