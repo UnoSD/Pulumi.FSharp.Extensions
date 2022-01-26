@@ -38,6 +38,7 @@ module Region =
         locationsMap
         |> Map.tryFind configuredRegion
         |> Option.map(fun x -> x.Name |> shorten)
+        |> Option.defaultValue (failwith "Missing or incorrect azure-native:location config value")
 
 module Resource =
     open Pulumi.FSharp.Config
