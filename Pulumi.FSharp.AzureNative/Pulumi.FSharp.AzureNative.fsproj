@@ -54,7 +54,7 @@
 
         <None Include="myriad.toml" />
 
-        <Compile Include="LocationsJson.fs" />
+        <Compile Include="Locations.fs" />
         <Compile Include="NamingConventions.fs" />
     </ItemGroup>
 
