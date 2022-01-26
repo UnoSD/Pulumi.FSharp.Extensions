@@ -13,6 +13,7 @@ open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
 open Fake.DotNet.NuGet
 open Fake.BuildServer
+open Fake.Net.Http
 open Fake.Core.Xml
 open Fake.DotNet
 open Fake.Core
@@ -186,9 +187,21 @@ Target.create "Pack" (fun _ ->
     getProviders |>
     Seq.iter (fun provider ->
         let nextExtensionsVersion =
-            getFullName provider |> 
-            NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
-            (fun x -> x.Version.Split('.')) |>
+            getFullName provider |>
+            
+            // This does not work and returns wrong package
+            //NuGet.getLatestPackage (NuGet.getRepoUrl()) |>
+            //(fun x -> x.Version.Split('.')) |>
+            
+            // So we have to do this crap...
+            sprintf "https://www.nuget.org/packages/%s" |>
+            get "" "" |>
+            (fun x -> x.Split('\n')) |>
+            Array.find (fun x -> x.Contains("packageVersion")) |>
+            (fun x -> x.Split('"')) |>
+            Array.item 1 |>
+            (fun x -> x.Split('.')) |>
+
             Array.last |>
             Int32.Parse |>
             (+)1
