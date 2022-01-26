@@ -53,6 +53,10 @@
         </Compile>
 
         <None Include="myriad.toml" />
+
+        <Compile Include="NamingConventions.fs" />
+
+        <None Include="locations.json" />
     </ItemGroup>
 
 </Project>
