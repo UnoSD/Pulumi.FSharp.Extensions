@@ -54,9 +54,8 @@
 
         <None Include="myriad.toml" />
 
+        <Compile Include="LocationsJson.fs" />
         <Compile Include="NamingConventions.fs" />
-
-        <EmbeddedResource Include="locations.json" />
     </ItemGroup>
 
 </Project>

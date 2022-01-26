@@ -1,6 +1,7 @@
 module LocationsJson
 
-let locationsJson = @"""[
+[<Literal>]
+let jsonData = """[
   {
     "displayName": "East US",
     "id": "/subscriptions/00000000-0000-0000-0000-000000000000/locations/eastus",

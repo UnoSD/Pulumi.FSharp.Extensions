@@ -6,10 +6,9 @@ open Pulumi
 // https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
 
 module Region = 
-    // az account list-locations -o json | sed "s/$(az account show --query id -o tsv)/00000000-0000-0000-0000-000000000000/" > locations.json
+    // az account list-locations -o json | sed "s/$(az account show --query id -o tsv)/00000000-0000-0000-0000-000000000000/"
     type private LocationsProvider =
-        JsonProvider<"../Pulumi.FSharp.AzureNative/locations.json",
-                     EmbeddedResource="Pulumi.FSharp.AzureNative, locations.json">
+        JsonProvider<LocationsJson.jsonData>
     
     let private locationsJson = LocationsProvider.GetSamples()
 
