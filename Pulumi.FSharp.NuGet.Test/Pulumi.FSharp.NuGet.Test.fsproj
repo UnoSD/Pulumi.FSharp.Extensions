@@ -15,14 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pulumi.FSharp.Aws" Version="4.37.5.4" />
+    <PackageReference Include="Pulumi.FSharp.Aws" Version="5.1.0.5" />
     <PackageReference Include="Pulumi.FSharp.Azure" Version="4.34.0.3" />
-    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="5.17.0.4" />
-    <PackageReference Include="Pulumi.FSharp.AzureNative" Version="1.58.0.13" />
+    <PackageReference Include="Pulumi.FSharp.AzureAD" Version="5.18.0.5" />
+    <PackageReference Include="Pulumi.FSharp.AzureNative" Version="1.62.0.14" />
     <PackageReference Include="Pulumi.FSharp.Core" Version="3.0.2" />
-    <PackageReference Include="Pulumi.FSharp.Gcp" Version="6.12.0.5" />
-    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="3.16.0.4" />
-    <PackageReference Include="Pulumi.FSharp.Tls" Version="4.1.0.5" />
+    <PackageReference Include="Pulumi.FSharp.Gcp" Version="6.17.0.6" />
+    <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="3.18.0.5" />
+    <PackageReference Include="Pulumi.FSharp.Tls" Version="4.1.0.6" />
   </ItemGroup>
 
 </Project>
