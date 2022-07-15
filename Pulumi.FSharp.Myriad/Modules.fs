@@ -227,6 +227,8 @@ let private missingStatusTypes =
         "StatefulSet"
         "APIService"
         "CustomResourceDefinition"
+        "PersistentVolumeClaimPatch"
+        "NetworkPolicy"
     |]
 
 let createTypes (schema : JsonValue) =
