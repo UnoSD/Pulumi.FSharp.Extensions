@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>preview</LangVersion>
         <NoWarn>NU1605,NU1608</NoWarn>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <RootNamespace>Pulumi.FSharp.Myriad</RootNamespace>
-        <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
+        <FSharpCoreImplicitPackageVersion>6.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,7 +40,7 @@
     
     <ItemGroup>
         <PackageReference Include="FsAst" Version="0.7.0" />
-        <PackageReference Include="FSharp.Core" Version="5.0.2" />
+        <PackageReference Include="FSharp.Core" Version="6.0.5" />
         <PackageReference Include="FSharp.Data" Version="4.2.9" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
         <PackageReference Include="Myriad.Core" Version="0.5.0" />

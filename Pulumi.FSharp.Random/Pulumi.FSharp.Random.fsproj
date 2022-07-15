@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
         <Copyright>Copyright 2021</Copyright>
         <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
@@ -13,7 +13,7 @@
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <FSharpCoreImplicitPackageVersion>5.0.*</FSharpCoreImplicitPackageVersion>
+        <FSharpCoreImplicitPackageVersion>6.0.*</FSharpCoreImplicitPackageVersion>
     </PropertyGroup>
 
     <UsingTask TaskName="ForceRegenerate" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
@@ -39,7 +39,7 @@
     <ItemGroup>
         <PackageReference Include="Pulumi.Random" Version="4.8.0" />
         <PackageReference Include="Pulumi.FSharp" Version="3.36.0" />
-        <PackageReference Include="FSharp.Core" Version="5.0.2" />
+        <PackageReference Include="FSharp.Core" Version="6.0.5" />
         <PackageReference Include="Myriad.Sdk" Version="0.5.0" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
