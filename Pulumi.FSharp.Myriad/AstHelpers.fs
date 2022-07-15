@@ -1,8 +1,10 @@
 module AstHelpers
 
-open FSharp.Compiler.SyntaxTree
-open FSharp.Compiler.Range
-open FsAst
+open FSharp.Compiler.Syntax
+open FSharp.Compiler.SyntaxTrivia
+open FSharp.Compiler.Text
+open FsAst.AstCreate
+open FsAst.AstRcd
 open Core
 
 type SimplePat =
@@ -171,7 +173,8 @@ type Expr =
                      Expr = exp }.FromRcd
             ],
             Expr.unit,
-            range.Zero)
+            range.Zero,
+            { InKeyword = None })
         
     static member let'(name, args, exp) =
         SynExpr.LetOrUse(
@@ -184,7 +187,8 @@ type Expr =
                      Expr = exp }.FromRcd
             ],
             Expr.unit,
-            range.Zero)
+            range.Zero,
+            { InKeyword = None })
         
     static member set(identString, exp) =
         SynExpr.Set (Expr.longIdent(identString),
@@ -195,13 +199,15 @@ type Expr =
         SynExpr.CreateInstanceMethodCall(LongIdentWithDots.CreateString(identString),
                                          Expr.paren(Expr.tuple(exps)))
     
-    static member lambda(args, exp) =
+    static member lambda(args : SynSimplePat list, exp : SynExpr) =
+        //SynExpr.Ident(Ident.Create("pippo"))
         SynExpr.Lambda(false,
                        true,
                        SynSimplePats.SimplePats(args, range.Zero),
                        exp,
                        None,
-                       range.Zero)
+                       range.Zero,
+                       { ArrowRange = None })
     
     static member lambda(args : string list, exp) =
         match args with
@@ -211,11 +217,12 @@ type Expr =
 
 type Match =
     static member clause(pat, expr) =
-        SynMatchClause.Clause(pat,
-                              None,
-                              expr,
-                              range.Zero,
-                              DebugPointForTarget.No)
+        SynMatchClause.SynMatchClause(pat,
+                                      None,
+                                      expr,
+                                      range.Zero,
+                                      DebugPointAtTarget.No,
+                                      { ArrowRange = Some range.Zero; BarRange = Some range.Zero })
 
 type Namespace =
     static member namespace'(name, content) =

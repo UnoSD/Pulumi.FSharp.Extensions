@@ -1,7 +1,7 @@
 module AstModules
 
 open System.Text.RegularExpressions
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open BuilderInstance
 open AstOperations
 open FSharp.Data

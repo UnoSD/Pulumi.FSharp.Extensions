@@ -1,7 +1,7 @@
 module Core
 
 open System
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open FsAst
 
 let private (|FirstLetter|) (p:string) =

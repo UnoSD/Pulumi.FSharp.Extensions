@@ -1,6 +1,6 @@
 module BuilderInstance
 
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open AstOperations
 open AstInstance
 open AstBuilder

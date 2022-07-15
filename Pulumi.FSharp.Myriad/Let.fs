@@ -1,7 +1,7 @@
 module AstLet
 
-open FSharp.Compiler.SyntaxTree
-open FSharp.Compiler.XmlDoc
+open FSharp.Compiler.Syntax
+open FSharp.Compiler.Xml
 open FsAst
 
 let createLet name expr (docs : string list) =

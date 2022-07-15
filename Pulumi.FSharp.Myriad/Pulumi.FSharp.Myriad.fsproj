@@ -39,12 +39,12 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="FsAst" Version="0.7.0" />
+        <PackageReference Include="FsAst" Version="0.13.0" />
         <PackageReference Include="FSharp.Core" Version="6.0.5" />
         <PackageReference Include="FSharp.Data" Version="4.2.9" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
-        <PackageReference Include="Myriad.Core" Version="0.5.0" />
-        <PackageReference Include="Myriad.Sdk" Version="0.5.0" />
+        <PackageReference Include="Myriad.Core" Version="0.8.1" />
+        <PackageReference Include="Myriad.Sdk" Version="0.8.1" />
     </ItemGroup>
     
 </Project>

@@ -1,7 +1,7 @@
 module AstYield
 
 open AstMember
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open FsAst
 
 let createYield' isType (arg : SynPat) (args : SynExpr) (cros : SynExpr) =

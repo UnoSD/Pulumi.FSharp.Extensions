@@ -1,7 +1,7 @@
 module AstOperations
 
-open FSharp.Compiler.SyntaxTree
-open FSharp.Compiler.XmlDoc
+open FSharp.Compiler.Syntax
+open FSharp.Compiler.Xml
 open AstAttribute
 open AstHelpers
 open AstMember

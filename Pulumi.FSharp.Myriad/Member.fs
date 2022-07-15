@@ -1,6 +1,6 @@
 module AstMember
 
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open Core
 open FsAst
     

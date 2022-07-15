@@ -1,7 +1,7 @@
 module AstAttribute
 
-open FSharp.Compiler.Range
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Text
+open FSharp.Compiler.Syntax
 open FsAst
 
 let createAttribute name =

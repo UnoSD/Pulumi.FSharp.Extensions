@@ -1,6 +1,6 @@
 module AstInstance
 
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open FsAst
 
 let createInstance name args =

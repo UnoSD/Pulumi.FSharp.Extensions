@@ -13,7 +13,7 @@ type PulumiFSharpGenerator() =
     interface IMyriadGenerator with
         member _.Generate(context) =            
             let projectFile =
-                FileInfo(context.InputFileName).Directory.EnumerateFiles("*.fsproj") |>
+                FileInfo(context.InputFilename).Directory.EnumerateFiles("*.fsproj") |>
                 Seq.exactlyOne
 
             let provider =
@@ -44,6 +44,8 @@ type PulumiFSharpGenerator() =
             createTypes |>
             createModules provider |>
             createNamespace |>
-            List.singleton
+            (fun x -> x.FromRcd) |>
+            List.singleton |>           
+            Output.Ast
 
         member this.ValidInputExtensions = seq { ".fs" }

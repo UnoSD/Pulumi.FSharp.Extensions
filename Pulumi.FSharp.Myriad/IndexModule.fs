@@ -1,6 +1,6 @@
 module IndexModule
 
-open FSharp.Compiler.SyntaxTree
+open FSharp.Compiler.Syntax
 open AstHelpers
 open AstModules
 open FsAst
