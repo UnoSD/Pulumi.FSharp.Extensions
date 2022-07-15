@@ -313,7 +313,7 @@ let createTypes (schema : JsonValue) =
         
     let resources =
         typedMatches resourcesJson typeInfoProvider Resource <|
-        Array.filter (fun (_, v) -> v.TryGetProperty("deprecationMessage").IsNone)
+        Array.filter (fun (k, v) -> v.TryGetProperty("deprecationMessage").IsNone && not (k.Contains("/get")))
         
     let types =
         typedMatches typesJson typeInfoProvider Type <|
