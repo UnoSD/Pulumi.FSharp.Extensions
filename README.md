@@ -66,8 +66,8 @@ let contentBlob =
     
 let sasToken =
     sasToken {
-        storage         sa
-        blob            contentBlob
+        storage                sa
+        blob                   contentBlob
     }
     
 let appServicePlan =
@@ -122,9 +122,9 @@ let storage =
     }
 
 blobContainer { 
-    accountName   storage.Name
-    resourceGroup rg.Name
-    name          "StorageContainer"
+    accountName       storage.Name
+    resourceGroup     rg.Name
+    name              "StorageContainer"
     
     PublicAccess.None
 }
