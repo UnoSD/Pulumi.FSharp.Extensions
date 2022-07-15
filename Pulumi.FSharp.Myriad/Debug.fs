@@ -139,7 +139,7 @@ let private join filtersList =
         Providers = reduce (fun f -> f.Providers)
     }
 
-let private isDebug = true
+let private isDebug = false
 let private filters = join [ azureFilters; awsFilters; kubernetesFilters; azureAdFilters; azureNativeFilters ]
 
 let private typeSelector builderType =

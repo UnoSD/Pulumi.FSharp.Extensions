@@ -200,14 +200,13 @@ type Expr =
                                          Expr.paren(Expr.tuple(exps)))
     
     static member lambda(args : SynSimplePat list, exp : SynExpr) =
-        SynExpr.Ident(Ident.Create("pippo"))
-        //SynExpr.Lambda(false,
-        //               true,
-        //               SynSimplePats.SimplePats(args, range.Zero),
-        //               exp,
-        //               None,
-        //               range.Zero,
-        //               { ArrowRange = Some range.Zero })
+        SynExpr.Lambda(false,
+                       true,
+                       SynSimplePats.SimplePats(args, range.Zero),
+                       exp,
+                       None,
+                       range.Zero,
+                       { ArrowRange = Some range.Zero })
     
     static member lambda(args : string list, exp) =
         match args with
