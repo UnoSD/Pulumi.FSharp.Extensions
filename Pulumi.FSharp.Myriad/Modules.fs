@@ -369,6 +369,10 @@ let createTypes (schema : JsonValue) =
             match pulumiProviderName, isType, typeName with
             | "kubernetes", true, x when missingStatusTypes |> Array.contains x
                 -> properties |> Array.filter (function pName, _ -> pName <> "status")
+            | "azure-native", false, x when Array.contains x [| "SecurityConnectorApplication"; "Application" |]
+                -> properties |> Array.filter (function pName, _ -> pName <> "conditionSets")
+            | "azure-native", false, x when Array.contains x [| "HybridRunbookWorkerGroup" |]
+                -> properties |> Array.filter (function pName, _ -> pName <> "name")
             | _
                 -> properties
         
@@ -424,6 +428,13 @@ let createTypes (schema : JsonValue) =
                                      | Resource r -> not (r.ResourceType.Value = "Chart" &&
                                                           r.ResourceProviderNamespace.Value = "helm.sh"))
     
+    let filterAzureNativeProblematicTypes types =
+        types |>
+        Array.filter (fun (bt, _) -> match bt with
+                                     | Type     t -> not (t.ResourceType.Value = "ApplicationCondition" &&
+                                                          t.ResourceProviderNamespace.Value = "security") 
+                                     | _          -> true)
+    
     let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy (fst >> getProvider) typesOrResources |>
         filters |>
@@ -431,6 +442,7 @@ let createTypes (schema : JsonValue) =
         Map.map (fun _ typesOrResources -> typesOrResources |>
                                            debugFilterTypes |>
                                            filterKubernetesProblematicTypes |>
+                                           filterAzureNativeProblematicTypes |>
                                            Array.Parallel.collect (createBuilders allTypes))
         
     let typeBuilders =
