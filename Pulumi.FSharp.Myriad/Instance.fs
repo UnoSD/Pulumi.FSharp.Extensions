@@ -1,7 +1,7 @@
 module AstInstance
 
 open FSharp.Compiler.Syntax
-open FsAst
+open Myriad.Core.AstExtensions
 
 let createInstance name args =
     let identifier =

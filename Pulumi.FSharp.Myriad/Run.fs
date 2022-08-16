@@ -4,7 +4,7 @@ open AstMember
 open AstOperations
 
 let createRunResource =
-    createMember "Run" [argsTupleResource true] []
+    createMember "Run" (argsTupleResource true) []
     
 let createRunType =
-    createMember "Run" [argsTupleType true] []
+    createMember "Run" (argsTupleType true) []

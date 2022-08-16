@@ -2,11 +2,11 @@ module AstLet
 
 open FSharp.Compiler.Syntax
 open FSharp.Compiler.Xml
-open FsAst
+open Myriad.Core.Ast
+open Myriad.Core.AstExtensions
 
 let createLet name expr (docs : string list) =
     SynModuleDecl.CreateLet
-        [ { SynBindingRcd.Let with
-                Pattern = SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString name, [])
-                Expr = expr
-                XmlDoc = PreXmlDoc.Create(docs) } ]
+        [ SynBinding.Let (pattern = SynPat.CreateLongIdent(LongIdentWithDots.CreateString name, []),
+                          expr = expr,
+                          xmldoc = PreXmlDoc.Create(docs)) ]

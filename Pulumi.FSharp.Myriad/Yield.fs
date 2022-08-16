@@ -2,7 +2,8 @@ module AstYield
 
 open AstMember
 open FSharp.Compiler.Syntax
-open FsAst
+open Myriad.Core.Ast
+open Myriad.Core.AstExtensions
 
 let createYield' isType (arg : SynPat) (args : SynExpr) (cros : SynExpr) =
     [
@@ -12,11 +13,10 @@ let createYield' isType (arg : SynPat) (args : SynExpr) (cros : SynExpr) =
             cros
     ] |>
     SynExpr.CreateTuple |>
-    createMember "Yield" [arg.ToRcd] []
+    createMember "Yield" arg []
     
 let createYield isType =
     let typedWildcardUnit =
-        SynPatRcd.CreateTyped(SynPatRcd.CreateWild, SynType.CreateUnit) |>
-        SynPatRcd.CreateParen
+        SynPat.CreateTyped(SynPat.CreateWild, SynType.CreateUnit)
     
-    createYield' isType (typedWildcardUnit.FromRcd)
+    createYield' isType typedWildcardUnit

@@ -6,7 +6,6 @@ open AstHelpers
 open AstMember
 open AstYield
 open AstRun
-open FsAst
 open Core
 
 open System.Text.RegularExpressions
@@ -49,10 +48,10 @@ let private combineArgs =
     Pat.ident("args")
     
 let private combineMember =
-    createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineExpr
+    createMember' None "this" "Combine" combineArgs [] combineExpr
     
 let private combineCrosMember =
-    createMember' None "this" "Combine" [combineArgs.ToRcd] [] combineCrosExpr
+    createMember' None "this" "Combine" combineArgs [] combineCrosExpr
     
 let private forArgs =
     Pat.paren (Pat.tuple ("args", "delayedArgs"))
@@ -63,13 +62,13 @@ let private forExpr =
                       Expr.app("delayedArgs", Expr.unit) ])
 
 let private forMember =
-    createMember' None "this" "For" [forArgs.ToRcd] [] forExpr
+    createMember' None "this" "For" forArgs [] forExpr
  
 let private delayMember =
-    createMember "Delay" [Pat.ident("f").ToRcd] [] (Expr.app("f", []))
+    createMember "Delay" (Pat.ident("f")) [] (Expr.app("f", []))
 
 let private zeroMember =
-    createMember "Zero" [Pat.wild.ToRcd] [] Expr.unit
+    createMember "Zero" Pat.wild [] Expr.unit
     
 let private yieldMember isType =
     createYield isType yieldReturnExpr yieldReturnExpr
@@ -135,8 +134,8 @@ let createBuilderClass isType name pTypes =
         Expr.paren(
             Expr.tuple(
                 Expr.ident("name"),
-                Expr.paren(apply "args"),
-                Expr.paren(apply "cros")
+                (apply "args"),
+                (apply "cros")
             )) |>
         createInstance name
         
@@ -160,7 +159,7 @@ let createBuilderClass isType name pTypes =
                                               Expr.ident(argName)))))
         
     Module.type'(name + "Builder", [
-        Type.ctor()
+        //Type.ctor()
         
         yieldMember isType
         

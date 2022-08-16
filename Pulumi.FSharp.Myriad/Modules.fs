@@ -56,7 +56,7 @@ let private (|StartsWith|_|) (value : string) (text : string) =
     | false -> None
 
 let private (|Property|_|) value seq =
-    seq |> Seq.tryFind (fst >> ((=)value)) |> Option.map snd
+    seq |> Seq.tryFind (fst >> (=)value) |> Option.map snd
 
 let private (|PTArray|_|) =
     function
@@ -133,7 +133,7 @@ let private nameAndType allPropertyNames isType allTypes name (properties : (str
         | PTJson                                                   -> PType.PJson
         | PTRef typeQualified when not <| typeExists typeQualified -> PType.PString
         | PTRef typeQualified                                      -> PType.PRef typeQualified
-        | PTBase baseType when (Map.containsKey baseType typeMap)  -> typeMap.[baseType]
+        | PTBase baseType when (Map.containsKey baseType typeMap)  -> typeMap[baseType]
         | PTUnion (one, two)
             -> match (getTypeInfo one, getTypeInfo two) with
                | one, two when one = two                              -> one
@@ -287,11 +287,11 @@ let createTypes (schema : JsonValue) =
          | [] -> refTypes
          | a  -> a |> List.collect (fun refType -> match List.exists ((=)refType) refTypes with
                                                    | true  -> refTypes
-                                                   | false -> allTypes.[refType] |>
+                                                   | false -> allTypes[refType] |>
                                                               getAllNestedTypes (refType :: refTypes)))
         
     let resourcesJson =
-        schema.["resources"].Properties()
+        schema["resources"].Properties()
         
     let allNestedTypes =
         resourcesJson |>
@@ -299,7 +299,7 @@ let createTypes (schema : JsonValue) =
         List.concat        
     
     let pulumiProviderName =
-        schema.["name"].AsString()
+        schema["name"].AsString()
     
     let inline typedMatches jsonsArray (regex : ^a) builderType filter =
         let getTypedMatch type' = (^a : (member TypedMatch : string -> 'b) (regex, type'))
@@ -341,9 +341,7 @@ let createTypes (schema : JsonValue) =
         Option.defaultValue namespace'
     
     let namespacesJson =
-        match schema.["language"]
-                    .["csharp"]
-                    .TryGetProperty("namespaces") with
+        match schema["language"].["csharp"].TryGetProperty("namespaces") with
         | Some ns -> ns.Properties()
         | None    -> [||]
     
@@ -458,7 +456,7 @@ let createTypes (schema : JsonValue) =
     
     let folder modules resourceProvider resourceBuilders =
         let resourceProviderNamespace =
-            namespaces.[resourceProvider]
+            namespaces[resourceProvider]
         
         let openNamespace =
             resourceProviderNamespace |>

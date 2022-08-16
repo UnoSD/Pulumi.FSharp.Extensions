@@ -3,9 +3,9 @@ module AstHelpers
 open FSharp.Compiler.Syntax
 open FSharp.Compiler.SyntaxTrivia
 open FSharp.Compiler.Text
-open FsAst.AstCreate
-open FsAst.AstRcd
 open Core
+open Myriad.Core.Ast
+open Myriad.Core.AstExtensions
 
 type SimplePat =
     /// str
@@ -17,33 +17,35 @@ type SimplePat =
                            SynType.CreateLongIdent(type'),
                            range.Zero)
 
+type SynPat with
+    static member CreateTuple(args : SynPat list) =
+        SynPat.Tuple(false, args, Range.Zero)
+
 type Pat =
     static member tuple(left, right) =
-        SynPatRcd.CreateTuple([
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(left), [])
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(right), [])
-        ]).FromRcd
+        SynPat.CreateTuple([
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString(left), [])
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString(right), [])
+        ])
     
     static member tuple(one, two, three) =
-        SynPatRcd.CreateTuple([
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(one), [])
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(two), [])
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(three), [])
-        ]).FromRcd
+        SynPat.CreateTuple([
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString(one), [])
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString(two), [])
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString(three), [])
+        ])
     
     static member tuple(left : SynPat, right : SynPat) =
-        SynPatRcd.CreateTuple([
-            left.ToRcd
-            right.ToRcd
-        ]).FromRcd
+        SynPat.CreateTuple([
+            left
+            right
+        ])
     
     static member paren(pat : SynPat) =
-        SynPatRcd.CreateParen(pat.ToRcd)
-                 .FromRcd
+        SynPat.CreateParen(pat)
         
     static member ident(str) =
-        SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(str), [])
-                 .FromRcd
+        SynPat.CreateLongIdent(LongIdentWithDots.CreateString(str), [])
 
     static member null' =
         SynPat.Null(range.Zero)
@@ -52,14 +54,8 @@ type Pat =
         SynPat.Wild(range.Zero)
         
     static member typed(name, typeName : string) =
-        {
-            Pattern = Pat.ident(name).ToRcd
-            Type = SynType.CreateLongIdent(typeName)
-            Range = range.Zero
-        } |>
-        SynPatRcd.Typed |>
-        SynPatRcd.CreateParen |>
-        (fun x -> x.FromRcd)
+        SynPat.Typed(Pat.ident(name), SynType.CreateLongIdent(typeName), range.Zero) |>
+        SynPat.CreateParen
 
 type Expr =
     /// str
@@ -167,10 +163,9 @@ type Expr =
             false,
             false,
             [
-                { SynBindingRcd.Let with
-                     Pattern = SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name),
-                                                         (args |> List.map (fun arg -> arg.ToRcd)))
-                     Expr = exp }.FromRcd
+                SynBinding.Let(
+                   pattern = SynPat.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
+                   expr = exp)
             ],
             Expr.unit,
             range.Zero,
@@ -181,10 +176,10 @@ type Expr =
             false,
             false,
             [
-                { SynBindingRcd.Let with
-                     Pattern = SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name),
-                                                         (args |> List.map (Pat.ident >> (fun x -> x.ToRcd))))
-                     Expr = exp }.FromRcd
+                SynBinding.Let(
+                     pattern = SynPat.CreateLongIdent(LongIdentWithDots.CreateString(name),
+                                                      (args |> List.map Pat.ident)),
+                     expr = exp)
             ],
             Expr.unit,
             range.Zero,
@@ -198,21 +193,35 @@ type Expr =
     static member methodCall(identString, exps) =
         SynExpr.CreateInstanceMethodCall(LongIdentWithDots.CreateString(identString),
                                          Expr.paren(Expr.tuple(exps)))
-    
+
     static member lambda(args : SynSimplePat list, exp : SynExpr) =
-        SynExpr.Lambda(false,
-                       true,
-                       SynSimplePats.SimplePats(args, range.Zero),
-                       exp,
-                       None,
-                       range.Zero,
-                       { ArrowRange = Some range.Zero })
+        let mapArgs = 
+            function
+            | SynSimplePat.Id(x, _, _, _, _, _) ->
+                SynPat.CreateLongIdent(LongIdentWithDots.CreateString(x.idText), [])
+            | SynSimplePat.Typed(SynSimplePat.Id(ident, _, _, _, _, _), targetType, _) ->
+                SynPat.CreateParen(SynPat.CreateTyped(SynPat.CreateLongIdent(LongIdentWithDots.CreateString(ident.idText), []), targetType))
+            | x -> sprintf "%A" x |> failwith
+                     
+        let pats =
+            args |>
+            List.map mapArgs
+        
+        let pat =
+            match pats with
+            | []  -> SynPat.CreateTuple(pats)
+            | [_] -> SynPat.CreateTuple(pats)
+            | _   -> SynPat.CreateParen(SynPat.CreateTuple(pats))
+        
+        SynExpr.CreateLambda([pat], exp)
     
     static member lambda(args : string list, exp) =
-        match args with
-        | [ ]      -> Expr.lambda(List.empty<SynSimplePat>, exp)
-        | [x]      -> Expr.lambda([ SimplePat.id(x) ], exp)
-        |  x :: xs -> Expr.lambda([ SimplePat.id(x) ], Expr.lambda(xs, exp))
+        SynExpr.CreateLambda(args |> List.map (fun x -> SynPat.CreateLongIdent(LongIdentWithDots.CreateString(x), [])), exp)
+        
+        //match args with
+        //| [ ]      -> Expr.lambda(List.empty<SynSimplePat>, exp)
+        //| [x]      -> Expr.lambda([ SimplePat.id(x) ], exp)
+        //|  x :: xs -> Expr.lambda([ SimplePat.id(x) ], Expr.lambda(xs, exp))
 
 type Match =
     static member clause(pat, expr) =
@@ -225,8 +234,7 @@ type Match =
 
 type Namespace =
     static member namespace'(name, content) =
-        { SynModuleOrNamespaceRcd.CreateNamespace(Ident.CreateLong name)
-                with Declarations = content }
+        SynModuleOrNamespace.CreateNamespace(Ident.CreateLong name, decls = content)
         
 type Attribute =
     static member attribute(name) =
@@ -235,9 +243,15 @@ type Attribute =
 type Module =
     static member module'(name, content, attributes) =
         let componentInfo =
-            { SynComponentInfoRcd.Create [ Ident.Create name ] with 
-                  Attributes = attributes }
-        SynModuleDecl.CreateNestedModule(componentInfo, content)
+            SynComponentInfo.Create([ Ident.Create name ], attributes = attributes)
+        
+        SynModuleDecl.NestedModule(componentInfo,
+                                   false,
+                                   content,
+                                   false,
+                                   Range.Zero,
+                                   { EqualsRange = Some Range.Zero
+                                     ModuleKeyword = Some Range.Zero })
         
     static member module'(name, content) =
         Module.module'(name, content, [])
@@ -250,8 +264,18 @@ type Module =
         SynModuleDecl.CreateOpen
         
     static member type'(name, content) =
-        SynModuleDecl.CreateType(SynComponentInfoRcd.Create(Ident.CreateLong(name)),
-                                 content)
+        let t = SynTypeDefn.SynTypeDefn(SynComponentInfo.Create(Ident.CreateLong(name)),
+                                        SynTypeDefnRepr.ObjectModel(SynTypeDefnKind.Unspecified,
+                                                                    [SynMemberDefn.CreateImplicitCtor()],
+                                                                    Range.Zero),
+                                        content,
+                                        None,
+                                        Range.Zero,
+                                        { SynTypeDefnTrivia.TypeKeyword = Some Range.Zero
+                                          EqualsRange = Some Range.Zero
+                                          WithKeyword = None })
+        
+        SynModuleDecl.Types([ t ], Range.Zero)
         
 type Type =
     static member ctor() =

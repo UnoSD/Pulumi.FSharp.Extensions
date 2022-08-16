@@ -2,10 +2,11 @@ module Core
 
 open System
 open FSharp.Compiler.Syntax
-open FsAst
+open Myriad.Core.Ast
+open Myriad.Core.AstExtensions
 
 let private (|FirstLetter|) (p:string) =
-    p.[0], (p.Substring(1))
+    p[0], p.Substring(1)
 
 let private changeInitial change value =
     let (FirstLetter(x, xs)) =
@@ -20,7 +21,7 @@ let toPascalCase =
     changeInitial Char.ToUpper
     
 let createPattern name args =
-    SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
+    SynPat.CreateLongIdent(LongIdentWithDots.CreateString(name), args)
     
 let (|Lazy|) (lazy' : Lazy<'a>) =
     lazy'.Value

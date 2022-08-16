@@ -2,7 +2,7 @@ module AstAttribute
 
 open FSharp.Compiler.Text
 open FSharp.Compiler.Syntax
-open FsAst
+open Myriad.Core.AstExtensions
 
 let createAttribute name =
     SynAttributeList.Create(SynAttribute.Create(name))

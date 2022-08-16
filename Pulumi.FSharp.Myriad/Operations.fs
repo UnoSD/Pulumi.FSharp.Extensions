@@ -5,18 +5,19 @@ open FSharp.Compiler.Xml
 open AstAttribute
 open AstHelpers
 open AstMember
-open FsAst
+open Myriad.Core.AstExtensions
+open Myriad.Core.Ast
 open Core
     
 let private createPatternTyped name args (typeName : string) =
-    SynPatRcd.CreateTyped(SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
-                          SynType.CreateLongIdent(typeName))
+    SynPat.CreateTyped(SynPat.CreateLongIdent(LongIdentWithDots.CreateString(name), args),
+                       SynType.CreateLongIdent(typeName))
 
 let private createTuple items withParen =
     if withParen then
-        SynPatRcd.CreateParen(SynPatRcd.CreateTuple(items))
+        SynPat.CreateParen(SynPat.CreateTuple(items))
     else
-        SynPatRcd.CreateTuple(items)
+        SynPat.CreateTuple(items)
 
 let private argsPattern =
     createPattern "args" []
@@ -39,7 +40,7 @@ let createPatternFromCache nameVarName =
 let argsTuple' isResource nameVarName withParen =
     let nvn =
         match nameVarName with
-        | null -> SynPatRcd.CreateWild
+        | null -> SynPat.CreateWild
         | _    -> createPatternFromCache nameVarName
     
     createTuple [ nvn
@@ -52,7 +53,7 @@ let argsTupleResource withParen =
                   crosPattern ] withParen
 
 let argsTupleType withParen =
-    createTuple [ SynPatRcd.CreateWild
+    createTuple [ SynPat.CreateWild
                   argsPattern ] withParen
 
 let private createOperation'' isResource (xmlDoc : string list) nameVarName name coName argName hasAttribute typ =
@@ -62,12 +63,11 @@ let private createOperation'' isResource (xmlDoc : string list) nameVarName name
         else
             []
     
-    let patterns = [
+    let patterns =
         createTuple [
             argsTuple' isResource nameVarName true
             match typ with | None -> createPattern argName [] | Some typ -> createPatternTyped argName [] typ
         ] true
-    ]
     
     let doc =
         PreXmlDoc.Create(xmlDoc) |> Some
@@ -151,8 +151,8 @@ let private inputListFromOutputSeq =
 
 let private inputListFromItemOf (expr : SynExpr) =
     Expr.paren(Expr.app(compose,
-                        (Expr.app(Expr.paren(Expr.app(compose,
-                                                      [ expr; Expr.longIdent("Seq.singleton") ])), inputListIdent))))
+                        Expr.app(Expr.paren(Expr.app(compose,
+                                                     [ expr; Expr.longIdent("Seq.singleton") ])), inputListIdent)))
 
 let private inputListFromItem =
     inputListFromItemOf inputIdent
@@ -225,7 +225,7 @@ let private returnTupleCache argsType pType opName setRight =
     | true  -> Expr.tuple(Expr.ident("name"), cons, Expr.ident("cros"))
 
 let createOperationsFor' argsType pType =
-    let (setRights, argType) =
+    let setRights, argType =
         match pType with
         | { PTypeDefinition.Type = PString }
         | { Type = PInteger }
@@ -271,7 +271,7 @@ let createOperationsFor' argsType pType =
         pType.OperationName |> toPascalCase
     
     let doc =
-        String.split '\n' pType.Description |> Array.filter (((=)"") >> not) |> List.ofArray
+        String.split '\n' pType.Description |> Array.filter ((=)"" >> not) |> List.ofArray
     
     let returnTupleCache' =
         returnTupleCache argsType pType operationName
@@ -288,12 +288,11 @@ let croOperation operationName description argumentName (setAssignmentExpression
     let attributes =
         [ if withAttribute then createAttributeWithArg "CustomOperation" (operationName |> toCamelCase) ]
     
-    let patterns = [
+    let patterns = 
         createTuple [
             argsTupleResource true
             createPattern argumentName []
         ] true
-    ]
     
     let doc =
         PreXmlDoc.Create([ description ]) |> Some

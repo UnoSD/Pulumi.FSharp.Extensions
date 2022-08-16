@@ -5,11 +5,11 @@ open AstOperations
 open AstInstance
 open AstBuilder
 open AstLet
-open FsAst
+open Myriad.Core.AstExtensions
 open Core
 
 let createBuilderInstance description typeName pTypes =
-    let (isYield, ops) =
+    let isYield, ops =
         Array.partition (fun x -> x.CanGenerateYield && mapOperationType (fun _ -> true) (fun _ -> false) x) pTypes
     
     let builderNames =

@@ -17,7 +17,7 @@ type PulumiFSharpGenerator() =
                 Seq.exactlyOne
 
             let provider =
-                projectFile.Name.["Pulumi.FSharp.".Length..^".fsproj".Length]
+                projectFile.Name["Pulumi.FSharp.".Length..^".fsproj".Length]
 
             let fsproj =
                 XmlDocument() in fsproj.Load (projectFile.OpenText())
@@ -26,8 +26,8 @@ type PulumiFSharpGenerator() =
                 fsproj.SelectNodes("/Project/ItemGroup") |>
                 Seq.cast<XmlNode> |>
                 Seq.collect (fun y -> y.SelectNodes("PackageReference") |> Seq.cast<XmlNode>) |>
-                Seq.pick (fun x -> if x.Attributes.["Include"].Value = $"Pulumi.{provider}" then
-                                       x.Attributes.["Version"].Value |> Some
+                Seq.pick (fun x -> if x.Attributes["Include"].Value = $"Pulumi.{provider}" then
+                                       x.Attributes["Version"].Value |> Some
                                    else
                                        None)
 
@@ -44,7 +44,6 @@ type PulumiFSharpGenerator() =
             createTypes |>
             createModules provider |>
             createNamespace |>
-            (fun x -> x.FromRcd) |>
             List.singleton |>           
             Output.Ast
 

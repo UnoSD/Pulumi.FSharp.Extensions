@@ -3,7 +3,9 @@ module IndexModule
 open FSharp.Compiler.Syntax
 open AstHelpers
 open AstModules
-open FsAst
+open FSharp.Compiler.Text
+open Myriad.Core.Ast
+open Myriad.Core.AstExtensions
 open Core
 
 type private Namespace =
@@ -41,12 +43,12 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
         List.map ((fun qualifiedTypeModule -> (String.split '.' qualifiedTypeModule.ResourceProviderNamespace.Value,
                                                qualifiedTypeModule.Content)) >>
                   (function
-                   | ([|rootNamespace|], content) -> { Name = rootNamespace
-                                                       SubNamespaceName = None
-                                                       Content = content }
-                   | ([|rootNamespace; subNamespace|], content) -> { Name = rootNamespace
-                                                                     SubNamespaceName = Some subNamespace
-                                                                     Content = content }
+                   | [|rootNamespace|], content -> { Name = rootNamespace
+                                                     SubNamespaceName = None
+                                                     Content = content }
+                   | [|rootNamespace; subNamespace|], content -> { Name = rootNamespace
+                                                                   SubNamespaceName = Some subNamespace
+                                                                   Content = content }
                    | _ -> failwith "Too many nested namespaces")) |>
         List.groupBy (fun rootNamespace -> rootNamespace.Name) |>
         List.map (fun (rootNamespaceName, content) -> groupSub content |>
@@ -58,10 +60,19 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
     
     let letCombineImplementation = 
         let fromRcd =
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString("_combine"),[
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString("_combine"),[
                 Pat.paren(Pat.tuple(Pat.paren(Pat.tuple("rName", "rArgs")),
-                                    Pat.paren(Pat.tuple("lName", "lArgs")))).ToRcd
-            ]).FromRcd
+                                    Pat.paren(Pat.tuple("lName", "lArgs"))))
+            ]) |> ignore // Replace below with this
+            
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString("_combine"), [
+                SynPat.CreateParen(SynPat.Tuple(false, [
+                    SynPat.CreateParen(SynPat.Tuple(false, [ SynPat.CreateLongIdent(LongIdentWithDots.CreateString("rName"), [])
+                                                             SynPat.CreateLongIdent(LongIdentWithDots.CreateString("rArgs"), []) ], range.Zero))
+                    SynPat.CreateParen(SynPat.Tuple(false, [ SynPat.CreateLongIdent(LongIdentWithDots.CreateString("lName"), [])
+                                                             SynPat.CreateLongIdent(LongIdentWithDots.CreateString("lArgs"), []) ], range.Zero))
+                ], Range.Zero))
+            ])
 
         let matchExpr =
             Expr.paren(
@@ -79,17 +90,16 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
         let expr =
             combineExpr
 
-        SynModuleDecl.CreateLet([{ SynBindingRcd.Let with
-                                       Access = Some SynAccess.Private // Does not work, fix it
-                                       Pattern = fromRcd.ToRcd
-                                       Expr = expr }])
+        SynModuleDecl.CreateLet([
+            SynBinding.Let(SynAccess.Private, pattern = fromRcd, expr = expr)
+        ])
     
     let letCombineCrosImplementation = 
         let fromRcd =
-            SynPatRcd.CreateLongIdent(LongIdentWithDots.CreateString("_combineCros"),[
+            SynPat.CreateLongIdent(LongIdentWithDots.CreateString("_combineCros"),[
                 Pat.paren(Pat.tuple(Pat.paren(Pat.tuple("rName", "rArgs", "rCros")),
-                                    Pat.paren(Pat.tuple("lName", "lArgs", "lCros")))).ToRcd
-            ]).FromRcd
+                                    Pat.paren(Pat.tuple("lName", "lArgs", "lCros"))))
+            ])
 
         let matchExpr =
             Expr.paren(
@@ -108,10 +118,9 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
         let expr =
             combineExpr
 
-        SynModuleDecl.CreateLet([{ SynBindingRcd.Let with
-                                       Access = Some SynAccess.Private // Does not work, fix it
-                                       Pattern = fromRcd.ToRcd
-                                       Expr = expr }])
+        SynModuleDecl.CreateLet([
+            SynBinding.Let(SynAccess.Private, pattern = fromRcd, expr = expr)
+        ])
     
     Module.module'(provider, [
         Module.open'($"Pulumi.{provider}")
