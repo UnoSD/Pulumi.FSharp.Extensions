@@ -74,6 +74,7 @@ let infra () =
     group {
         name        "group-example"
         displayName "Example AAD group from Pulumi.FSharp.Extensions"
+        mailEnabled false
     }
 
     let rg =
@@ -195,8 +196,8 @@ let infra () =
         }
         
         oSProfile {
-            adminUsername config.["vmUser"]
-            adminPassword secret.["vmPass"]
+            adminUsername config["vmUser"]
+            adminPassword secret["vmPass"]
         }
         
         storageProfile {
@@ -221,7 +222,7 @@ let infra () =
         output {
             let! ipConfigs = nic.IpConfigurations
             
-            return ipConfigs.[0].PrivateIPAddress
+            return ipConfigs[0].PrivateIPAddress
         }
 
     let secretPipCird =
