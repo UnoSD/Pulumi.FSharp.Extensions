@@ -23,6 +23,8 @@
     <PackageReference Include="Pulumi.FSharp.Gcp" Version="6.17.0.6" />
     <PackageReference Include="Pulumi.FSharp.Kubernetes" Version="3.18.0.5" />
     <PackageReference Include="Pulumi.FSharp.Tls" Version="4.1.0.6" />
+    
+    <PackageReference Update="FSharp.Core" Version="6.0.5" />
   </ItemGroup>
 
 </Project>

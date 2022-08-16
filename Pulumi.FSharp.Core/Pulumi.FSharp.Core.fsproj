@@ -18,7 +18,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="3.36.0" />
+        <PackageReference Include="Pulumi.FSharp" Version="3.37.2" />
         <PackageReference Include="FSharp.Core" Version="6.0.5" />
 
         <None Include="build.fsx" />
@@ -27,6 +27,8 @@
         <Compile Include="OutputBuilder.fs" />
         <Compile Include="Config.fs" />
         <Compile Include="Assets.fs" />
+        
+        <PackageReference Update="FSharp.Core" Version="6.0.5" />
     </ItemGroup>
 
 </Project>
