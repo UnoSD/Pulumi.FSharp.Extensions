@@ -40,7 +40,7 @@
     
     <ItemGroup>
         <PackageReference Include="FSharp.Core" Version="6.0.5" />
-        <PackageReference Include="FSharp.Data" Version="4.2.10" />
+        <PackageReference Include="FSharp.Data" Version="5.0.2" />
         <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
         <PackageReference Include="Myriad.Core" Version="0.8.1" />
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" />

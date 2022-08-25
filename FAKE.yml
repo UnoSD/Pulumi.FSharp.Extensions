@@ -22,8 +22,8 @@ trigger:
     include:
       - Pulumi.FSharp.Myriad/*
 
-pool:
-  vmImage: ubuntu-latest
+pool: GitHubRunners
+#  vmImage: ubuntu-latest
 
 steps:
 - task: DotNetCoreCLI@2
