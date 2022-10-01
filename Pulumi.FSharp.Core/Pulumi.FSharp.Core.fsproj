@@ -18,8 +18,8 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="3.38.0" />
-        <PackageReference Include="FSharp.Core" Version="6.0.5" />
+        <PackageReference Include="Pulumi.FSharp" Version="3.40.2" />
+        <PackageReference Include="FSharp.Core" />
 
         <None Include="build.fsx" />
         <Content Include="FAKE.yml" />
@@ -28,7 +28,7 @@
         <Compile Include="Config.fs" />
         <Compile Include="Assets.fs" />
         
-        <PackageReference Update="FSharp.Core" Version="6.0.5" />
+        <PackageReference Update="FSharp.Core" Version="6.0.6" />
     </ItemGroup>
 
 </Project>
