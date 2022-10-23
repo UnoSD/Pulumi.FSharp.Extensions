@@ -37,7 +37,7 @@
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.Command" Version="4.5.0" />
+        <PackageReference Include="Pulumi.Command" Version="0.5.2" />
         <PackageReference Include="Pulumi.FSharp" Version="3.43.1" />
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" PrivateAssets="All" />
