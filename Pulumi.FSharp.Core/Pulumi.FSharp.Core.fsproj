@@ -11,7 +11,7 @@
         <PackageTags>fsharp pulumi azure</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <PackageVersion>3.1.3</PackageVersion>
+        <PackageVersion>3.1.4</PackageVersion>
         <NoWarn>NU1605,NU1608</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <FSharpCoreImplicitPackageVersion>6.0.*</FSharpCoreImplicitPackageVersion>
