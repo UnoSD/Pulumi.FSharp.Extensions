@@ -1,5 +1,6 @@
 module AstModules
 
+open System
 open System.Text.RegularExpressions
 open FSharp.Compiler.Syntax
 open BuilderInstance
@@ -336,8 +337,8 @@ let createTypes (schema : JsonValue) =
         
         subNamespaceOrName |>
         Option.bind (function
-                     | name when name = t.ResourceType.Value -> None
-                     | _                                     -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
+                     | name when name.Equals(t.ResourceType.Value, StringComparison.OrdinalIgnoreCase) -> None
+                     | _                                                                               -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
         Option.defaultValue namespace'
     
     let namespacesJson =
