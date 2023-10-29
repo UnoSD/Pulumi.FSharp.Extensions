@@ -33,17 +33,17 @@
     <Target Name="CustomBeforeBuild" BeforeTargets="Build" Condition="'$(NoRegenerate)'!='true'">
         <ForceRegenerate />
     </Target>
-    
+
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
-    
+
     <ItemGroup>
-        <PackageReference Include="Pulumi.Kubernetes" Version="3.22.0" />
+        <PackageReference Include="Pulumi.Kubernetes" Version="4.5.2" />
         <PackageReference Include="Pulumi.FSharp" Version="3.43.1" />
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
-        
+
         <Compile Include="Myriad.fs" />
 
         <Compile Include="Generated.fs">
