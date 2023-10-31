@@ -229,6 +229,11 @@ let private missingStatusTypes =
         "CustomResourceDefinition"
         "PersistentVolumeClaimPatch"
         "NetworkPolicy"
+        "PodSchedulingContext"
+        "ResourceClaim"
+        "PodScheduling"
+        "ResourceClaim"
+        "ValidatingAdmissionPolicy"
     |]
 
 let createTypes (schema : JsonValue) =
