@@ -8,7 +8,7 @@
         <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
         <Title>$(MSBuildProjectName)</Title>
         <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
-        <PackageTags>fsharp pulumi azure</PackageTags>
+        <PackageTags>fsharp pulumi docker</PackageTags>
         <Company>Stefano d'Antonio (UnoSD)</Company>
         <Authors>Stefano d'Antonio (UnoSD)</Authors>
         <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
@@ -22,7 +22,7 @@
             <Using Namespace="System.IO" />
             <Code Type="Fragment" Language="cs"><![CDATA[
                 var number = new Random(DateTime.Now.Millisecond).Next();
-                File.WriteAllText("Myriad.fs", $"module private Azure\n\nmodule Force = let private nonce = {number}");
+                File.WriteAllText("Myriad.fs", $"module private Docker\n\nmodule Force = let private nonce = {number}");
                 Log.LogWarning("Force regenerate");
          ]]></Code>
         </Task>
@@ -43,8 +43,6 @@
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
-
-        <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" PrivateAssets="All" />
 
         <Compile Include="Myriad.fs" />
 
