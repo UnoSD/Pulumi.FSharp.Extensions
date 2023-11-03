@@ -1,5 +1,6 @@
 module AstModules
 
+open System
 open System.Text.RegularExpressions
 open FSharp.Compiler.Syntax
 open BuilderInstance
@@ -338,11 +339,17 @@ let createTypes (schema : JsonValue) =
         
         let namespace' =
             t.ResourceProviderNamespace.Value
-        
+
+        // Docker schema has inconsistency of case in resource type and name for some resources
+        let resourceTypeAndNameComparison =
+            match pulumiProviderName with
+            | "docker" -> StringComparison.OrdinalIgnoreCase
+            | _ ->        StringComparison.Ordinal
+
         subNamespaceOrName |>
         Option.bind (function
-                     | name when name = t.ResourceType.Value -> None
-                     | _                                     -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
+                     | name when name.Equals(t.ResourceType.Value, resourceTypeAndNameComparison) -> None
+                     | _                                                                          -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
         Option.defaultValue namespace'
     
     let namespacesJson =
