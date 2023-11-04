@@ -295,18 +295,20 @@ let createTypes (schema : JsonValue) =
                                                    | true  -> refTypes
                                                    | false -> allTypes[refType] |>
                                                               getAllNestedTypes (refType :: refTypes)))
-        
+
+    let pulumiProviderName =
+        schema["name"].AsString()
+
     let resourcesJson =
-        schema["resources"].Properties()
-        
+        schema["resources"].Properties() |>
+        // Faking Provider to be in the root namespace
+        Array.append [| $"{pulumiProviderName}:index/Provider:Provider", schema["provider"] |]
+
     let allNestedTypes =
         resourcesJson |>
         Array.map (snd >> getAllNestedTypes []) |>
-        List.concat        
-    
-    let pulumiProviderName =
-        schema["name"].AsString()
-    
+        List.concat
+
     let inline typedMatches jsonsArray (regex : ^a) builderType filter =
         let getTypedMatch type' = (^a : (member TypedMatch : string -> 'b) (regex, type'))
         
