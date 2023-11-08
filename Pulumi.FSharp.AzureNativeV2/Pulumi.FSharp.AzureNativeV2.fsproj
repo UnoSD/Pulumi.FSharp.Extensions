@@ -49,10 +49,11 @@
         <Compile Include="Generated.fs">
             <MyriadFile>Myriad.fs</MyriadFile>
         </Compile>
+        <Compile Include="../Pulumi.FSharp.AzureNative.Common/Locations.fs" Link="Locations.fs" />
+        <Compile Include="../Pulumi.FSharp.AzureNative.Common/NamingConventions.fs" Link="NamingConventions.fs" />
 
         <None Include="myriad.toml" />
         <PackageReference Update="FSharp.Core" Version="6.0.6" />
-        <ProjectReference Include="..\Pulumi.FSharp.AzureNative.Common\Pulumi.FSharp.AzureNative.Common.fsproj" />
     </ItemGroup>
 
 </Project>

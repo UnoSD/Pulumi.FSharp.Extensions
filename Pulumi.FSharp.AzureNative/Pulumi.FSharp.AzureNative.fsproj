@@ -43,7 +43,6 @@
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
         <ProjectReference Include="../Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj" PrivateAssets="All" />
-        <ProjectReference Include="..\Pulumi.FSharp.AzureNative.Common\Pulumi.FSharp.AzureNative.Common.fsproj" />
 
         <ProjectReference Include="..\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj" PrivateAssets="All" />
 
@@ -52,6 +51,8 @@
         <Compile Include="Generated.fs">
             <MyriadFile>Myriad.fs</MyriadFile>
         </Compile>
+        <Compile Include="../Pulumi.FSharp.AzureNative.Common/Locations.fs" Link="Locations.fs" />
+        <Compile Include="../Pulumi.FSharp.AzureNative.Common/NamingConventions.fs" Link="NamingConventions.fs" />
 
         <None Include="myriad.toml" />
         <PackageReference Update="FSharp.Core" Version="6.0.6" />
