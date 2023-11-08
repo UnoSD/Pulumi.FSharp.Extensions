@@ -206,8 +206,14 @@ Target.create "Pack" (fun _ ->
             Int32.Parse |>
             (+)1
             
+        let pulumiPackageName =
+            Map.empty |>
+            Map.add "AzureNativeV2" "AzureNative" |>
+            Map.tryFind provider |>
+            Option.defaultValue provider
+            
         let xPath =
-            sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']" provider
+            sprintf "/Project/ItemGroup/PackageReference[@Include='Pulumi.%s']" pulumiPackageName
             
         let projectFile =
             getProjectFiles provider |>
