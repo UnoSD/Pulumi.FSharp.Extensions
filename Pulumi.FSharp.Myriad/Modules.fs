@@ -20,8 +20,12 @@ let rec createModule name openNamespace types =
                         ])
     | Some [| name |] -> let openNamespaces =
                             match name, String.split '.' openNamespace |> List.ofArray with
-                            | "Inputs", "Kubernetes" :: _    -> []
-                            | name    , "Kubernetes" :: tail ->
+                            // Kubernetes is the only provider, which overrides empty namespace with "Provider"
+                            | "Inputs", [ "Kubernetes"; "Provider" ] -> 
+                                [ Module.open'("Pulumi.Kubernetes.Types.Inputs.Provider") ]
+                            | "Inputs", "Kubernetes" :: _            ->
+                                []
+                            | name    , "Kubernetes" :: tail         ->
                                 let sub = tail |> String.concat "."
                                 let mn types = Module.open'("Pulumi." + "Kubernetes" + types + sub + "." + name)
                                 [ mn ".Types.Inputs."
@@ -295,20 +299,20 @@ let createTypes (schema : JsonValue) =
                                                    | true  -> refTypes
                                                    | false -> allTypes[refType] |>
                                                               getAllNestedTypes (refType :: refTypes)))
-
+        
     let pulumiProviderName =
         schema["name"].AsString()
-
+    
     let resourcesJson =
         schema["resources"].Properties() |>
         // Faking Provider to be in the root namespace
-        Array.append [| $"{pulumiProviderName}:index/Provider:Provider", schema["provider"] |]
-
+        Array.append [| $"{pulumiProviderName}:index:Provider", schema["provider"] |]
+        
     let allNestedTypes =
         resourcesJson |>
         Array.map (snd >> getAllNestedTypes []) |>
-        List.concat
-
+        List.concat        
+    
     let inline typedMatches jsonsArray (regex : ^a) builderType filter =
         let getTypedMatch type' = (^a : (member TypedMatch : string -> 'b) (regex, type'))
         
@@ -474,6 +478,12 @@ let createTypes (schema : JsonValue) =
         
         let openNamespace =
             resourceProviderNamespace |>
+            Option.orElseWith (fun () ->
+                // If resourceProviderNamespace is None, it means "index"
+                // Kubernetes is the only provider which overrides empty namespace with "Provider"
+                match pulumiProviderName with
+                | "kubernetes" -> namespaces[""]
+                | _            -> None) |>
             Option.map (fun rpn -> $"{cloudProviderNamespace}.{rpn}") |>
             Option.defaultValue cloudProviderNamespace
         
