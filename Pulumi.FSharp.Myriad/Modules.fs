@@ -233,9 +233,8 @@ let private missingStatusTypes =
         "PodSchedulingContext"
         "ResourceClaim"
         "PodScheduling"
-        "ResourceClaim"
         "ValidatingAdmissionPolicy"
-    |]
+    |] |> Set.ofArray
 
 let createTypes (schema : JsonValue) =
     let typesJson =
@@ -377,7 +376,7 @@ let createTypes (schema : JsonValue) =
         // but I can't figure our why this happens; will ask the Pulumi team
         let properties =
             match pulumiProviderName, isType, typeName with
-            | "kubernetes", true, x when missingStatusTypes |> Array.contains x
+            | "kubernetes", true, x when missingStatusTypes |> Set.contains x
                 -> properties |> Array.filter (function pName, _ -> pName <> "status")
             | "azure-native", false, x when Array.contains x [| "SecurityConnectorApplication"; "Application" |]
                 -> properties |> Array.filter (function pName, _ -> pName <> "conditionSets")
