@@ -1,4 +1,4 @@
-﻿module Pulumi.FSharp.Core.CustomResourceOptions
+﻿module Pulumi.FSharp.Core
 
 open System
 open Pulumi
