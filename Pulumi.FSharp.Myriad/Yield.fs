@@ -5,12 +5,13 @@ open FSharp.Compiler.Syntax
 open Myriad.Core.Ast
 open Myriad.Core.AstExtensions
 
-let createYield' isType (arg : SynPat) (args : SynExpr) (cros : SynExpr) =
+let createYield' isType (arg : SynPat) (args : SynExpr) (cros : SynExpr) (croI : SynExpr) =
     [
         SynExpr.CreateNull
         args
         if not isType then
             cros
+            croI
     ] |>
     SynExpr.CreateTuple |>
     createMember "Yield" arg []

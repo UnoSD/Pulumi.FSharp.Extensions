@@ -71,12 +71,13 @@ let private zeroMember =
     createMember "Zero" Pat.wild [] Expr.unit
     
 let private yieldMember isType =
-    createYield isType yieldReturnExpr yieldReturnExpr
+    createYield isType yieldReturnExpr yieldReturnExpr Expr.null'
     
 let private newNameExpr =
     Expr.tuple(Expr.ident("newName"),
                Expr.ident("args"),
-               Expr.ident("cros"))
+               Expr.ident("cros"),
+               Expr.ident("croI"))
 
 let private nameMember =
     createNameOperation newNameExpr
@@ -100,8 +101,9 @@ let createYieldFor argsType propType =
     
     let cros =
         Expr.list([Expr.ident("id")])
-    
-    [ createYield' (not propType.IsResource) argIdent expr cros ]
+    let croI = Expr.null'
+        
+    [ createYield' (not propType.IsResource) argIdent expr cros croI ]
 
 let mapOperationType yieldSelector opsSelector =
     function
@@ -123,10 +125,15 @@ let createBuilderClass isType name pTypes =
     let argsType =
         name + "Args"
 
+    let croICheckNull () =
+        Expr.match' (Expr.ident "croI",
+            [Match.clause(Pat.null', createInstance "CustomResourceOptions" Expr.unit)
+             Match.clause(Pat.ident "croI", Expr.ident "croI")])
+        
     let apply varname =
         Expr.app("List.fold", [
             Expr.paren(Expr.lambda([ varname; "f" ], Expr.app("f", varname)))
-            Expr.paren(createInstance (match varname with | "args" -> argsType | _ -> "CustomResourceOptions") Expr.unit)
+            Expr.paren(match varname with | "args" -> createInstance argsType Expr.unit | _ -> croICheckNull())
             Expr.ident(varname)
         ])
        
@@ -179,15 +186,22 @@ let createBuilderClass isType name pTypes =
         
         if not isType then
             croOperation "DependsOn"
-                         "Ensure this resource gets created after its dependency"
+                         "Obsolete. Use customResourceOptions nested CE. Ensure this resource gets created after its dependency"
                          "dependency"
                          (inputListOfInput "dependency")
                          true
                          
         if not isType then
             croOperation "DependsOn"
-                         "Ensure this resource gets created after its dependency"
+                         "Obsolete. Use customResourceOptions nested CE. Ensure this resource gets created after its dependency"
                          "dependency"
                          (inputListOfResources "dependency")
                          false
+                         
+        if not isType then
+            createYield' false
+                         (Pat.typed("croI", "CustomResourceOptions"))
+                         (Expr.list([Expr.ident("id")]))
+                         (Expr.list([Expr.ident("id")]))
+                         (Expr.ident("croI"))
     ])

@@ -27,6 +27,7 @@
         <Compile Include="OutputBuilder.fs" />
         <Compile Include="Config.fs" />
         <Compile Include="Assets.fs" />
+        <Compile Include="CustomResourceOptions.fs" />
         
         <PackageReference Update="FSharp.Core" Version="6.0.6" />
     </ItemGroup>
