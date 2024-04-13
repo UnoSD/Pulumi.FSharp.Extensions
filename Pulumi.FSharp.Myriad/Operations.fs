@@ -299,18 +299,15 @@ let croOperation operationName description argumentName (setAssignmentExpression
         PreXmlDoc.Create([ description ]) |> Some
     
     let updateCrosExpression setAssignmentExpression =
-        let setExpression =
-            Expr.set($"cros.{operationName}", setAssignmentExpression)
-        
         let lambdaExpression =
             Expr.sequential([
-                setExpression
+                Expr.set($"cros.{operationName}", setAssignmentExpression)
                 Expr.ident("cros")
             ])
         
         let listConsLambdaFirstExpression =
             Expr.lambda([
-                SimplePat.typed("cros", "CustomResourceOptions")
+                SimplePat.typed("cros", "ResourceOptions")
             ], lambdaExpression)
         
         let listConsExpressions =

@@ -120,13 +120,21 @@ let mapOperationType yieldSelector opsSelector =
     | { Type = PArchive _ }                      & pt -> opsSelector pt
 
 let createBuilderClass isType name pTypes =
-    let argsType =
-        name + "Args"
+    let argsType = $"{name}Args"
 
     let apply varname =
+        let args = 
+            match varname with 
+            | "args" -> argsType
+            // in Pulumi.Kubernetes 4.10.0, two new types were added which
+            // use ComponentResourceOptions instead of CustomResourceOptions
+            // This check should be made generic for all ResourceOption types
+            | _ when ["ConfigFile"; "ConfigGroup"] |> List.contains name -> "ComponentResourceOptions"
+            | _ -> "CustomResourceOptions"
+
         Expr.app("List.fold", [
             Expr.paren(Expr.lambda([ varname; "f" ], Expr.app("f", varname)))
-            Expr.paren(createInstance (match varname with | "args" -> argsType | _ -> "CustomResourceOptions") Expr.unit)
+            Expr.paren(createInstance args Expr.unit)
             Expr.ident(varname)
         ])
        
@@ -140,21 +148,23 @@ let createBuilderClass isType name pTypes =
         createInstance name
         
     let createOperations =
-        mapOperationType (createYieldFor argsType)
-                         (createOperationsFor' argsType)
+        mapOperationType (createYieldFor argsType) (createOperationsFor' argsType)
         
     let operations =
         pTypes |>
         Seq.collect createOperations
         
     let inputListOfInput argName =
-        Expr.app(Expr.ident("inputList"),
-                 Expr.list([Expr.app(Expr.ident("input"),
-                                     Expr.ident(argName))]))
+        Expr.app(
+            Expr.ident("inputList"),
+            Expr.list(
+                [Expr.app(
+                    Expr.ident("input"),
+                    Expr.ident(argName))]))
         
     let inputListOfResources argName =
         Expr.app(Expr.ident("inputList"),
-                 Expr.paren(Expr.app(Expr.longIdent("Seq.map"),
+            Expr.paren(Expr.app(Expr.longIdent("Seq.map"),
                                      Expr.app(Expr.ident("input"),
                                               Expr.ident(argName)))))
         

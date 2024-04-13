@@ -238,6 +238,7 @@ let private missingStatusTypes =
         "ResourceClaim"
         "PodScheduling"
         "ValidatingAdmissionPolicy"
+        "ServiceCIDR"
     |] |> Set.ofArray
 
 let createTypes (schema : JsonValue) =
