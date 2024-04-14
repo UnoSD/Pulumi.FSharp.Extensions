@@ -1,3 +1,3 @@
-module private AzureNative
+module private Azure
 
-module Force = let private nonce = 1738045662
+module Force = let private nonce = 275494408

@@ -1,43 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>preview</LangVersion>
-        <NoWarn>NU1605,NU1608</NoWarn>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <RootNamespace>Pulumi.FSharp.Myriad</RootNamespace>
-    </PropertyGroup>
-    <ItemGroup>
-        <Content Include="build\Pulumi.FSharp.Myriad.props">
-            <Pack>true</Pack>
-            <PackagePath>%(Identity)</PackagePath>
-            <Visible>true</Visible>
-        </Content>
-        <Content Include="build\Pulumi.FSharp.Myriad.InTest.props" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Core.fs" />
-        <Compile Include="AstHelpers.fs" />
-        <Compile Include="Member.fs" />
-        <Compile Include="Attribute.fs" />
-        <Compile Include="Yield.fs" />
-        <Compile Include="Operations.fs" />
-        <Compile Include="Instance.fs" />
-        <Compile Include="Run.fs" />
-        <Compile Include="Let.fs" />
-        <Compile Include="Builder.fs" />
-        <Compile Include="Debug.fs" />
-        <Compile Include="BuilderInstance.fs" />
-        <Compile Include="Modules.fs" />
-        <Compile Include="Namespace.fs" />
-        <Compile Include="Schema.fs" />
-        <Compile Include="IndexModule.fs" />
-        <Compile Include="Generator.fs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="FSharp.Core" />
-        <PackageReference Include="FSharp.Data" Version="5.0.2" />
-        <PackageReference Include="FSharp.Text.RegexProvider" Version="2.1.0" />
-        <PackageReference Include="Myriad.Core" Version="0.8.1" />
-        <PackageReference Include="Myriad.Sdk" Version="0.8.1" />
-    </ItemGroup> 
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <NoWarn>NU1605,NU1608</NoWarn>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RootNamespace>Pulumi.FSharp.Myriad</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="build\Pulumi.FSharp.Myriad.props">
+      <Pack>true</Pack>
+      <PackagePath>%(Identity)</PackagePath>
+      <Visible>true</Visible>
+    </Content>
+    <Content Include="build\Pulumi.FSharp.Myriad.InTest.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core.fs" />
+    <Compile Include="AstHelpers.fs" />
+    <Compile Include="Member.fs" />
+    <Compile Include="Attribute.fs" />
+    <Compile Include="Yield.fs" />
+    <Compile Include="Operations.fs" />
+    <Compile Include="Instance.fs" />
+    <Compile Include="Run.fs" />
+    <Compile Include="Let.fs" />
+    <Compile Include="Builder.fs" />
+    <Compile Include="Debug.fs" />
+    <Compile Include="BuilderInstance.fs" />
+    <Compile Include="Modules.fs" />
+    <Compile Include="Namespace.fs" />
+    <Compile Include="Schema.fs" />
+    <Compile Include="IndexModule.fs" />
+    <Compile Include="Generator.fs" />
+  </ItemGroup>
+ <ItemGroup>
+   <PackageReference Include="Myriad.Core" Version="0.8.1" />
+ </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

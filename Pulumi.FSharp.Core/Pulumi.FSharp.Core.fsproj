@@ -1,34 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
-        <Copyright>Copyright 2020</Copyright>
-        <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
-        <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
-        <Title>$(MSBuildProjectName)</Title>
-        <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
-        <PackageTags>fsharp pulumi azure</PackageTags>
-        <Company>Stefano d'Antonio (UnoSD)</Company>
-        <Authors>Stefano d'Antonio (UnoSD)</Authors>
-        <PackageVersion>3.1.4</PackageVersion>
-        <NoWarn>NU1605,NU1608</NoWarn>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <FSharpCoreImplicitPackageVersion>6.0.*</FSharpCoreImplicitPackageVersion>
-    </PropertyGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="Pulumi.FSharp" Version="3.43.1" />
-        <PackageReference Include="FSharp.Core" />
-
-        <None Include="build.fsx" />
-        <Content Include="FAKE.yml" />
-        
-        <Compile Include="OutputBuilder.fs" />
-        <Compile Include="Config.fs" />
-        <Compile Include="Assets.fs" />
-        
-        <PackageReference Update="FSharp.Core" Version="6.0.6" />
-    </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
+    <Copyright>Copyright 2020</Copyright>
+    <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
+    <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
+    <Title>$(MSBuildProjectName)</Title>
+    <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
+    <PackageTags>fsharp pulumi azure</PackageTags>
+    <Company>Stefano d'Antonio (UnoSD)</Company>
+    <Authors>Stefano d'Antonio (UnoSD)</Authors>
+    <PackageVersion>3.1.4</PackageVersion>
+    <NoWarn>NU1605,NU1608</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="build.fsx" />
+    <Content Include="FAKE.yml" />
+    <Compile Include="OutputBuilder.fs" />
+    <Compile Include="Config.fs" />
+    <Compile Include="Assets.fs" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

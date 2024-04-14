@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 #
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{B1545C13-170F-42E0-9BAF-29DCA80951E7}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Myriad", "Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj", "{EDDFE9E5-9B82-4ECF-AB23-86F3347D77EC}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Azure", "Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj", "{0CDB4B8E-343B-45A5-A1C6-951470C965F9}"

@@ -351,6 +351,6 @@ MigrationBackup/
 
 .idea/
 
-/azure-native.*.json
+/docker.*.json
 /Generated.fs
 /Generated.*.fs

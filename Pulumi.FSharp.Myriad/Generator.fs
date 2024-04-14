@@ -7,53 +7,74 @@ open AstModules
 open System.Xml
 open System.IO
 open Schema
+open Paket
 
 [<MyriadGenerator("Pulumi.FSharp")>]
 type PulumiFSharpGenerator() =
+
     interface IMyriadGenerator with
-        member _.Generate(context) =
+        member this.Generate(context) =
+
+            let getVersionFromFsproj (projectFile: FileInfo) (provider: string) =
+                let fsproj : XmlDocument = XmlDocument()
+                in do fsproj.Load (projectFile.OpenText())
+        
+                fsproj.SelectNodes("/Project/ItemGroup")
+                |> Seq.cast<XmlNode> 
+                |> Seq.collect (fun y -> 
+                    y.SelectNodes("PackageReference") 
+                    |> Seq.cast<XmlNode>)
+                    |> Seq.pick (fun x -> 
+                        if x.Attributes["Include"].Value = $"Pulumi.{provider}" then
+                            x.Attributes["Version"].Value |> Some
+                        else
+                            None)
+        
             let projectFile =
                 FileInfo(context.InputFilename).Directory.EnumerateFiles("*.fsproj") |>
                 Seq.exactlyOne
 
             let provider =
-                projectFile.Name["Pulumi.FSharp.".Length..^".fsproj".Length]
+                let providerName = projectFile.Name["Pulumi.FSharp.".Length..^".fsproj".Length]
+                let providerNameOverride =
+                    Map.ofList ["AzureNativeV2", "AzureNative"]
 
-            let providerNameOverride =
-                Map.empty
-                    .Add("AzureNativeV2", "AzureNative")
+                providerNameOverride
+                |> Map.tryFind providerName
+                |> Option.defaultValue providerName
 
-            let provider =
-                providerNameOverride |>
-                Map.tryFind provider |>
-                Option.defaultValue provider
+            let paketDeps = 
+                FileInfo(context.InputFilename).DirectoryName
+                |> Paket.Dependencies.TryLocate
 
-            let fsproj =
-                XmlDocument() in fsproj.Load (projectFile.OpenText())
+            let paketProviderVersion =
+                paketDeps
+                |> Option.bind(fun deps ->
+                    deps.GetInstalledVersion $"Pulumi.{provider}")
+                |> Option.map (fun version -> 
+                    let semver = (SemVer.Parse version) in
+                    $"{semver.Major}.{semver.Minor}.{semver.Patch}")
+                
 
-            let version =
-                fsproj.SelectNodes("/Project/ItemGroup") |>
-                Seq.cast<XmlNode> |>
-                Seq.collect (fun y -> y.SelectNodes("PackageReference") |> Seq.cast<XmlNode>) |>
-                Seq.pick (fun x -> if x.Attributes["Include"].Value = $"Pulumi.{provider}" then
-                                       x.Attributes["Version"].Value |> Some
-                                   else
-                                       None)
+            let version = 
+                match paketProviderVersion with
+                | Some version -> version
+                | None -> getVersionFromFsproj projectFile provider
 
             let providerRepositoryNameOverride =
-                Map.empty
-                   .Add("AzureNative", "azure-native")
+                ["AzureNative", "azure-native"]
+                |> Map.ofList
 
             let providerRepository =
-                providerRepositoryNameOverride |>
-                Map.tryFind provider |>
-                Option.defaultValue provider
+                providerRepositoryNameOverride
+                |> Map.tryFind provider
+                |> Option.defaultValue provider
 
-            loadSchema providerRepository version |>
-            createTypes |>
-            createModules provider |>
-            createNamespace |>
-            List.singleton |>
-            Output.Ast
+            loadSchema providerRepository version
+            |> createTypes
+            |> createModules provider
+            |> createNamespace
+            |> List.singleton
+            |> Output.Ast
 
         member this.ValidInputExtensions = seq { ".fs" }
