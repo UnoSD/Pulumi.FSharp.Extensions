@@ -11,11 +11,19 @@ type SimplePat =
     /// str
     static member id(str) =
         SynSimplePat.Id(Ident.Create(str), None, false, false, false, range.Zero)
-        
+
+    static member hashTyped (str, type': string) =
+        SynSimplePat.CreateTyped(
+            Ident.Create str,
+            SynType.HashConstraint(
+                SynType.CreateLongIdent(type'),
+                range.Zero))
+
     static member typed(str, type' : string) =
-        SynSimplePat.Typed(SimplePat.id(str),
-                           SynType.CreateLongIdent(type'),
-                           range.Zero)
+        SynSimplePat.Typed(
+            SimplePat.id(str),
+            SynType.CreateLongIdent(type'),
+            range.Zero)
 
 type SynPat with
     static member CreateTuple(args : SynPat list) =

@@ -307,7 +307,7 @@ let croOperation operationName description argumentName (setAssignmentExpression
         
         let listConsLambdaFirstExpression =
             Expr.lambda([
-                SimplePat.typed("cros", "ResourceOptions")
+                SimplePat.hashTyped("cros", "ResourceOptions")
             ], lambdaExpression)
         
         let listConsExpressions =
