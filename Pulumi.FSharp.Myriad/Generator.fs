@@ -62,7 +62,7 @@ type PulumiFSharpGenerator() =
                 | None -> getVersionFromFsproj projectFile provider
 
             let providerRepositoryNameOverride =
-                ["AzureNative", "azure-native"]
+                ["azure-native", "AzureNative"]
                 |> Map.ofList
 
             let providerRepository =
