@@ -209,36 +209,37 @@ let private createPTypes isType allTypes properties =
 
 let private missingStatusTypes =
     [|
-        "VolumeAttachment"
-        "PodDisruptionBudget"
-        "Ingress"
-        "FlowSchema"
-        "PriorityLevelConfiguration"
+        "APIService"
+        "CertificateSigningRequest"
+        "CronJob"
+        "CustomResourceDefinition"
         "DaemonSet"
         "Deployment"
-        "ReplicaSet"
+        "FlowSchema"
+        "HorizontalPodAutoscaler"
+        "Ingress"
+        "Job"
         "Namespace"
+        "NetworkPolicy"
         "Node"
         "PersistentVolume"
         "PersistentVolumeClaim"
+        "PersistentVolumeClaimPatch"
         "Pod"
+        "PodDisruptionBudget"
+        "PodScheduling"
+        "PodSchedulingContext"
+        "PriorityLevelConfiguration"
+        "ReplicaSet"
         "ReplicationController"
+        "ResourceClaim"
         "ResourceQuota"
         "Service"
-        "CertificateSigningRequest"
-        "CronJob"
-        "Job"
-        "HorizontalPodAutoscaler"
-        "StatefulSet"
-        "APIService"
-        "CustomResourceDefinition"
-        "PersistentVolumeClaimPatch"
-        "NetworkPolicy"
-        "PodSchedulingContext"
-        "ResourceClaim"
-        "PodScheduling"
-        "ValidatingAdmissionPolicy"
         "ServiceCIDR"
+        "StatefulSet"
+        "StorageVersionMigration"
+        "ValidatingAdmissionPolicy"
+        "VolumeAttachment"
     |] |> Set.ofArray
 
 let createTypes (schema : JsonValue) =
@@ -389,8 +390,6 @@ let createTypes (schema : JsonValue) =
                 -> properties |> Array.filter (function pName, _ -> pName <> "conditionSets")
             | "azure-native", false, x when Array.contains x [| "HybridRunbookWorkerGroup" |]
                 -> properties |> Array.filter (function pName, _ -> pName <> "name")
-            | "azure-native", false, x when Array.contains x [| "StorageVersionMigrationArgs" |]
-                -> properties |> Array.filter (function pName, _ -> pName <> "status")
             | _
                 -> properties
         
