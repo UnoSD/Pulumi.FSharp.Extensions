@@ -389,6 +389,8 @@ let createTypes (schema : JsonValue) =
                 -> properties |> Array.filter (function pName, _ -> pName <> "conditionSets")
             | "azure-native", false, x when Array.contains x [| "HybridRunbookWorkerGroup" |]
                 -> properties |> Array.filter (function pName, _ -> pName <> "name")
+            | "azure-native", false, x when Array.contains x [| "StorageVersionMigrationArgs" |]
+                -> properties |> Array.filter (function pName, _ -> pName <> "status")
             | _
                 -> properties
         

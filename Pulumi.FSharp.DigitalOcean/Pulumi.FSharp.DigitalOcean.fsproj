@@ -3,17 +3,16 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
-    <Copyright>Copyright 2020</Copyright>
+    <Copyright>Copyright 2021</Copyright>
     <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
     <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
     <Title>$(MSBuildProjectName)</Title>
     <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
-    <PackageTags>fsharp pulumi kubernetes</PackageTags>
+    <PackageTags>fsharp pulumi digitalocean</PackageTags>
     <Company>Stefano d'Antonio (UnoSD)</Company>
     <Authors>Stefano d'Antonio (UnoSD)</Authors>
     <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <FSharpCoreImplicitPackageVersion>6.0.*</FSharpCoreImplicitPackageVersion>
   </PropertyGroup>
   <UsingTask TaskName="ForceRegenerate" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <Task>
@@ -21,7 +20,7 @@
       <Using Namespace="System.IO" />
       <Code Type="Fragment" Language="cs"><![CDATA[
                 var number = new Random(DateTime.Now.Millisecond).Next();
-                File.WriteAllText("Myriad.fs", $"module private Kubernetes\n\nmodule Force = let private nonce = {number}");
+                File.WriteAllText("Myriad.fs", $"module private DigitalOcean\n\nmodule Force = let private nonce = {number}");
                 Log.LogWarning("Force regenerate");
          ]]></Code>
     </Task>

@@ -208,7 +208,7 @@ Target.create "Pack" (fun _ ->
             
         let pulumiPackageName =
             Map.empty |>
-            Map.add "AzureNativeV2" "AzureNative" |>
+            Map.add "AzureNativeV2" "azure-native" |>
             Map.tryFind provider |>
             Option.defaultValue provider
             

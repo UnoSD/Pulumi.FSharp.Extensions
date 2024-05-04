@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-#
+# 
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{B1545C13-170F-42E0-9BAF-29DCA80951E7}"
 	ProjectSection(SolutionItems) = preProject
 		paket.dependencies = paket.dependencies
@@ -48,6 +48,10 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNativeV2", "Pulumi.FSharp.AzureNativeV2\Pulumi.FSharp.AzureNativeV2.fsproj", "{C93C3853-4894-4CB6-9F1E-3CD544E10870}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative.Common", "Pulumi.FSharp.AzureNative.Common\Pulumi.FSharp.AzureNative.Common.fsproj", "{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.DigitalOcean", "Pulumi.FSharp.DigitalOcean\Pulumi.FSharp.DigitalOcean.fsproj", "{D42BC874-1B4F-487B-A342-182773EB57CE}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Auth0", "Pulumi.FSharp.Auth0\Pulumi.FSharp.Auth0.fsproj", "{7157AB07-6831-4ABC-AA30-3B947E85A660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,5 +123,13 @@ Global
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42BC874-1B4F-487B-A342-182773EB57CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42BC874-1B4F-487B-A342-182773EB57CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42BC874-1B4F-487B-A342-182773EB57CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42BC874-1B4F-487B-A342-182773EB57CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7157AB07-6831-4ABC-AA30-3B947E85A660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7157AB07-6831-4ABC-AA30-3B947E85A660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7157AB07-6831-4ABC-AA30-3B947E85A660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7157AB07-6831-4ABC-AA30-3B947E85A660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
