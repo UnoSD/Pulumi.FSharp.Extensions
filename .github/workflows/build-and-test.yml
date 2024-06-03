@@ -1,0 +1,32 @@
+name: .NET Publish
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+env:
+  CONFIGURATION: Debug
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup necessary dotnet SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.x
+      - name: Build Pulumi.FSharp.Extensions
+        env:
+          FAKE_DETAILED_ERRORS: true
+          ENABLE_COVERAGE: false # AltCover doesn't work with Release builds, reports lower coverage than actual
+        run: |
+          ./build.sh DotnetBuild
+      - name: Build providers
+        env:
+          FAKE_DETAILED_ERRORS: true
+          ENABLE_COVERAGE: false
+        run: |
+          ./build.sh BuildProviders

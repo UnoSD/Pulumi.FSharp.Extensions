@@ -15,7 +15,6 @@ let rec createModule name openNamespace types =
     match name |> Option.map (String.split '.') with
     | None            -> Module.module'(openNamespace, [
                             Module.open'("Pulumi." + openNamespace)
-                 
                             yield! types
                         ])
     | Some [| name |] -> let openNamespaces =
@@ -28,15 +27,16 @@ let rec createModule name openNamespace types =
                             | name    , "Kubernetes" :: tail         ->
                                 let sub = tail |> String.concat "."
                                 let mn types = Module.open'("Pulumi." + "Kubernetes" + types + sub + "." + name)
-                                [ mn ".Types.Inputs."
-                                  mn "." ]
+                                [ 
+                                    mn ".Types.Inputs."
+                                    mn "." 
+                                ]
                             | name, _                        -> [ Module.open'("Pulumi." + openNamespace + "." + name) ]
                             
-                         Module.module'(name, [
-                             yield! openNamespaces
-                             
-                             yield! types
-                         ])
+                        Module.module'(name, [
+                            yield! openNamespaces
+                            yield! types
+                        ])
     | Some [| name; subname |] -> Module.module'(name, [
                                     createModule (Some subname) (openNamespace + "." + name) types
                                 ])
@@ -45,7 +45,6 @@ let rec createModule name openNamespace types =
 let createModule' name openNamespaces types =
     Module.module'(name, [
         yield! openNamespaces |> List.map (fun openNamespace -> Module.open'("Pulumi." + openNamespace))
-                             
         yield! types
     ])
     
@@ -439,28 +438,28 @@ let createTypes (schema : JsonValue) =
     
     let filterKubernetesProblematicTypes types =
         types |>
-        Array.filter (fun (bt, _) -> match bt with
-                                     | Type     t -> not (t.ResourceType.Value = "FetchOpts" &&
-                                                          t.ResourceProviderNamespace.Value = "helm.sh") 
-                                     | Resource r -> not (r.ResourceType.Value = "Chart" &&
-                                                          r.ResourceProviderNamespace.Value = "helm.sh"))
+        Array.filter (fun (bt, _) -> 
+            match bt with
+            | Type t -> not (t.ResourceType.Value = "FetchOpts" && t.ResourceProviderNamespace.Value = "helm.sh") 
+            | Resource r -> not (r.ResourceType.Value = "Chart" && r.ResourceProviderNamespace.Value = "helm.sh"))
     
     let filterAzureNativeProblematicTypes types =
         types |>
-        Array.filter (fun (bt, _) -> match bt with
-                                     | Type     t -> not (t.ResourceType.Value = "ApplicationCondition" &&
-                                                          t.ResourceProviderNamespace.Value = "security") 
-                                     | _          -> true)
+        Array.filter (fun (bt, _) -> 
+            match bt with
+            | Type t -> not (t.ResourceType.Value = "ApplicationCondition" && t.ResourceProviderNamespace.Value = "security") 
+            | _          -> true)
     
     let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy (fst >> getProvider) typesOrResources |>
         filters |>
         Map.ofArray |>
-        Map.map (fun _ typesOrResources -> typesOrResources |>
-                                           debugFilterTypes |>
-                                           filterKubernetesProblematicTypes |>
-                                           filterAzureNativeProblematicTypes |>
-                                           Array.Parallel.collect (createBuilders allTypes))
+        Map.map (fun _ typesOrResources -> 
+            typesOrResources |>
+            debugFilterTypes |>
+            filterKubernetesProblematicTypes |>
+            filterAzureNativeProblematicTypes |>
+            Array.Parallel.collect (createBuilders allTypes))
         
     let typeBuilders =
         createBuildersParallelFiltered allAvailableTypes types

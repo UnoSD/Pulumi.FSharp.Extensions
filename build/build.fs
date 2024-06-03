@@ -763,13 +763,13 @@ let githubRelease _ =
     |> Async.RunSynchronously
 
 let formatCode _ =
-    let result = dotnet.fantomas $"{rootDirectory}"
+    let result = dotnet.fantomas $"{srcDir}"
 
     if not result.OK then
         printfn "Errors while formatting all files: %A" result.Messages
 
 let checkFormatCode ctx =
-    let result = dotnet.fantomas $"{rootDirectory} --check"
+    let result = dotnet.fantomas $"{srcDir} --check"
 
     if result.ExitCode = 0 then
         Trace.log "No files need formatting"
