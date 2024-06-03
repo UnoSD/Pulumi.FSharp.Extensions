@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
+    <Copyright>Copyright 2021</Copyright>
+    <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
+    <Title>$(MSBuildProjectName)</Title>
+    <RepositoryUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</RepositoryUrl>
+    <PackageTags>fsharp pulumi auth0 identity oidc oauth</PackageTags>
+    <Company>Stefano d'Antonio (UnoSD)</Company>
+    <Authors>Stefano d'Antonio (UnoSD)</Authors>
+    <NoWarn>NU1605,NU1608,FS0058,FS0044</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <UsingTask TaskName="ForceRegenerate" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+                var number = new Random(DateTime.Now.Millisecond).Next();
+                File.WriteAllText("Myriad.fs", $"module private Auth0\n\nmodule Force = let private nonce = {number}");
+                Log.LogWarning("Force regenerate");
+         ]]></Code>
+    </Task>
+  </UsingTask>
+  <!-- To skip: -->
+  <!-- dotnet build Pulumi.FSharp.<provider> -p:NoRegenerate=true -->
+  <Target Name="CustomBeforeBuild" BeforeTargets="Build" Condition="'$(NoRegenerate)'!='true'">
+    <ForceRegenerate />
+  </Target>
+  <Import Project="../../src/Pulumi.FSharp.Myriad/build/Pulumi.FSharp.Myriad.InTest.props" />
+  <ItemGroup>
+    <Compile Include="Myriad.fs" />
+    <Compile Include="Generated.fs">
+      <MyriadFile>Myriad.fs</MyriadFile>
+    </Compile>
+    <None Include="myriad.toml" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

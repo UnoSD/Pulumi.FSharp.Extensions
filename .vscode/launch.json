@@ -9,6 +9,7 @@
             "description": "Pulumi provider name",
             "type": "pickString",
             "options": [
+                "Auth0",
                 "Aws",
                 "Azure",
                 "AzureAD",
@@ -16,6 +17,7 @@
                 "AzureNativeV2",
                 "Command",
                 "Docker",
+                "DigitalOcean",
                 "Gcp",
                 "Kubernetes",
                 "Random",
@@ -28,8 +30,8 @@
             "type": "coreclr",
             "request": "launch",
             "program": "${userHome}/.nuget/packages/myriad.sdk/0.8.1/tools/net6.0/any/Myriad.dll",
-            "args": ["--inputfile", "${workspaceFolder}/Pulumi.FSharp.${input:provider}/Myriad.fs", "--outputfile", "${workspaceFolder}/Pulumi.FSharp.${input:provider}/Generated.fs", "--plugin", "${workspaceFolder}/Pulumi.FSharp.Myriad/bin/Debug/net6.0/Pulumi.FSharp.Myriad.dll"],
-            "cwd": "${workspaceFolder}/Pulumi.FSharp.${input:provider}/",
+            "args": ["--inputfile", "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/Myriad.fs", "--outputfile", "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/Generated.fs", "--plugin", "${workspaceFolder}/src/Pulumi.FSharp.Myriad/bin/Debug/net6.0/Pulumi.FSharp.Myriad.dll"],
+            "cwd": "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/",
             "stopAtEntry": true,
             "justMyCode": true,
             "console": "internalConsole"
