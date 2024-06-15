@@ -739,13 +739,14 @@ let paketUpdate _ =
             (Git.Information.getBranchName rootDirectory)
             newBranch
 
+        Git.Staging.stageFile rootDirectory "paket.lock" |> ignore
         Git.Commit.exec rootDirectory prTitle
 
         Git.Branches.pushBranch rootDirectory gitHubRepoUrl newBranch
 
         let pr = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch,Body = prTitle)
         GitHub.createClientWithToken (Option.get githubToken)
-        |> GitHub.createPullRequest gitRepoName gitOwner pr
+        |> GitHub.createPullRequest gitRepoName "github-actions[bot]" pr
         |> Async.RunSynchronously
         |> Async.RunSynchronously
         |> ignore
