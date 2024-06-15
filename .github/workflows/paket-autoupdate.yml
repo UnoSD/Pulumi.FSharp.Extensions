@@ -1,0 +1,25 @@
+name: Paket Update
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+      
+jobs:
+  paket-update:
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup necessary dotnet SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.x
+      - name: Paket Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FAKE_DETAILED_ERRORS: true
+        run: |
+          ./build.sh PaketUpdate

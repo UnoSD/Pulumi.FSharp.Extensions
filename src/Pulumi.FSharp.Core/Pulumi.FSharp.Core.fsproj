@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageTags>fsharp pulumi azure</PackageTags>
+    <NoWarn>NU1605,NU1608</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="build.fsx" />
+    <Content Include="FAKE.yml" />
+    <Compile Include="OutputBuilder.fs" />
+    <Compile Include="Config.fs" />
+    <Compile Include="Assets.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

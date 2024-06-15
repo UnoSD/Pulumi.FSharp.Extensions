@@ -1,0 +1,27 @@
+
+<!--
+This file allows overriding of properties for all projects in the directory.
+See https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory?view=vs-2022#directorybuildprops-and-directorybuildtargets
+ -->
+
+<Project>
+    <PropertyGroup>
+        <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
+        <Copyright>Copyright 2021</Copyright>
+        <Authors>Stefano d'Antonio (UnoSD), Cadence Agyirey (cagyirey)</Authors>
+        <PackageTags>f#, fsharp, pulumi, iac</PackageTags>
+        <PackageProjectUrl>https://github.com/cagyirey/Pulumi.FSharp.Extensions</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile> <!--https://docs.microsoft.com/en-gb/nuget/reference/msbuild-targets#packagereadmefile -->
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/cagyirey/Pulumi.FSharp.Extensions</RepositoryUrl>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/"/>
+        <None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+</Project>

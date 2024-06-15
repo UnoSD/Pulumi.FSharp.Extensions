@@ -1,0 +1,34 @@
+name: .NET Publish
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+env:
+  CONFIGURATION: Release
+jobs:
+  build:
+    # Sets permissions of the GITHUB_TOKEN to allow release creating
+    permissions:
+      contents: write
+      packages: write
+    environment:
+      name: nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup necessary dotnet SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.x
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this is intentional — we publish to github packages
+          FAKE_DETAILED_ERRORS: true
+          ENABLE_COVERAGE: false # AltCover doesn't work with Release builds, reports lower coverage than actual
+        run: |
+          ./build.sh Publish

@@ -351,6 +351,17 @@ MigrationBackup/
 
 .idea/
 
-/TODO
-/Generated.fs
-Pulumi.FSharp.Extensions.vault.json
+
+# Paket tool store
+.paket/.store
+.paket/paket
+
+# fsdocs generated
+tmp/
+temp/
+.fsdocs
+docs/
+
+providers/Pulumi.FSharp.*/*.json
+providers/Pulumi.FSharp.*/Generated.fs
+.DS_Store

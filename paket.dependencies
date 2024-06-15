@@ -1,48 +1,68 @@
 group Myriad
-    framework: net6.0
-    source https://api.nuget.org/v3/index.json
-    storage: none
+  framework: net6.0
+  source https://api.nuget.org/v3/index.json
+  storage: none
 
-    nuget FSharp.Core               ~> 6
-    nuget FSharp.Data               ~> 6
-    nuget FSharp.Text.RegexProvider ~> 2
-    nuget Myriad.Core               0.8.1
-    nuget Myriad.Sdk                0.8.1
-    nuget Paket.Core                ~> 8
+  nuget FSharp.Core               ~> 6
+  nuget FSharp.Data               ~> 6
+  nuget FSharp.Text.RegexProvider ~> 2
+  nuget Myriad.Core               0.8.1
+  nuget Myriad.Sdk                0.8.1
+  nuget Paket.Core                ~> 8
 
 group Main
-    framework: net8.0
-    source https://api.nuget.org/v3/index.json
-    storage: none
+  framework: net8.0
+  source https://api.nuget.org/v3/index.json
+  storage: none
 
-    nuget FSharp.Core ~> 8
-    nuget Myriad.Sdk 0.8.1
+  nuget FSharp.Core ~> 8
+  nuget Myriad.Sdk 0.8.1 copy_local: true
 
-    nuget Pulumi.Aws
-    nuget Pulumi.Auth0
-    nuget Pulumi.Azure
-    nuget Pulumi.AzureAD
-    nuget Pulumi.AzureNative
-    nuget Pulumi.Command
-    nuget Pulumi.DigitalOcean
-    nuget Pulumi.Docker
-    nuget Pulumi.FSharp
-    nuget Pulumi.Gcp
-    nuget Pulumi.Kubernetes
-    nuget Pulumi.Random
-    nuget Pulumi.Tls
+  nuget Pulumi.Aws
+  nuget Pulumi.Auth0
+  nuget Pulumi.Azure
+  nuget Pulumi.AzureAD
+  nuget Pulumi.AzureNative
+  nuget Pulumi.Command
+  nuget Pulumi.DigitalOcean
+  nuget Pulumi.Docker
+  nuget Pulumi.Gcp
+  nuget Pulumi.Kubernetes
+  nuget Pulumi.Random
+  nuget Pulumi.Tls
 
-group Test
-    framework: net8.0
-    source https://api.nuget.org/v3/index.json
-    storage: none
+  nuget Pulumi.FSharp.Core
+  
+  nuget Microsoft.SourceLink.GitHub copy_local: true
+  nuget YoloDev.Expecto.TestSdk
+  nuget Microsoft.NET.Test.Sdk
+  nuget altcover
 
-    nuget FSharp.Core ~> 8.0
-    nuget Pulumi.FSharp.Aws
-    nuget Pulumi.FSharp.Azure
-    nuget Pulumi.FSharp.AzureAD
-    nuget Pulumi.FSharp.AzureNative
-    nuget Pulumi.FSharp.Core
-    nuget Pulumi.FSharp.Gcp
-    nuget Pulumi.FSharp.Kubernetes
-    nuget Pulumi.FSharp.Tls
+// [ FAKE GROUP ]
+group Build
+  framework: net6.0
+  storage: none
+  source https://www.nuget.org/api/v2
+  source https://api.nuget.org/v3/index.json
+  nuget Fake.IO.FileSystem
+  nuget Fake.Core.Target
+  nuget Fake.Core.ReleaseNotes
+  nuget Fake.Core.Environment
+  nuget Fake.DotNet.Cli
+  nuget Fake.Core.Process
+  nuget Fake.DotNet.AssemblyInfoFile
+  nuget Fake.Tools.Git
+  nuget Fake.DotNet.Paket
+  nuget Fake.Api.GitHub
+  nuget Fake.BuildServer.GitHubActions
+  nuget Argu
+  nuget Microsoft.Build 17.3.2
+  nuget Microsoft.Build.Framework 17.3.2
+  nuget Microsoft.Build.Tasks.Core 17.3.2
+  nuget Microsoft.Build.Utilities.Core 17.3.2
+  nuget Paket.Core ~> 8
+
+group Analyzers
+  source https://www.nuget.org/api/v2
+  source https://api.nuget.org/v3/index.json
+  nuget BinaryDefense.FSharp.Analyzers.Hashing 0.2.2
