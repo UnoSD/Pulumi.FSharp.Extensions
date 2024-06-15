@@ -746,7 +746,7 @@ let paketUpdate _ =
 
         let pr = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch,Body = prTitle)
         GitHub.createClientWithToken (Option.get githubToken)
-        |> GitHub.createPullRequest gitRepoName "github-actions[bot]" pr
+        |> GitHub.createPullRequest gitOwner gitRepoName pr
         |> Async.RunSynchronously
         |> Async.RunSynchronously
         |> ignore
