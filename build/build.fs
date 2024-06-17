@@ -963,7 +963,7 @@ let initTargets () =
         $"BuildProvider.{providerName}"
         ==>! "BuildProviders"
 
-        if PulumiExtensions.providersRequiringRebuild.Contains providerName then
+        if PulumiExtensions.providersRequiringRebuild.Contains $"Pulumi.{providerName}" then
             $"PackProvider.{providerName}"
             ==>! "PackProviders"
 
