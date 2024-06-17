@@ -1,4 +1,4 @@
-name: .NET Publish (Release)
+name: .NET Publish Extensions
 
 on:
   push:
