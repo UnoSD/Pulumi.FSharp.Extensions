@@ -1,3 +1,5 @@
-Pulumi.Docker
-Pulumi.FSharp
 Myriad.Sdk
+
+group Providers
+  Pulumi.Docker
+  Pulumi.FSharp

@@ -1,11 +1,11 @@
-name: .NET Publish (Release)
+name: .NET Publish Providers
 
 on:
   push:
     branches:
       - main
     paths:
-      - src/**
+      - src/
 env:
   CONFIGURATION: Release
 jobs:
@@ -24,11 +24,13 @@ jobs:
           global-json-file: global.json
           dotnet-version: |
             8.x
-      - name: Publish
+      - name: Checkout previous revision's lockfile to obtain the list of updated providers
+        run: git show HEAD^1:./paket.lock > ./paket.lock.previous
+      - name: Publish updated providers
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this is intentional — we publish to github packages
           FAKE_DETAILED_ERRORS: true
           ENABLE_COVERAGE: false # AltCover doesn't work with Release builds, reports lower coverage than actual
         run: |
-          ./build.sh Publish
+          ./build.sh PublishProviders

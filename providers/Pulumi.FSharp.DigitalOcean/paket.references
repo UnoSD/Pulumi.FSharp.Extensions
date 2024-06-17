@@ -1,3 +1,5 @@
-Pulumi.DigitalOcean
-Pulumi.FSharp
 Myriad.Sdk
+
+group Providers
+  Pulumi.DigitalOcean
+  Pulumi.FSharp

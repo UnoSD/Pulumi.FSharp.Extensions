@@ -1,1 +1,2 @@
-Pulumi.FSharp
+group Providers
+  Pulumi.FSharp

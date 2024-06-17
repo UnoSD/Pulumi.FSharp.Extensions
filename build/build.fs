@@ -231,13 +231,46 @@ module PulumiExtensions =
 
         let paketDeps = Paket.Dependencies.Locate projectFile.DirectoryName
 
-        let version =
-            paketDeps.GetInstalledVersion $"Pulumi.{provider}"
-            |> Option.get
-            |> SemVer.parse
 
-        version.Normalize()
+        paketDeps
+            .GetInstalledPackageModel(Some "Providers", $"Pulumi.{provider}")
+            .PackageVersion.Normalize()
 
+    let getProviderVersions (lock1: Paket.LockFile) (lock2: Paket.LockFile) =
+        (lock1.Groups[Paket.Domain.GroupName "Providers"].Resolution
+         |> Map.toList)
+        @ (lock2.Groups[Paket.Domain.GroupName "Providers"].Resolution
+           |> Map.toList)
+        |> List.groupBy fst
+        |> List.map (fun (k, v) -> k, List.map snd v)
+        |> Map.ofList
+        |> Map.map (fun package versions ->
+            match versions with
+            | [ v1; v2 ] ->
+                (min v1.Version v2.Version,
+                 Some
+                 <| max v1.Version v2.Version)
+            | [ version ] -> (version.Version, None)
+        )
+
+    let providersRequiringRebuild =
+
+        if
+            not
+            <| File.exists "paket.lock.previous"
+        then
+            Set.empty
+        else
+            let current = Paket.LockFile.LoadFrom "paket.lock"
+            let previous = Paket.LockFile.LoadFrom "paket.lock.previous"
+
+            getProviderVersions previous current
+            |> Seq.choose (fun (KeyValue(k, v)) ->
+                match v with
+                | _, None -> None
+                | _, Some _ -> Some k.Name
+            )
+            |> Set.ofSeq
 
 module dotnet =
     let watch cmdParam program args =
@@ -633,6 +666,7 @@ let generateAssemblyInfo _ =
                  </> "AssemblyInfo.vb")
                 attributes
     )
+
 let packProvider projectFile =
     fun (ctx: TargetParameter) ->
         let args = [ $"/p:VersionPrefix={PulumiExtensions.getProviderVersion projectFile}" ]
@@ -694,18 +728,19 @@ let sourceLinkTest _ =
 
 let publishProvider packageName =
     fun (_: TargetParameter) ->
-        let packageFile = 
-            !! (distDir </> $"{packageName}.*.nupkg")
+        let packageFile =
+            !!(distDir
+               </> $"{packageName}.*.nupkg")
             |> Seq.exactlyOne
-        
-        Paket.push(fun pushParams ->
-            { pushParams with
+
+        Paket.push (fun pushParams -> {
+            pushParams with
                 ApiKey =
                     match nugetToken with
                     | Some s -> s
                     | _ -> pushParams.ApiKey // assume paket-config was set properly
-                
-            })
+
+        })
 
 let publishToNuget _ =
     allPublishChecks ()
@@ -729,22 +764,39 @@ let paketUpdate _ =
     failOnWrongBranch ()
     failOnLocalBuild ()
 
-    let dependencies = (Paket.Dependencies.Locate ()).DependenciesFile
+
+    let dependencies = (Paket.Dependencies.Locate()).DependenciesFile
+
+    let oldLockfile =
+        (rootDirectory
+         </> "paket.lock")
+        |> Paket.LockFile.LoadFrom
+
     if Paket.UpdateProcess.Update(dependencies, Paket.UpdaterOptions.Default) then
+        let newLockfile =
+            (rootDirectory
+             </> "paket.lock")
+            |> Paket.LockFile.LoadFrom
+
+        let packageUpdates = PulumiExtensions.getProviderVersions oldLockfile newLockfile
+
         let newBranch = $"paket-update-{Git.Information.getCurrentHash ()}"
         let prTitle = $"Paket Update for {DateTime.Now}"
 
-        Git.Branches.checkoutNewBranch 
+        Git.Branches.checkoutNewBranch
             rootDirectory
             (Git.Information.getBranchName rootDirectory)
             newBranch
 
-        Git.Staging.stageFile rootDirectory "paket.lock" |> ignore
+        Git.Staging.stageFile rootDirectory "paket.lock"
+        |> ignore
+
         Git.Commit.exec rootDirectory prTitle
 
         Git.Branches.pushBranch rootDirectory gitHubRepoUrl newBranch
 
-        let pr = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch,Body = prTitle)
+        let pr = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch, Body = prTitle)
+
         GitHub.createClientWithToken (Option.get githubToken)
         |> GitHub.createPullRequest gitOwner gitRepoName pr
         |> Async.RunSynchronously
@@ -761,9 +813,14 @@ let gitRelease _ =
     Git.Staging.stageFile "" "CHANGELOG.md"
     |> ignore
 
-    !!(rootDirectory </> "src/**/AssemblyInfo.fs")
-    ++ (rootDirectory </> "tests/**/AssemblyInfo.fs")
-    |> Seq.iter (Git.Staging.stageFile ""  >> ignore)
+    !!(rootDirectory
+       </> "src/**/AssemblyInfo.fs")
+    ++ (rootDirectory
+        </> "tests/**/AssemblyInfo.fs")
+    |> Seq.iter (
+        Git.Staging.stageFile ""
+        >> ignore
+    )
 
     let msg =
         sprintf "Bump version to %s\n\n%s" latestEntry.NuGetVersion releaseNotesGitCommitFormat
@@ -799,7 +856,8 @@ let githubRelease _ =
         gitOwner
         gitRepoName
         (Changelog.tagFromVersionNumber latestEntry.NuGetVersion)
-        (latestEntry.SemVer.PreRelease <> None)
+        (latestEntry.SemVer.PreRelease
+         <> None)
         (Seq.singleton releaseNotes)
     |> GitHub.uploadFiles files
     |> GitHub.publishDraft
@@ -889,7 +947,6 @@ let initTargets () =
 
         Target.create $"BuildProvider.{providerName}" (buildProvider projectFile)
         Target.create $"PackProvider.{providerName}" (packProvider projectFile)
-
         Target.create $"PublishProvider.{providerName}" (publishProvider providerName)
 
         "Clean"
@@ -906,17 +963,17 @@ let initTargets () =
         $"BuildProvider.{providerName}"
         ==>! "BuildProviders"
 
-        $"PackProvider.{providerName}"
-        ==>! "PackProviders"
+        if PulumiExtensions.providersRequiringRebuild.Contains providerName then
+            $"PackProvider.{providerName}"
+            ==>! "PackProviders"
 
-        $"PublishProvider.{providerName}"
-        ==>! "PublishProviders"
+            $"PublishProvider.{providerName}"
+            ==>! "PublishProviders"
     )
 
     //-----------------------------------------------------------------------------
     // Target Dependencies
     //-----------------------------------------------------------------------------
-
 
     // Only call Clean if DotnetPack was in the call chain
     // Ensure Clean is called before DotnetRestore

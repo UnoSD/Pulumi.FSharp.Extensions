@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.6] - 2024-05-31
+
+Providers now use a dedicated FAKE dependency group to enable detection of updated providers via GitOps
+
+### Changed
+- Provider dependencies moved from `Main` group to `Providers`.
+
 ## [3.1.5] - 2024-05-31
 
 Updated the project to use modern build tooling.

@@ -10,13 +10,10 @@ group Myriad
   nuget Myriad.Sdk                0.8.1
   nuget Paket.Core                ~> 8
 
-group Main
+group Providers
   framework: net8.0
   source https://api.nuget.org/v3/index.json
   storage: none
-
-  nuget FSharp.Core ~> 8
-  nuget Myriad.Sdk 0.8.1 copy_local: true
 
   nuget Pulumi.Aws
   nuget Pulumi.Auth0
@@ -26,13 +23,19 @@ group Main
   nuget Pulumi.Command
   nuget Pulumi.DigitalOcean
   nuget Pulumi.Docker
+  nuget Pulumi.FSharp
   nuget Pulumi.Gcp
   nuget Pulumi.Kubernetes
   nuget Pulumi.Random
   nuget Pulumi.Tls
 
-  nuget Pulumi.FSharp.Core
-  
+group Main
+  framework: net8.0
+  source https://api.nuget.org/v3/index.json
+  storage: none
+
+  nuget FSharp.Core ~> 8
+  nuget Myriad.Sdk 0.8.1 copy_local: true
   nuget Microsoft.SourceLink.GitHub copy_local: true
   nuget YoloDev.Expecto.TestSdk
   nuget Microsoft.NET.Test.Sdk

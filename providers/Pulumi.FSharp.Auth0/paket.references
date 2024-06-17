@@ -1,3 +1,5 @@
-Pulumi.Auth0
-Pulumi.FSharp
 Myriad.Sdk
+
+group Providers
+  Pulumi.Auth0
+  Pulumi.FSharp

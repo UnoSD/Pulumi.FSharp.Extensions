@@ -1,3 +1,5 @@
-Pulumi.Command
-Pulumi.FSharp
 Myriad.Sdk
+
+group Providers
+  Pulumi.Command
+  Pulumi.FSharp

@@ -51,10 +51,10 @@ type PulumiFSharpGenerator() =
 
             let paketProviderVersion =
                 paketDeps
-                |> Option.bind (fun deps -> deps.GetInstalledVersion $"Pulumi.{provider}")
-                |> Option.map (fun version ->
-                    let semver = (SemVer.Parse version) in
-                    $"{semver.Major}.{semver.Minor}.{semver.Patch}"
+                |> Option.map (fun deps ->
+                    deps
+                        .GetInstalledPackageModel(Some "Providers", $"Pulumi.{provider}")
+                        .PackageVersion.Normalize()
                 )
 
 
