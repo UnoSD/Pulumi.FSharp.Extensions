@@ -24,6 +24,7 @@ group Providers
   nuget Pulumi.DigitalOcean
   nuget Pulumi.Docker
   nuget Pulumi.FSharp
+  nuget Pulumi.FSharp.Core
   nuget Pulumi.Gcp
   nuget Pulumi.Kubernetes
   nuget Pulumi.Random

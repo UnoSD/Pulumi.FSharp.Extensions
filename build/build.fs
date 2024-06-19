@@ -216,25 +216,33 @@ let failOnWrongBranch () =
 module PulumiExtensions =
 
     let getProviderName projectFile =
-        (FileInfo projectFile).Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
-
-    let getProviderVersion projectFile =
         let projectFile = FileInfo projectFile
 
-        let provider =
-            let providerName = projectFile.Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
-            let providerNameOverride = Map.ofList [ "AzureNativeV2", "AzureNative" ]
+        let providerName = projectFile.Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
+        let providerNameOverride = Map.ofList [ "AzureNativeV2", "AzureNative" ]
 
-            providerNameOverride
-            |> Map.tryFind providerName
-            |> Option.defaultValue providerName
+        providerNameOverride
+        |> Map.tryFind providerName
+        |> Option.defaultValue providerName
 
-        let paketDeps = Paket.Dependencies.Locate projectFile.DirectoryName
+    let getProviderVersion provider =
 
+        let paketDeps = Paket.Dependencies.Locate provider
 
         paketDeps
             .GetInstalledPackageModel(Some "Providers", $"Pulumi.{provider}")
             .PackageVersion.Normalize()
+
+    
+    let isExtensionPublished provider =
+        let lockfile = Paket.LockFile.LoadFrom "paket.lock"
+        try
+            let providerVersion = getProviderVersion provider
+            NuGet.NuGet.getPackage publishUrl $"Pulumi.FSharp.{provider}" providerVersion |> ignore
+            true // if we didn't throw in the previous step, this is a valid version.
+        with
+        | _ -> false
+
 
     let getProviderVersions (lock1: Paket.LockFile) (lock2: Paket.LockFile) =
         (lock1.Groups[Paket.Domain.GroupName "Providers"].Resolution
@@ -252,25 +260,6 @@ module PulumiExtensions =
                  <| max v1.Version v2.Version)
             | [ version ] -> (version.Version, None)
         )
-
-    let providersRequiringRebuild =
-
-        if
-            not
-            <| File.exists "paket.lock.previous"
-        then
-            Set.empty
-        else
-            let current = Paket.LockFile.LoadFrom "paket.lock"
-            let previous = Paket.LockFile.LoadFrom "paket.lock.previous"
-
-            getProviderVersions previous current
-            |> Seq.choose (fun (KeyValue(k, v)) ->
-                match v with
-                | _, None -> None
-                | _, Some _ -> Some k.Name
-            )
-            |> Set.ofSeq
 
 module dotnet =
     let watch cmdParam program args =
@@ -960,10 +949,10 @@ let initTargets () =
         "DotnetRestore"
         ==>! $"BuildProvider.{providerName}"
 
-        $"BuildProvider.{providerName}"
-        ==>! "BuildProviders"
+        if PulumiExtensions.isExtensionPublished providerName then
+            $"BuildProvider.{providerName}"
+            ==>! "BuildProviders"
 
-        if PulumiExtensions.providersRequiringRebuild.Contains $"Pulumi.{providerName}" then
             $"PackProvider.{providerName}"
             ==>! "PackProviders"
 
