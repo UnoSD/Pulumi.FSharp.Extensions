@@ -941,7 +941,7 @@ let initTargets () =
         "DotnetRestore"
         ==>! $"BuildProvider.{extensionName}"
 
-        if PulumiExtensions.isExtensionPublished extensionName then
+        if not (PulumiExtensions.isExtensionPublished extensionName) then
             $"BuildProvider.{extensionName}"
             ==>! "BuildProviders"
 
