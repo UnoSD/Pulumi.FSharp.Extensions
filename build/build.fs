@@ -215,18 +215,10 @@ let failOnWrongBranch () =
 
 module PulumiExtensions =
 
-    let getProviderName projectFile =
-        let projectFile = FileInfo projectFile
-
-        let providerName = projectFile.Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
-        let providerNameOverride = Map.ofList [ "AzureNativeV2", "AzureNative" ]
-
-        providerNameOverride
-        |> Map.tryFind providerName
-        |> Option.defaultValue providerName
+    let getExtensionName projectFile =
+        (FileInfo projectFile).Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
 
     let getProviderVersion provider =
-
         let paketDeps = Paket.Dependencies.Locate provider
 
         paketDeps
@@ -932,31 +924,31 @@ let initTargets () =
 
     !!providersGlob
     |> Seq.iter (fun projectFile ->
-        let providerName = PulumiExtensions.getProviderName projectFile
+        let extensionName = PulumiExtensions.getExtensionName projectFile
 
-        Target.create $"BuildProvider.{providerName}" (buildProvider projectFile)
-        Target.create $"PackProvider.{providerName}" (packProvider projectFile)
-        Target.create $"PublishProvider.{providerName}" (publishProvider providerName)
+        Target.create $"BuildProvider.{extensionName}" (buildProvider projectFile)
+        Target.create $"PackProvider.{extensionName}" (packProvider projectFile)
+        Target.create $"PublishProvider.{extensionName}" (publishProvider extensionName)
 
         "Clean"
-        ==>! $"PackProvider.{providerName}"
+        ==>! $"PackProvider.{extensionName}"
 
         "DotnetBuild"
-        ==> $"BuildProvider.{providerName}"
-        ==> $"PackProvider.{providerName}"
-        ==>! $"PublishProvider.{providerName}"
+        ==> $"BuildProvider.{extensionName}"
+        ==> $"PackProvider.{extensionName}"
+        ==>! $"PublishProvider.{extensionName}"
 
         "DotnetRestore"
-        ==>! $"BuildProvider.{providerName}"
+        ==>! $"BuildProvider.{extensionName}"
 
-        if PulumiExtensions.isExtensionPublished providerName then
-            $"BuildProvider.{providerName}"
+        if PulumiExtensions.isExtensionPublished extensionName then
+            $"BuildProvider.{extensionName}"
             ==>! "BuildProviders"
 
-            $"PackProvider.{providerName}"
+            $"PackProvider.{extensionName}"
             ==>! "PackProviders"
 
-            $"PublishProvider.{providerName}"
+            $"PublishProvider.{extensionName}"
             ==>! "PublishProviders"
     )
 
