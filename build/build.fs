@@ -716,19 +716,22 @@ let sourceLinkTest _ =
 
 let publishProvider packageName =
     fun (_: TargetParameter) ->
-        let packageFile =
+        let nupkg =
             !!(distDir
                </> $"{packageName}.*.nupkg")
             |> Seq.exactlyOne
 
-        Paket.push (fun pushParams -> {
-            pushParams with
-                ApiKey =
-                    match nugetToken with
-                    | Some s -> s
-                    | _ -> pushParams.ApiKey // assume paket-config was set properly
-
-        })
+        DotNet.nugetPush (fun c -> {
+            c with
+                PushParams = {
+                    c.PushParams with
+                        ApiKey =
+                            match nugetToken with
+                            | Some s -> nugetToken
+                            | _ -> c.PushParams.ApiKey // assume paket-config was set properly
+                        Source = Some publishUrl
+                }
+        }) nupkg
 
 let publishToNuget _ =
     allPublishChecks ()
