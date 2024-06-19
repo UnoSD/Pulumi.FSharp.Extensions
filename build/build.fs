@@ -218,14 +218,21 @@ module PulumiExtensions =
     let getExtensionName projectFile =
         (FileInfo projectFile).Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
 
-    let getProviderVersion provider =
-        let paketDeps = Paket.Dependencies.Locate provider
-
-        paketDeps
+    let getProviderVersion providerName  = 
+        let dependencies =  Paket.Dependencies.Locate ()
+        let providerNameOverride = Map.ofList [ "AzureNativeV2", "AzureNative" ]
+        let provider = 
+            providerNameOverride
+            |> Map.tryFind providerName
+            |> Option.defaultValue providerName
+        dependencies
             .GetInstalledPackageModel(Some "Providers", $"Pulumi.{provider}")
             .PackageVersion.Normalize()
 
-    
+    let getProviderVersionFromFsproj projectFile =
+        getExtensionName projectFile
+        |> getProviderVersion
+
     let isExtensionPublished provider =
         let lockfile = Paket.LockFile.LoadFrom "paket.lock"
         try
@@ -427,7 +434,7 @@ let deleteChangelogBackupFile _ =
 let buildProvider projectFile =
     fun (ctx: TargetParameter) ->
         let args = [
-            $"/p:VersionPrefix={PulumiExtensions.getProviderVersion projectFile}"
+            $"/p:VersionPrefix={PulumiExtensions.getProviderVersionFromFsproj projectFile}"
             //"/p:NoRegenerate=true"
             "--no-restore"
         ]
@@ -650,7 +657,7 @@ let generateAssemblyInfo _ =
 
 let packProvider projectFile =
     fun (ctx: TargetParameter) ->
-        let args = [ $"/p:VersionPrefix={PulumiExtensions.getProviderVersion projectFile}" ]
+        let args = [ $"/p:VersionPrefix={PulumiExtensions.getProviderVersionFromFsproj projectFile}" ]
 
         DotNet.pack
             (fun (c: DotNet.PackOptions) -> {
