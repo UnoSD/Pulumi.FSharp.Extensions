@@ -935,7 +935,7 @@ let initTargets () =
 
         Target.create $"BuildProvider.{extensionName}" (buildProvider projectFile)
         Target.create $"PackProvider.{extensionName}" (packProvider projectFile)
-        Target.create $"PublishProvider.{extensionName}" (publishProvider extensionName)
+        Target.create $"PublishProvider.{extensionName}" (publishProvider $"Pulumi.FSharp.{extensionName}")
 
         "Clean"
         ==>! $"PackProvider.{extensionName}"
