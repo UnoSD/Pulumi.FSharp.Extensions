@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28C09E13-D45B-40D2-AAB0-F7D3A69417D8}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative.Common", "src\Pulumi.FSharp.AzureNative.Common\Pulumi.FSharp.AzureNative.Common.fsproj", "{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Core", "src\Pulumi.FSharp.Core\Pulumi.FSharp.Core.fsproj", "{7A74E40C-7A88-4683-807B-26FE69C00C9E}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Myriad", "src\Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj", "{39E6A928-3D66-4D1D-9F12-5CAE5C47D82B}"
@@ -50,10 +48,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A74E40C-7A88-4683-807B-26FE69C00C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A74E40C-7A88-4683-807B-26FE69C00C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A74E40C-7A88-4683-807B-26FE69C00C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -120,7 +114,6 @@ Global
 		{F001F2EE-9ED0-4FE0-87F6-0365F1CA887E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8EC6FF58-5CB7-4FBD-A82F-0EEE2795307F} = {28C09E13-D45B-40D2-AAB0-F7D3A69417D8}
 		{7A74E40C-7A88-4683-807B-26FE69C00C9E} = {28C09E13-D45B-40D2-AAB0-F7D3A69417D8}
 		{39E6A928-3D66-4D1D-9F12-5CAE5C47D82B} = {28C09E13-D45B-40D2-AAB0-F7D3A69417D8}
 		{23F69D6B-8674-49A3-A872-70F06F8A982C} = {6A29027D-A6AF-406A-B0E5-FBBBD9962BFC}

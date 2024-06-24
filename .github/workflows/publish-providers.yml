@@ -25,9 +25,7 @@ jobs:
           global-json-file: global.json
           dotnet-version: |
             8.x
-      - name: Checkout previous revision's lockfile to obtain the list of updated providers
-        run: git show HEAD^1:./paket.lock > ./paket.lock.previous
-      - name: Publish updated providers
+      - name: Publish providers
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NUGET_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this is intentional — we publish to github packages

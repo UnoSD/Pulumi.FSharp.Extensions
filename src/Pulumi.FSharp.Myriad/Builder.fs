@@ -120,24 +120,14 @@ let mapOperationType yieldSelector opsSelector =
     | { Type = PAny _ } & pt
     | { Type = PArchive _ } & pt -> opsSelector pt
 
-let createBuilderClass isType name pTypes =
+let createBuilderClass isType isComponent name pTypes =
     let argsType = $"{name}Args"
 
     let apply varname =
         let args =
             match varname with
             | "args" -> argsType
-            // in Pulumi.Kubernetes 4.10.0, two new types were added which
-            // use ComponentResourceOptions instead of CustomResourceOptions
-            // This check should be made generic for all ResourceOption types
-            | _ when
-                [
-                    "ConfigFile"
-                    "ConfigGroup"
-                ]
-                |> List.contains name
-                ->
-                "ComponentResourceOptions"
+            | _ when isComponent -> "ComponentResourceOptions"
             | _ -> "CustomResourceOptions"
 
         Expr.app (

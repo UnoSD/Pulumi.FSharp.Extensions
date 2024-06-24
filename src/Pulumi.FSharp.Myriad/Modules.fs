@@ -276,7 +276,6 @@ let createTypes (schema : JsonValue) =
         
         | PTMap t
         | PTArray t                               -> getRefType t
-                                                  
         | PTUnion (a, b) (*PTUnion typeTuple*)    -> //typeTuple |> tupleMap getRefType |> optionApply (@)
                                                      //typeTuple |> tupleMap getRefType |> lift2 (@)
                                                      //typeTuple |>
@@ -375,6 +374,9 @@ let createTypes (schema : JsonValue) =
         Map.add "remote" (Some("Remote"))
     
     let create allTypes (jsonValue : JsonValue) (propertyName : string) typeName isType =
+        
+        let isComponent = if not isType then jsonValue.TryGetProperty "isComponent" |> Option.isSome else false
+
         let properties =
             match jsonValue.TryGetProperty(propertyName) with
             | Some ip -> ip.Properties()
@@ -411,7 +413,7 @@ let createTypes (schema : JsonValue) =
             [||]
         else            
             [|
-                createBuilderClass isType typeName pTypes
+                createBuilderClass isType isComponent typeName pTypes
                 
                 createBuilderInstance description typeName pTypes
             |]
