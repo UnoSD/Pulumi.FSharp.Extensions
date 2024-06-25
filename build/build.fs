@@ -809,7 +809,7 @@ let initTargets () =
     ==> "GenerateCoverageReport"
     ==>! "ShowCoverageReport"
 
-    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Myriad.fsproj") then
+    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Myriad" </> "Pulumi.FSharp.Myriad.fsproj") then
         "DotnetRestore"
         =?> ("CheckFormatCode", isCI.Value)
         ==> "BuildMyriadExtension"
@@ -818,7 +818,7 @@ let initTargets () =
         ==> "PublishToNuGet"
         ==>! "Publish"
 
-    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Core.fsproj") then
+    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Core" </> "Pulumi.FSharp.Core.fsproj") then
         "DotnetRestore"
         =?> ("CheckFormatCode", isCI.Value)
         ==> "BuildCore"
