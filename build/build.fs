@@ -2,16 +2,19 @@
 
 open System
 open System.IO
+
+open Argu
+open Fake.Api
+open Fake.BuildServer
 open Fake.Core
+open Fake.Core.TargetOperators
 open Fake.DotNet
-open Fake.Tools
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
-open Fake.Core.TargetOperators
-open Fake.Api
-open Fake.BuildServer
-open Argu
+open Fake.Tools
+open global.Paket.PackageSources
+
 
 let environVarAsBoolOrDefault varName defaultValue =
     let truthyConsts = [
@@ -63,6 +66,16 @@ let testsCodeGlob =
 let srcDir =
     rootDirectory
     </> "src"
+
+let srcCoreDir = 
+    srcDir
+    </> "Pulumi.FSharp.Core"
+    </> "Pulumi.FSharp.Core.fsproj"
+
+let myriadPluginDir =
+    srcDir
+    </> "Pulumi.FSharp.Myriad"
+    </> "Pulumi.FSharp.Myriad.fsproj"
 
 let providersDir =
     rootDirectory
@@ -138,6 +151,20 @@ let githubToken = Environment.environVarOrNone "GITHUB_TOKEN"
 
 let nugetToken = Environment.environVarOrNone "GITHUB_TOKEN" // "NUGET_TOKEN"
 
+let githubPackageSource =
+    NuGetV3 {
+        Url = publishUrl
+        Authentication =
+            match githubToken with
+            | Some token ->
+                Paket.NetUtils.AuthProvider.ofUserPassword {
+                    Username = GitHubActions.Environment.Actor
+                    Password = token
+                    Type = Paket.NetUtils.AuthType.Basic
+                }
+            | None -> Paket.AuthService.GetGlobalAuthenticationProvider publishUrl
+    }
+
 let githubSHA = Environment.environVarOrNone "GITHUB_SHA"
 
 let shortGitShubHA =
@@ -199,7 +226,7 @@ let failOnWrongBranch () =
 
 module PulumiExtensions =
 
-    let getExtensionName projectFile =
+    let getProviderName projectFile =
         (FileInfo projectFile).Name["Pulumi.FSharp.".Length .. ^".fsproj".Length]
 
     let getProviderVersion providerName =
@@ -216,16 +243,15 @@ module PulumiExtensions =
             .PackageVersion.Normalize()
 
     let getProviderVersionFromFsproj projectFile =
-        getExtensionName projectFile
+        getProviderName projectFile
         |> getProviderVersion
 
-    let isExtensionPublished provider =
+    let isProviderPublished provider =
         let lockfile = Paket.LockFile.LoadFrom "paket.lock"
 
         try
-            let providerVersion = getProviderVersion provider
-
-            NuGet.NuGet.getPackage publishUrl $"Pulumi.FSharp.{provider}" providerVersion
+            getProviderVersion provider
+            |> NuGet.NuGet.getPackage publishUrl $"Pulumi.FSharp.{provider}"
             |> ignore
 
             true // if we didn't throw in the previous step, this is a valid version.
@@ -251,19 +277,29 @@ module PulumiExtensions =
         )
 
 module NuGet =
+
     let isPublished project =
         let projectFile = FileInfo project
+
         let changelog: Changelog.Changelog =
             projectFile.DirectoryName
             </> "CHANGELOG.md"
             |> Changelog.load
 
-        let packageInfo =
-            Path.GetFileNameWithoutExtension project
-            |> NuGet.NuGet.getLatestPackage publishUrl
+        Paket.Dependencies.FindPackageVersions(
+            rootDirectory,
+            [ githubPackageSource ],
+            System.IO.Path.GetFileNameWithoutExtension project
+        )
+        |> Set.ofArray
+        |> Set.map (SemVer.parse)
+        |> Set.contains changelog.LatestEntry.SemVer
+        |> not
 
-        (SemVer.parse packageInfo.Version) = changelog.LatestEntry.SemVer
-        
+    let shouldPublishCore = Lazy<_>.Create(fun () -> isPublished srcCoreDir)
+
+    let shouldPublishMyriadPlugin = Lazy<_>.Create(fun () -> isPublished myriadPluginDir)
+
 module dotnet =
     let watch cmdParam program args =
         DotNet.exec cmdParam (sprintf "watch %s" program) args
@@ -410,14 +446,6 @@ let dotnetBuild project =
 
             })
             project
-
-let buildCore =
-    srcDir </> "Pulumi.FSharp.Core.fsproj"
-    |> dotnetBuild
-
-let buildMyriadExtension =
-    srcDir </> "Pulumi.FSharp.Myriad.fsproj"
-    |> dotnetBuild
 
 let fsharpAnalyzers _ =
     let argParser =
@@ -567,9 +595,9 @@ let packProvider projectFile =
             })
             projectFile
 
-let dotnetPack ctx =
-    !!srcGlob
-    |> Seq.iter (fun project ->
+let dotnetPack project =
+
+    fun ctx ->
         let changelog =
             (FileInfo project).DirectoryName
             </> "CHANGELOG.md"
@@ -604,7 +632,6 @@ let dotnetPack ctx =
                         |> DotNet.Options.withAdditionalArgs args
             })
             project
-    )
 
 let sourceLinkTest _ =
     !!distGlob
@@ -728,26 +755,27 @@ let initTargets () =
     //-----------------------------------------------------------------------------
     Option.iter (TraceSecrets.register "<GITHUB_TOKEN>") githubToken
     Option.iter (TraceSecrets.register "<NUGET_TOKEN>") nugetToken
+
     //-----------------------------------------------------------------------------
     // Target Declaration
     //-----------------------------------------------------------------------------
-
     Target.create "Clean" clean
     Target.create "DotnetRestore" dotnetRestore
 
-    Target.create "BuildMyriadExtension" buildMyriadExtension
-    Target.create "BuildCore" buildCore
-    Target.create "DotnetBuild" ignore
+    Target.create "BuildCore" (dotnetBuild srcCoreDir)
+    Target.create "BuildMyriadPlugin" (dotnetBuild myriadPluginDir)
     Target.create "BuildProviders" ignore
 
     Target.create "DotnetTest" dotnetTest
     Target.create "WatchTests" watchTests
-    
+
     Target.create "FSharpAnalyzers" fsharpAnalyzers
     Target.create "GenerateCoverageReport" generateCoverageReport
     Target.create "ShowCoverageReport" showCoverageReport
 
-    Target.create "DotnetPack" dotnetPack
+    Target.create "PackCore" (dotnetPack srcCoreDir)
+    Target.create "PackMyriadPlugin" (dotnetPack myriadPluginDir)
+    Target.create "DotnetPack" ignore
     Target.create "PackProviders" ignore
     Target.create "PublishProviders" ignore
     Target.create "SourceLinkTest" sourceLinkTest
@@ -759,40 +787,40 @@ let initTargets () =
 
     !!providersGlob
     |> Seq.iter (fun projectFile ->
-        let extensionName = PulumiExtensions.getExtensionName projectFile
+        let providerName = PulumiExtensions.getProviderName projectFile
 
-        Target.create $"BuildProvider.{extensionName}" (buildProvider projectFile)
-        Target.create $"PackProvider.{extensionName}" (packProvider projectFile)
+        Target.create $"BuildProvider.{providerName}" (buildProvider projectFile)
+        Target.create $"PackProvider.{providerName}" (packProvider projectFile)
 
         Target.create
-            $"PublishProvider.{extensionName}"
-            (publishProvider $"Pulumi.FSharp.{extensionName}")
+            $"PublishProvider.{providerName}"
+            (publishProvider $"Pulumi.FSharp.{providerName}")
+
+//-----------------------------------------------------------------------------
+// Target Dependencies
+//-----------------------------------------------------------------------------
 
         "Clean"
-        ==>! $"PackProvider.{extensionName}"
-
-        "DotnetBuild"
-        ==> $"BuildProvider.{extensionName}"
-        ==> $"PackProvider.{extensionName}"
-        ==>! $"PublishProvider.{extensionName}"
+        ==>! $"PackProvider.{providerName}"
 
         "DotnetRestore"
-        ==>! $"BuildProvider.{extensionName}"
+        ==>! $"BuildProvider.{providerName}"
 
-        if not (PulumiExtensions.isExtensionPublished extensionName) then
-            $"BuildProvider.{extensionName}"
+        "BuildMyriadPlugin"
+        ==> $"BuildProvider.{providerName}"
+        ==> $"PackProvider.{providerName}"
+        ==>! $"PublishProvider.{providerName}"
+
+        if not (PulumiExtensions.isProviderPublished providerName) then
+            $"BuildProvider.{providerName}"
             ==>! "BuildProviders"
 
-            $"PackProvider.{extensionName}"
+            $"PackProvider.{providerName}"
             ==>! "PackProviders"
 
-            $"PublishProvider.{extensionName}"
+            $"PublishProvider.{providerName}"
             ==>! "PublishProviders"
     )
-
-    //-----------------------------------------------------------------------------
-    // Target Dependencies
-    //-----------------------------------------------------------------------------
 
     // Only call Clean if DotnetPack was in the call chain
     // Ensure Clean is called before DotnetRestore
@@ -802,32 +830,34 @@ let initTargets () =
     "Clean"
     ==>! "DotnetPack"
 
-    "DotnetBuild"
-    ==>! "BuildProviders"
+    "Clean"
+    ==>! "PackCore"
+
+    "Clean"
+    ==>! "PackMyriadPlugin"
 
     "DotnetTest"
     ==> "GenerateCoverageReport"
     ==>! "ShowCoverageReport"
 
-    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Myriad" </> "Pulumi.FSharp.Myriad.fsproj") then
-        "DotnetRestore"
-        =?> ("CheckFormatCode", isCI.Value)
-        ==> "BuildMyriadExtension"
-        ==> "DotnetTest"
-        ==> "DotnetPack"
-        ==> "PublishToNuGet"
-        ==>! "Publish"
-
-    if NuGet.isPublished (srcDir </> "Pulumi.FSharp.Core" </> "Pulumi.FSharp.Core.fsproj") then
-        "DotnetRestore"
-        =?> ("CheckFormatCode", isCI.Value)
-        ==> "BuildCore"
-        ==> "DotnetTest"
-        ==> "DotnetPack"
-        ==> "PublishToNuGet"
-        ==>! "Publish"
+    "DotnetRestore"
+    =?> ("CheckFormatCode", isCI.Value)
+    =?> ("BuildCore", NuGet.shouldPublishCore.Value)
+    ==> "DotnetTest"
+    =?> ("PackCore", NuGet.shouldPublishCore.Value)
+    ==> "PublishToNuGet"
+    ==>! "Publish"
 
     "DotnetRestore"
+    =?> ("CheckFormatCode", isCI.Value)
+    =?> ("BuildMyriadPlugin", NuGet.shouldPublishMyriadPlugin.Value)
+    ==> "DotnetTest"
+    =?> ("PackMyriadPlugin", NuGet.shouldPublishMyriadPlugin.Value)
+    ==> "PublishToNuGet"
+    ==>! "Publish"
+
+    "DotnetRestore"
+    ==> "BuildMyriadPlugin"
     ==> "BuildProviders"
     ==> "PackProviders"
     ==>! "PublishProviders"
@@ -847,6 +877,6 @@ let main argv =
     |> Context.setExecutionContext
 
     initTargets ()
-    Target.runOrDefaultWithArguments "PublishProviders"
+    Target.runOrDefaultWithArguments "Publish"
 
     0 // return an integer exit code

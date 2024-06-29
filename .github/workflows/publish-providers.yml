@@ -9,7 +9,6 @@ env:
   CONFIGURATION: Release
 jobs:
   build:
-    # Sets permissions of the GITHUB_TOKEN to allow release creating
     permissions:
       packages: write
     environment:

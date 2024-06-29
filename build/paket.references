@@ -1,16 +1,15 @@
 group Build
-Argu
-Octokit
-FSharp.Core
-Fake.IO.FileSystem
-Fake.Core.Target
-Fake.Core.ReleaseNotes
-FAKE.Core.Environment
-Fake.DotNet.Cli
-FAKE.Core.Process
-Fake.DotNet.AssemblyInfoFile
-Fake.Tools.Git
-Fake.DotNet.Paket
-Fake.Api.GitHub
-Fake.BuildServer.GitHubActions
-Paket.Core
+  Argu
+  Fake.Api.GitHub
+  Fake.BuildServer.GitHubActions
+  Fake.Core.Target
+  Fake.Core.ReleaseNotes
+  Fake.Core.Environment
+  Fake.Core.Process
+  Fake.DotNet.AssemblyInfoFile
+  Fake.DotNet.Cli
+  Fake.DotNet.Paket
+  Fake.IO.FileSystem
+  Fake.Tools.Git
+  Octokit
+  Paket.Core
