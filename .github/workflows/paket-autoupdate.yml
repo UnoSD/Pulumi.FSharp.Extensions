@@ -8,6 +8,7 @@ on:
 jobs:
   paket-update:
     permissions:
+      packages: read
       contents: write
       pull-requests: write
     runs-on: ubuntu-latest
