@@ -67,7 +67,7 @@ let srcDir =
     rootDirectory
     </> "src"
 
-let srcCoreDir = 
+let srcCoreDir =
     srcDir
     </> "Pulumi.FSharp.Core"
     </> "Pulumi.FSharp.Core.fsproj"
@@ -247,16 +247,18 @@ module PulumiExtensions =
         |> getProviderVersion
 
     let isProviderPublished provider =
-        let lockfile = Paket.LockFile.LoadFrom "paket.lock"
-
         try
+            Paket.Dependencies.FindPackageVersions(
+                rootDirectory,
+                [ githubPackageSource ],
+                $"Pulumi.FSharp.{provider}")
+        with e -> Array.empty
+        |> Set.ofArray
+        |> Set.map (SemVer.parse)
+        |> Set.contains (
             getProviderVersion provider
-            |> NuGet.NuGet.getPackage publishUrl $"Pulumi.FSharp.{provider}"
-            |> ignore
-
-            true // if we didn't throw in the previous step, this is a valid version.
-        with _ ->
-            false
+            |> SemVer.parse
+        )
 
 
     let getProviderVersions (lock1: Paket.LockFile) (lock2: Paket.LockFile) =
@@ -298,7 +300,8 @@ module NuGet =
 
     let shouldPublishCore = Lazy<_>.Create(fun () -> isPublished srcCoreDir)
 
-    let shouldPublishMyriadPlugin = Lazy<_>.Create(fun () -> isPublished myriadPluginDir)
+    let shouldPublishMyriadPlugin =
+        Lazy<_>.Create(fun () -> isPublished myriadPluginDir)
 
 module dotnet =
     let watch cmdParam program args =
@@ -796,9 +799,9 @@ let initTargets () =
             $"PublishProvider.{providerName}"
             (publishProvider $"Pulumi.FSharp.{providerName}")
 
-//-----------------------------------------------------------------------------
-// Target Dependencies
-//-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        // Target Dependencies
+        //-----------------------------------------------------------------------------
 
         "Clean"
         ==>! $"PackProvider.{providerName}"
@@ -811,13 +814,13 @@ let initTargets () =
         ==> $"PackProvider.{providerName}"
         ==>! $"PublishProvider.{providerName}"
 
+        $"BuildProvider.{providerName}"
+        ==>! "BuildProviders"
+
+        $"PackProvider.{providerName}"
+        ==>! "PackProviders"
+
         if not (PulumiExtensions.isProviderPublished providerName) then
-            $"BuildProvider.{providerName}"
-            ==>! "BuildProviders"
-
-            $"PackProvider.{providerName}"
-            ==>! "PackProviders"
-
             $"PublishProvider.{providerName}"
             ==>! "PublishProviders"
     )
@@ -841,8 +844,12 @@ let initTargets () =
     ==>! "ShowCoverageReport"
 
     "DotnetRestore"
+    ==>! "WatchTests"
+
+
+    "DotnetRestore"
     =?> ("CheckFormatCode", isCI.Value)
-    =?> ("BuildCore", NuGet.shouldPublishCore.Value)
+    ==> "BuildCore"
     ==> "DotnetTest"
     =?> ("PackCore", NuGet.shouldPublishCore.Value)
     ==> "PublishToNuGet"
@@ -850,7 +857,7 @@ let initTargets () =
 
     "DotnetRestore"
     =?> ("CheckFormatCode", isCI.Value)
-    =?> ("BuildMyriadPlugin", NuGet.shouldPublishMyriadPlugin.Value)
+    ==> "BuildMyriadPlugin"
     ==> "DotnetTest"
     =?> ("PackMyriadPlugin", NuGet.shouldPublishMyriadPlugin.Value)
     ==> "PublishToNuGet"
@@ -861,9 +868,6 @@ let initTargets () =
     ==> "BuildProviders"
     ==> "PackProviders"
     ==>! "PublishProviders"
-
-    "DotnetRestore"
-    ==>! "WatchTests"
 
 //-----------------------------------------------------------------------------
 // Target Start
