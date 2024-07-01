@@ -251,8 +251,10 @@ module PulumiExtensions =
             Paket.Dependencies.FindPackageVersions(
                 rootDirectory,
                 [ githubPackageSource ],
-                $"Pulumi.FSharp.{provider}")
-        with e -> Array.empty
+                $"Pulumi.FSharp.{provider}"
+            )
+        with e ->
+            Array.empty
         |> Set.ofArray
         |> Set.map (SemVer.parse)
         |> Set.contains (
@@ -862,12 +864,6 @@ let initTargets () =
     =?> ("PackMyriadPlugin", NuGet.shouldPublishMyriadPlugin.Value)
     ==> "PublishToNuGet"
     ==>! "Publish"
-
-    "DotnetRestore"
-    ==> "BuildMyriadPlugin"
-    ==> "BuildProviders"
-    ==> "PackProviders"
-    ==>! "PublishProviders"
 
 //-----------------------------------------------------------------------------
 // Target Start
