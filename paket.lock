@@ -992,7 +992,7 @@ NUGET
       Pulumi (>= 3.64)
     Pulumi.Azure (5.81)
       Pulumi (>= 3.64)
-    Pulumi.AzureAD (5.53)
+    Pulumi.AzureAD (5.53.1)
       Pulumi (>= 3.64)
     Pulumi.AzureNative (2.47.1)
       Pulumi (>= 3.64)
