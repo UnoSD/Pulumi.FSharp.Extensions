@@ -644,6 +644,9 @@ let sourceLinkTest _ =
 
 let publishProvider packageName =
     fun (_: TargetParameter) ->
+        failOnLocalBuild ()
+        failOnWrongBranch ()
+
         let nupkg =
             !!(distDir
                </> $"{packageName}.*.nupkg")
@@ -685,7 +688,6 @@ let paketUpdate _ =
     failOnWrongBranch ()
     failOnLocalBuild ()
 
-
     let dependencies = (Paket.Dependencies.Locate()).DependenciesFile
 
     let oldLockfile =
@@ -694,35 +696,44 @@ let paketUpdate _ =
         |> Paket.LockFile.LoadFrom
 
     if Paket.UpdateProcess.Update(dependencies, Paket.UpdaterOptions.Default) then
-        let newLockfile =
-            (rootDirectory
-             </> "paket.lock")
-            |> Paket.LockFile.LoadFrom
+        if not (Git.Information.isCleanWorkingCopy rootDirectory) then
+            let newLockfile =
+                (rootDirectory
+                </> "paket.lock")
+                |> Paket.LockFile.LoadFrom
 
-        let packageUpdates = PulumiExtensions.getProviderVersions oldLockfile newLockfile
+            let packageUpdates = PulumiExtensions.getProviderVersions oldLockfile newLockfile
 
-        let newBranch = $"paket-update-{Git.Information.getCurrentHash ()}"
-        let prTitle = $"Paket Update for {DateTime.Now}"
+            let newBranch = $"paket-update-{Git.Information.getCurrentHash ()}"
+            let prTitle = $"Paket Update for {DateTime.Now}"
 
-        Git.Branches.checkoutNewBranch
-            rootDirectory
-            (Git.Information.getBranchName rootDirectory)
-            newBranch
+            Git.Branches.checkoutNewBranch
+                rootDirectory
+                (Git.Information.getBranchName rootDirectory)
+                newBranch
 
-        Git.Staging.stageFile rootDirectory "paket.lock"
-        |> ignore
+            Git.Staging.stageFile rootDirectory "paket.lock"
+            |> ignore
 
-        Git.Commit.exec rootDirectory prTitle
+            Git.Commit.exec rootDirectory prTitle
 
-        Git.Branches.pushBranch rootDirectory gitHubRepoUrl newBranch
+            Git.Branches.pushBranch rootDirectory gitHubRepoUrl newBranch
 
-        let pr = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch, Body = prTitle)
+            let newPR = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch, Body = prTitle)
 
-        GitHub.createClientWithToken (Option.get githubToken)
-        |> GitHub.createPullRequest gitOwner gitRepoName pr
-        |> Async.RunSynchronously
-        |> Async.RunSynchronously
-        |> ignore
+            let pr = 
+                GitHub.createClientWithToken (Option.get githubToken)
+                |> GitHub.createPullRequest gitOwner gitRepoName newPR
+                |> Async.RunSynchronously
+                |> Async.RunSynchronously
+
+            let prMergeResult = Process.shellExec { 
+                Program = "gh"
+                WorkingDir = rootDirectory
+                CommandLine = $"pr merge {pr.Id} --auto"
+                Args = []
+            }
+            if prMergeResult <> 0 then failwith "gh pr merge failed with exit code {prMerge}"
     else
         failwith "Paket update failed. Unable to create PR."
 
