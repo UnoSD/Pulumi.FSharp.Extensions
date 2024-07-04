@@ -730,7 +730,7 @@ let paketUpdate _ =
             let prMergeResult = Process.shellExec { 
                 Program = "gh"
                 WorkingDir = rootDirectory
-                CommandLine = $"pr merge {pr.Number} --auto"
+                CommandLine = $"pr merge {pr.Number} --squash --auto"
                 Args = []
             }
             if prMergeResult <> 0 then failwith $"gh pr merge failed with exit code {prMergeResult}"
