@@ -696,7 +696,11 @@ let paketUpdate _ =
         |> Paket.LockFile.LoadFrom
 
     if Paket.UpdateProcess.Update(dependencies, Paket.UpdaterOptions.Default) then
-        if not (Git.Information.isCleanWorkingCopy rootDirectory) then
+        let modified = 
+            Git.FileStatus.getChangedFilesInWorkingCopy
+                rootDirectory
+                (Git.Information.getCurrentSHA1 rootDirectory)
+        if Seq.contains (Git.FileStatus.Modified, "paket.lock") modified then
             let newLockfile =
                 (rootDirectory
                 </> "paket.lock")
