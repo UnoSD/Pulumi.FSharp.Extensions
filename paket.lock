@@ -590,7 +590,7 @@ NUGET
     Chessie (0.6)
       FSharp.Core (>= 4.0.1.7-alpha)
       NETStandard.Library (>= 1.6)
-    Fantomas (6.3.9)
+    Fantomas (6.3.10)
     FSharp.Core (6.0.3)
     FSharp.Data (6.4)
       FSharp.Core (>= 6.0.1)
