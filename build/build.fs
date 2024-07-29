@@ -695,15 +695,20 @@ let paketUpdate _ =
          </> "paket.lock")
         |> Paket.LockFile.LoadFrom
 
-    if Paket.UpdateProcess.Update(dependencies, Paket.UpdaterOptions.Default) then
-        let modified = 
+    if  Paket.UpdateProcess.UpdateGroup(
+        dependencies,
+        Paket.Domain.GroupName "Providers",
+        Paket.UpdaterOptions.Default) then
+
+        let modified =
             Git.FileStatus.getChangedFilesInWorkingCopy
                 rootDirectory
                 (Git.Information.getCurrentSHA1 rootDirectory)
+
         if Seq.contains (Git.FileStatus.Modified, "paket.lock") modified then
             let newLockfile =
                 (rootDirectory
-                </> "paket.lock")
+                 </> "paket.lock")
                 |> Paket.LockFile.LoadFrom
 
             let packageUpdates = PulumiExtensions.getProviderVersions oldLockfile newLockfile
@@ -723,21 +728,28 @@ let paketUpdate _ =
 
             Git.Branches.pushBranch rootDirectory gitHubRepoUrl newBranch
 
-            let newPR = Octokit.NewPullRequest(prTitle, newBranch, releaseBranch, Body = prTitle)
+            let newPR =
+                Octokit.NewPullRequest(prTitle, newBranch, releaseBranch, Body = prTitle)
 
-            let pr = 
+            let pr =
                 GitHub.createClientWithToken (Option.get githubToken)
                 |> GitHub.createPullRequest gitOwner gitRepoName newPR
                 |> Async.RunSynchronously
                 |> Async.RunSynchronously
 
-            let prMergeResult = Process.shellExec { 
-                Program = "gh"
-                WorkingDir = rootDirectory
-                CommandLine = $"pr merge {pr.Number} --squash --auto"
-                Args = []
-            }
-            if prMergeResult <> 0 then failwith $"gh pr merge failed with exit code {prMergeResult}"
+            let prMergeResult =
+                Process.shellExec {
+                    Program = "gh"
+                    WorkingDir = rootDirectory
+                    CommandLine = $"pr merge {pr.Number} --squash --auto"
+                    Args = []
+                }
+
+            if
+                prMergeResult
+                <> 0
+            then
+                failwith $"gh pr merge failed with exit code {prMergeResult}"
     else
         failwith "Paket update failed. Unable to create PR."
 
