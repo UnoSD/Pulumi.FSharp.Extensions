@@ -990,7 +990,7 @@ NUGET
       Pulumi (>= 3.65)
     Pulumi.AzureAD (5.53.3)
       Pulumi (>= 3.65)
-    Pulumi.AzureNative (2.52.1)
+    Pulumi.AzureNative (2.53)
       Pulumi (>= 3.65)
       System.Collections.Immutable (>= 5.0)
     Pulumi.Command (1.0.1)
