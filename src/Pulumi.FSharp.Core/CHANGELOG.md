@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.7] - 2024-06-02
+
+
+
 ## [3.1.6] - 2024-05-31
 
 Providers now use a dedicated FAKE dependency group to enable detection of updated providers via GitOps

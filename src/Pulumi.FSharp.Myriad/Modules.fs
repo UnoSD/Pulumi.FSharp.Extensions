@@ -13,8 +13,6 @@ open Core
 
 let inline equalsCI (str1) (str2) = String.Equals(str1, str2, StringComparison.OrdinalIgnoreCase)
 
-let (=!) = equalsCI
-
 let rec createModule name openNamespace types =
     match name |> Option.map (String.split '.') with
     | None            -> Module.module'(openNamespace, [
@@ -288,8 +286,8 @@ let createTypes (schema : JsonValue) =
     
     let rec getRefType =
         function
-        | PTRef t when Array.exists ((=!) t) allAvailableTypes -> Some [t]
-        | PTRef t when Array.exists ((=!) t) allResources -> Some [t]
+        | PTRef t when Array.exists (equalsCI t) allAvailableTypes -> Some [t]
+        | PTRef t when Array.exists (equalsCI t) allResources -> Some [t]
         | PTMap t
         | PTArray t -> getRefType t
         | PTUnion (a, b) ->
@@ -302,8 +300,11 @@ let createTypes (schema : JsonValue) =
         
     let rec getAllNestedTypes refTypes resourceOrType =
 
-        let (|ExistsInCI|_|) collection input  =
-            if Seq.exists ((=!) input) collection then Some () else None
+        let (|ExistsInCI|_|) collection input =
+            if Seq.exists (equalsCI input) collection then Some () else None
+
+        let (|GetCI|_|) (map: Map<_, JsonValue>) (key: string) =
+            Map.tryPick (fun k v -> if equalsCI k key then Some v else None) map
 
         getPropertiesValues resourceOrType |>
         Array.choose getRefType |>
@@ -312,11 +313,12 @@ let createTypes (schema : JsonValue) =
             | [] -> refTypes
             | a  -> a |> List.collect (fun refType ->
                 match refType with
-                | ExistsInCI allAvailableTypes 
-                | ExistsInCI allResources -> refTypes
-                | _ -> 
-                    allTypes[refType]
-                    |> getAllNestedTypes (refType :: refTypes)))
+                | ExistsInCI refTypes -> refTypes
+                | GetCI allTypes typeJson
+                | GetCI resourceTypes typeJson -> typeJson |> getAllNestedTypes (refType :: refTypes)
+                | _ -> failwith "Referenced type does not exist in the Pulumi schema resources or types"
+                )
+        )
 
     let allNestedTypes =
         resourcesJson |>
@@ -468,8 +470,10 @@ let createTypes (schema : JsonValue) =
         Array.filter (fun (bt, _) -> 
             match bt with
             // this seems to be a nodejs-only mixin? CallbackFunctionArgs does not exist in the pulumi .net sdk
-            | Resource r -> not (r.ResourceType.Value = "CallbackFunction" && r.ResourceProviderNamespace.Value = "lambda")
-            | _ -> false)
+            | Resource r -> 
+                not (r.ResourceType.Value = "CallbackFunction" && r.ResourceProviderNamespace.Value = "lambda")
+            | Type t -> 
+                not (t.ResourceType.Value = "CodePathOptions" && t.ResourceProviderNamespace.Value = "lambda"))
 
     let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy (fst >> getProvider) typesOrResources |>
