@@ -1,5 +1,6 @@
 module AstBuilder
 
+open Myriad.Core.AstExtensions
 open AstOperations
 open AstInstance
 open AstHelpers
@@ -202,17 +203,140 @@ let createBuilderClass isType isComponent name pTypes =
             if not isType then
                 croOperation
                     "DependsOn"
+                    ResourceOptions
                     "Ensure this resource gets created after its dependency"
                     "dependency"
                     (inputListOfInput "dependency")
+                    false
                     true
 
-            if not isType then
                 croOperation
                     "DependsOn"
+                    ResourceOptions
                     "Ensure this resource gets created after its dependency"
                     "dependency"
                     (inputListOfResources "dependency")
+                    true
                     false
+
+                croOperation
+                    "Id"
+                    ResourceOptions
+                    "An optional existing ID to load, rather than create."
+                    "resourceId"
+                    (Expr.ident "resourceId")
+                    false
+                    true
+
+                croOperation
+                    "IgnoreChanges"
+                    ResourceOptions
+                    "If set to True, the providers Delete method will not be called for this resource."
+                    "paths"
+                    (Expr.ident "paths")
+                    true
+                    true
+
+                croOperation
+                    "ReplaceOnChanges"
+                    ResourceOptions
+                    """Changes to any of these property paths will force a replacement.  If this list includes `"*"`, changes to any properties will force a replacement.  Initialization errors from previous deployments will require replacement instead of update only if `"*"` is passed."""
+                    "paths"
+                    (Expr.ident "paths")
+                    true
+                    true
+
+                croOperation
+                    "ResourceTransformations"
+                    ResourceOptions
+                    "Optional list of transformations to apply to this resource during construction.The transformations are applied in order, and are applied prior to transformation applied to parents walking from the resource up to the stack."
+                    "transformations"
+                    (Expr.ident "transformations")
+                    true
+                    true
+
+                croOperation
+                    "RetainOnDelete"
+                    ResourceOptions
+                    "If set to True, the providers Delete method will not be called for this resource."
+                    "retain"
+                    (Expr.ident "retain")
+                    false
+                    true
+
+                croOperation
+                    "Urn"
+                    ResourceOptions
+                    "The URN of a previously-registered resource of this type to read from the engine."
+                    "urn"
+                    (Expr.ident "urn")
+                    false
+                    true
+
+                croOperation
+                    "Protect"
+                    ResourceOptions
+                    "When set to true, protect ensures this resource cannot be deleted."
+                    "isProtected"
+                    (Expr.ident "isProtected")
+                    false
+                    true
+
+                croOperation
+                    "Parent"
+                    ResourceOptions
+                    "An optional parent resource to which this resource belongs."
+                    "parent"
+                    (Expr.ident "parent")
+                    false
+                    true
+
+                // CustomResourceOptions-specific types
+                if not isComponent then
+                    croOperation
+                        "AdditionalSecretOutputs"
+                        CustomResourceOptions
+                        "The names of outputs for this resource that should be treated as secrets. This augments the list that the resource provider and pulumi engine already determine based on inputs to your resource. It can be used to mark certain outputs as a secrets on a per resource basis."
+                        "outputs"
+                        (Expr.ident "outputs")
+                        true
+                        true
+
+                    croOperation
+                        "DeleteBeforeReplace"
+                        CustomResourceOptions
+                        "When set to `true`, indicates that this resource should be deleted before its replacement is created when replacement is necessary."
+                        "deletedBeforeReplace"
+                        (Expr.ident "deletedBeforeReplace")
+                        false
+                        true
+
+                    croOperation
+                        "ImportId"
+                        CustomResourceOptions
+                        "When provided with a resource ID, import indicates that this resource's provider should import its state from the cloud resource with the given ID. The inputs to the resource's constructor must align with the resource's current state. Once a resource has been imported, the import property must be removed from the resource's options."
+                        "resourceId"
+                        (Expr.ident "resourceId")
+                        false
+                        true
+
+                    croOperation
+                        "Provider"
+                        ResourceOptions
+                        "An optional provider to use for this resource's CRUD operations. If no provider is supplied, the default provider for the resource's package will be used. The default provider is pulled from the parent's provider bag (see also ComponentResourceOptions.providers)."
+                        "resourceProvider"
+                        (Expr.ident "resourceProvider")
+                        false
+                        true
+
+                else
+                    croOperation
+                        "Providers"
+                        ComponentResourceOptions
+                        "An optional set of providers to use for child resources."
+                        "resourceProviders"
+                        (Expr.ident "resourceProviders")
+                        true
+                        true
         ]
     )

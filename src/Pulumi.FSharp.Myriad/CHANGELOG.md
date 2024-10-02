@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2024-10-01
+
+Support for `ResourceOptions`-derived types has been improved, allowing more flexible customization 
+
+### Added
+- Various custom operations that represent `ResourceOptions` in the Pulumi .NET SDK.
+
+### Fixed
+- Fixed an issue where specific resource types could not be used as inputs to other Pulumi resources (such as in the AWS providers >6.49)
+- Some providers such as AWS and Docker, which use inconsistent casing for resource names, now handle names case-insensitivitely.
+
 ## [3.1.7] - 2024-06-24
 
 Pulumi providers that use `ComponentResource` as a base class are now interpreted correctly by the Myriad compiler extension.

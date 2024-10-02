@@ -11,6 +11,10 @@ open AstBuilder
 open Debug
 open Core
 
+let inline equalsCI (str1) (str2) = String.Equals(str1, str2, StringComparison.OrdinalIgnoreCase)
+
+let (=!) = equalsCI
+
 let rec createModule name openNamespace types =
     match name |> Option.map (String.split '.') with
     | None            -> Module.module'(openNamespace, [
@@ -102,8 +106,7 @@ let private (|PTUnionMany|_|) =
     
 let private (|PTRef|_|) =
     function
-    | Property("type") (JsonValue.String("string")) &
-      Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
+    | Property("type") (JsonValue.String("string")) & Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
     | Property("$ref") (JsonValue.String(StartsWith("#/types/") typeQualified))
         -> Some typeQualified
     | _ -> None
@@ -244,6 +247,10 @@ let private missingStatusTypes =
     |] |> Set.ofArray
 
 let createTypes (schema : JsonValue) =
+
+    let pulumiProviderName =
+        schema["name"].AsString()
+        
     let typesJson =
         match schema.TryGetProperty("types") with
         | Some types -> types.Properties()
@@ -254,7 +261,16 @@ let createTypes (schema : JsonValue) =
 
     let allAvailableTypes =
         typesJson |> Array.map fst
-   
+
+    let resourcesJson =
+        schema["resources"].Properties() |>
+        // Faking Provider to be in the root namespace
+        Array.append [| $"{pulumiProviderName}:index:Provider", schema["provider"] |]
+
+    let resourceTypes = Map.ofArray resourcesJson
+    let allResources =
+        resourcesJson |> Array.map fst
+
     let getPropertiesValues =
         function
         | JsonValue.Record(Property("inputProperties") (JsonValue.Record(jv)))
@@ -272,43 +288,36 @@ let createTypes (schema : JsonValue) =
     
     let rec getRefType =
         function
-        | PTRef t when Map.containsKey t allTypes -> Some [t]
-        
+        | PTRef t when Array.exists ((=!) t) allAvailableTypes -> Some [t]
+        | PTRef t when Array.exists ((=!) t) allResources -> Some [t]
         | PTMap t
-        | PTArray t                               -> getRefType t
-        | PTUnion (a, b) (*PTUnion typeTuple*)    -> //typeTuple |> tupleMap getRefType |> optionApply (@)
-                                                     //typeTuple |> tupleMap getRefType |> lift2 (@)
-                                                     //typeTuple |>
-                                                     //tupleMap getRefType ||>
-                                                     //(fun x y -> List.append <!> x <*> y)                                                     
-                                                     List.append <!> (getRefType a) <*> (getRefType b)
-                                                     
-        | PTMap t                                 -> getRefType t
-
+        | PTArray t -> getRefType t
+        | PTUnion (a, b) ->
+            List.append <!> (getRefType a) <*> (getRefType b)
+        | PTMap t  -> getRefType t
         | PTUnionMany _                                                  
         | PTBase _                                
-        | PTJson                                  -> None
+        | PTJson -> None
         | x                                       -> failwith $"Pattern not matched {x}"
         
     let rec getAllNestedTypes refTypes resourceOrType =
+
+        let (|ExistsInCI|_|) collection input  =
+            if Seq.exists ((=!) input) collection then Some () else None
+
         getPropertiesValues resourceOrType |>
         Array.choose getRefType |>
-        List.concat |>
-        (function
-         | [] -> refTypes
-         | a  -> a |> List.collect (fun refType -> match List.exists ((=)refType) refTypes with
-                                                   | true  -> refTypes
-                                                   | false -> allTypes[refType] |>
-                                                              getAllNestedTypes (refType :: refTypes)))
-        
-    let pulumiProviderName =
-        schema["name"].AsString()
-    
-    let resourcesJson =
-        schema["resources"].Properties() |>
-        // Faking Provider to be in the root namespace
-        Array.append [| $"{pulumiProviderName}:index:Provider", schema["provider"] |]
-        
+        List.concat 
+        |> (function
+            | [] -> refTypes
+            | a  -> a |> List.collect (fun refType ->
+                match refType with
+                | ExistsInCI allAvailableTypes 
+                | ExistsInCI allResources -> refTypes
+                | _ -> 
+                    allTypes[refType]
+                    |> getAllNestedTypes (refType :: refTypes)))
+
     let allNestedTypes =
         resourcesJson |>
         Array.map (snd >> getAllNestedTypes []) |>
@@ -350,14 +359,14 @@ let createTypes (schema : JsonValue) =
         // Docker schema has inconsistency of case in resource type and name for some resources
         let resourceTypeAndNameComparison =
             match pulumiProviderName with
-            | "docker" -> StringComparison.OrdinalIgnoreCase
+            | "docker" | "aws" -> StringComparison.OrdinalIgnoreCase
             | _ ->        StringComparison.Ordinal
 
-        subNamespaceOrName |>
-        Option.bind (function
-                     | name when name.Equals(t.ResourceType.Value, resourceTypeAndNameComparison) -> None
-                     | _                                                                          -> namespace' + "/" + t.SubNamespace.Value |> Some) |>
-        Option.defaultValue namespace'
+        subNamespaceOrName 
+        |> Option.bind (function
+            | name when name.Equals(t.ResourceType.Value, resourceTypeAndNameComparison) -> None
+            | _ -> namespace' + "/" + t.SubNamespace.Value |> Some) 
+        |> Option.defaultValue namespace'
     
     let namespacesJson =
         match schema["language"].["csharp"].TryGetProperty("namespaces") with
@@ -454,6 +463,14 @@ let createTypes (schema : JsonValue) =
             | Type t -> not (t.ResourceType.Value = "ApplicationCondition" && t.ResourceProviderNamespace.Value = "security") 
             | _          -> true)
     
+    let filterAwsProblematicTypes types =
+        types |>
+        Array.filter (fun (bt, _) -> 
+            match bt with
+            // this seems to be a nodejs-only mixin? CallbackFunctionArgs does not exist in the pulumi .net sdk
+            | Resource r -> not (r.ResourceType.Value = "CallbackFunction" && r.ResourceProviderNamespace.Value = "lambda")
+            | _ -> false)
+
     let createBuildersParallelFiltered allTypes typesOrResources =
         Array.groupBy (fst >> getProvider) typesOrResources |>
         filters |>
@@ -463,6 +480,7 @@ let createTypes (schema : JsonValue) =
             debugFilterTypes |>
             filterKubernetesProblematicTypes |>
             filterAzureNativeProblematicTypes |>
+            filterAwsProblematicTypes |>
             Array.Parallel.collect (createBuilders allTypes))
         
     let typeBuilders =
@@ -486,7 +504,7 @@ let createTypes (schema : JsonValue) =
                 String.split '/' resourceProvider
                 |> Array.toList
             | _ -> [resourceProvider]
-
+            
         let resourceProviderNamespace = namespaces[ns]
         
         let openNamespace =

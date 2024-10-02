@@ -368,12 +368,18 @@ let createOperationsFor' argsType pType =
             e
     )
 
+type internal ResourceOptionsKind =
+    | ResourceOptions
+    | CustomResourceOptions
+    | ComponentResourceOptions
 
-let croOperation
+let internal croOperation
     operationName
+    resourceOptionsKind
     description
     argumentName
     (setAssignmentExpression: SynExpr)
+    isListAdd
     withAttribute
     =
     let attributes = [
@@ -400,13 +406,27 @@ let croOperation
         let lambdaExpression =
             Expr.sequential (
                 [
-                    Expr.set ($"cros.{operationName}", setAssignmentExpression)
+                    if not isListAdd then
+                        Expr.set ($"cros.{operationName}", setAssignmentExpression)
+                    else
+                        Expr.appTuple (
+                            $"cros.{operationName}.AddRange",
+                            [ setAssignmentExpression ]
+                        )
                     Expr.ident ("cros")
                 ]
             )
 
         let listConsLambdaFirstExpression =
-            Expr.lambda ([ SimplePat.hashTyped ("cros", "ResourceOptions") ], lambdaExpression)
+            Expr.lambda (
+                match resourceOptionsKind with
+                | ResourceOptions -> [ SimplePat.hashTyped ("cros", "ResourceOptions") ]
+                | CustomResourceOptions -> [ SimplePat.typed ("cros", "CustomResourceOptions") ]
+                | ComponentResourceOptions -> [
+                    SimplePat.typed ("cros", "ComponentResourceOptions")
+                  ]
+                , lambdaExpression
+            )
 
         let listConsExpressions =
             Expr.paren (

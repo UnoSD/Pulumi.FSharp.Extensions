@@ -695,10 +695,13 @@ let paketUpdate _ =
          </> "paket.lock")
         |> Paket.LockFile.LoadFrom
 
-    if  Paket.UpdateProcess.UpdateGroup(
-        dependencies,
-        Paket.Domain.GroupName "Providers",
-        Paket.UpdaterOptions.Default) then
+    if
+        Paket.UpdateProcess.UpdateGroup(
+            dependencies,
+            Paket.Domain.GroupName "Providers",
+            Paket.UpdaterOptions.Default
+        )
+    then
 
         let modified =
             Git.FileStatus.getChangedFilesInWorkingCopy

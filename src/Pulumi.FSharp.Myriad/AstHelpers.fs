@@ -154,6 +154,20 @@ type Expr =
             )
         )
 
+    static member appTuple(func: SynExpr, args) =
+        Expr.app (
+            func,
+            Expr.paren (
+                Expr.tuple (
+                    args
+                    |> List.map Expr.ident
+                )
+            )
+        )
+
+    static member appTuple(func: string, args: SynExpr list) =
+        Expr.app (func, Expr.paren (Expr.tuple args))
+
     static member match'(expr, clauses) = SynExpr.CreateMatch(expr, clauses)
 
     /// value
