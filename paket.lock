@@ -1013,7 +1013,7 @@ NUGET
     Pulumi.Protobuf (3.27.3)
     Pulumi.Random (4.16.6)
       Pulumi (>= 3.67.1)
-    Pulumi.Tls (5.0.7)
+    Pulumi.Tls (5.0.8)
       Pulumi (>= 3.67.1)
     Semver (2.3)
     Serilog (4.0.2)
