@@ -982,7 +982,7 @@ NUGET
       Semver (>= 2.1)
       Serilog.Extensions.Logging (>= 3.0.1)
       Serilog.Sinks.Console (>= 4.0.1)
-    Pulumi.Auth0 (3.8)
+    Pulumi.Auth0 (3.8.1)
       Pulumi (>= 3.67.1)
     Pulumi.Aws (6.55)
       Pulumi (>= 3.67.1)
