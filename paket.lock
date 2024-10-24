@@ -995,7 +995,7 @@ NUGET
       System.Collections.Immutable (>= 5.0)
     Pulumi.Command (1.0.1)
       Pulumi (>= 3.65)
-    Pulumi.DigitalOcean (4.33.1)
+    Pulumi.DigitalOcean (4.34)
       Pulumi (>= 3.67.1)
     Pulumi.Docker (4.5.7)
       Pulumi (>= 3.67.1)
