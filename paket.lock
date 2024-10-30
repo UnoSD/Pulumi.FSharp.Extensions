@@ -984,7 +984,7 @@ NUGET
       Serilog.Sinks.Console (>= 4.0.1)
     Pulumi.Auth0 (3.8.1)
       Pulumi (>= 3.67.1)
-    Pulumi.Aws (6.56.1)
+    Pulumi.Aws (6.57)
       Pulumi (>= 3.67.1)
     Pulumi.Azure (6.6)
       Pulumi (>= 3.67.1)
