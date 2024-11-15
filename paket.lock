@@ -987,7 +987,7 @@ NUGET
       Pulumi (>= 3.67.1)
     Pulumi.Aws (6.59.1)
       Pulumi (>= 3.67.1)
-    Pulumi.Azure (6.8)
+    Pulumi.Azure (6.9)
       Pulumi (>= 3.67.1)
     Pulumi.AzureAD (6.0.1)
       Pulumi (>= 3.67.1)
