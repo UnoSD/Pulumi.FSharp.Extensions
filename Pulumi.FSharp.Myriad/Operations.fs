@@ -25,6 +25,9 @@ let private argsPattern =
 let private crosPattern =
     createPattern "cros" []
 
+let private croIPattern =
+    createPattern "croI" []
+
 let private nPattern =
     createPattern "n" []
 
@@ -45,12 +48,16 @@ let argsTuple' isResource nameVarName withParen =
     
     createTuple [ nvn
                   argsPattern
-                  if isResource then crosPattern ] withParen
+                  if isResource
+                  then
+                      crosPattern
+                      croIPattern ] withParen
 
 let argsTupleResource withParen =
     createTuple [ namePattern
                   argsPattern
-                  crosPattern ] withParen
+                  crosPattern
+                  croIPattern ] withParen
 
 let argsTupleType withParen =
     createTuple [ SynPat.CreateWild
@@ -222,7 +229,7 @@ let private returnTupleCache argsType pType opName setRight =
     
     match pType.IsResource with    
     | false -> Expr.tuple(Expr.ident("n"), cons)
-    | true  -> Expr.tuple(Expr.ident("name"), cons, Expr.ident("cros"))
+    | true  -> Expr.tuple(Expr.ident("name"), cons, Expr.ident("cros"), Expr.ident("croI"))
 
 let createOperationsFor' argsType pType =
     let setRights, argType =
@@ -321,6 +328,7 @@ let croOperation operationName description argumentName (setAssignmentExpression
     let expression =
         Expr.tuple(Expr.ident("name"),
                    Expr.ident("args"),
-                   updateCrosExpression setAssignmentExpression)
+                   updateCrosExpression setAssignmentExpression,
+                   Expr.ident("croI"))
     
     createMember'' doc operationName patterns attributes expression

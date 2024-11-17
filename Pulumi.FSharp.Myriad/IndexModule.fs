@@ -97,23 +97,24 @@ let createModules provider ((indexTypes, qualifiedTypes) : PulumiModule list * P
     let letCombineCrosImplementation = 
         let fromRcd =
             SynPat.CreateLongIdent(LongIdentWithDots.CreateString("_combineCros"),[
-                Pat.paren(Pat.tuple(Pat.paren(Pat.tuple("rName", "rArgs", "rCros")),
-                                    Pat.paren(Pat.tuple("lName", "lArgs", "lCros"))))
+                Pat.paren(Pat.tuple(Pat.paren(Pat.tuple("rName", "rArgs", "rCros", "rCroI")),
+                                    Pat.paren(Pat.tuple("lName", "lArgs", "lCros", "lCroI"))))
             ])
 
-        let matchExpr =
+        let matchExpr argName =
             Expr.paren(
-                Expr.match'(Expr.tuple(Expr.ident("lName"), Expr.ident("rName")), [
+                Expr.match'(Expr.tuple(Expr.ident("l" + argName), Expr.ident("r" + argName)), [
                     Match.clause(Pat.tuple(Pat.null', Pat.null'), Expr.null')
-                    Match.clause(Pat.tuple(Pat.null', Pat.ident("name")), Expr.ident("name"))
-                    Match.clause(Pat.tuple(Pat.ident("name"), Pat.null'), Expr.ident("name"))
-                    Match.clause(Pat.wild, Expr.failwith("Duplicate name"))
+                    Match.clause(Pat.tuple(Pat.null', Pat.ident(argName.ToLower())), Expr.ident(argName.ToLower()))
+                    Match.clause(Pat.tuple(Pat.ident(argName.ToLower()), Pat.null'), Expr.ident(argName.ToLower()))
+                    Match.clause(Pat.wild, Expr.failwith("Duplicate " + argName))
                 ]))
 
         let combineExpr =
-            Expr.tuple(matchExpr,
+            Expr.tuple(matchExpr "Name",
                        Expr.paren(Expr.app("List.concat", (Expr.list [ "lArgs"; "rArgs" ]))),
-                       Expr.paren(Expr.app("List.concat", (Expr.list [ "lCros"; "rCros" ]))))
+                       Expr.paren(Expr.app("List.concat", (Expr.list [ "lCros"; "rCros" ]))),
+                       matchExpr "CroI")
             
         let expr =
             combineExpr
