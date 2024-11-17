@@ -1003,7 +1003,7 @@ NUGET
     Pulumi.FSharp (3.67.1)
       FSharp.Core (>= 4.7.2)
       Pulumi (>= 3.67.1)
-    Pulumi.FSharp.Core (3.1.4)
+    Pulumi.FSharp.Core (3.1.5)
       FSharp.Core (>= 6.0.6)
       Pulumi.FSharp (>= 3.43.1)
     Pulumi.Gcp (8.9.2)
