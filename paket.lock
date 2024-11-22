@@ -1006,7 +1006,7 @@ NUGET
     Pulumi.FSharp.Core (3.1.5)
       FSharp.Core (>= 6.0.6)
       Pulumi.FSharp (>= 3.43.1)
-    Pulumi.Gcp (8.9.2)
+    Pulumi.Gcp (8.9.3)
       Pulumi (>= 3.67.1)
     Pulumi.Kubernetes (4.18.3)
       Glob (>= 1.1.5)
