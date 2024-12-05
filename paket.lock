@@ -941,7 +941,7 @@ NUGET
       System.Reflection.Metadata (>= 5.0)
     FSharp.Core (9.0.100)
     Glob (1.1.9)
-    Google.Protobuf (3.29)
+    Google.Protobuf (3.29.1)
     Grpc.AspNetCore.Server (2.67)
       Grpc.Net.Common (>= 2.67)
     Grpc.AspNetCore.Server.Reflection (2.67)
