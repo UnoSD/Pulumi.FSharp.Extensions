@@ -12,6 +12,7 @@
     <Compile Include="OutputBuilder.fs" />
     <Compile Include="Config.fs" />
     <Compile Include="Assets.fs" />
+    <Compile Include="CustomResourceOptions.fs" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
