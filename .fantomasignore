@@ -1,0 +1,5 @@
+# Ignore AssemblyInfo files
+AssemblyInfo.fs
+
+# TODO: clean up this code and remove this
+src/Pulumi.FSharp.Myriad/Modules.fs

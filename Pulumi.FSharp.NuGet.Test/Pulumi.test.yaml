@@ -1,9 +1,0 @@
-encryptionsalt: v1:vC2DnswDsdc=:v1:Yw7Gg1eV2V5gajI4:Z6OMGFCtX8eTeBcpHr+2AZ/qnCE5kg==
-config:
-  aws:region: eu-west-1
-  azure-native:location: West Europe
-  PFETest:vmUser: UnoSD
-  # export PULUMI_CONFIG_PASSPHRASE=''
-  # pulumi config set --secret vmPass 'PulumiFsharp99!!'
-  PFETest:vmPass:
-    secure: v1:HzkVBijUXi9/c6ZT:QwyDkZ2bZufCkjVh41aBj3Gla4vDIktmZAYbmcZZVNs=

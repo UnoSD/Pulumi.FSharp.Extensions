@@ -351,17 +351,6 @@ MigrationBackup/
 
 .idea/
 
-
-# Paket tool store
-.paket/.store
-.paket/paket
-
-# fsdocs generated
-tmp/
-temp/
-.fsdocs
-docs/
-
-providers/Pulumi.FSharp.*/*.json
-providers/Pulumi.FSharp.*/Generated.fs
-.DS_Store
+/digitalocean.*.json
+/Generated.fs
+/Generated.*.fs

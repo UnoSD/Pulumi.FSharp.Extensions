@@ -1,0 +1,5 @@
+Myriad.Sdk
+
+group Providers
+  Pulumi.Aws
+  Pulumi.FSharp

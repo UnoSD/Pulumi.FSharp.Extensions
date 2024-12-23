@@ -1,0 +1,6 @@
+Myriad.Sdk
+
+group Providers
+  Pulumi.Azure
+  Pulumi.FSharp
+  Pulumi.FSharp.Core

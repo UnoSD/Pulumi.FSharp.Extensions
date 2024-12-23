@@ -1,3 +1,0 @@
-name: PFETest
-runtime: dotnet
-description: Pulumi.FSharp.Extensions test project

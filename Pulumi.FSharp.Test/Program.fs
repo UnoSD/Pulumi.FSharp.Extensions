@@ -1,1 +1,0 @@
-../Pulumi.FSharp.NuGet.Test/Program.fs

@@ -1,0 +1,24 @@
+name: .NET Build and Test
+
+on:
+  pull_request: {}
+env:
+  CONFIGURATION: Debug
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup necessary dotnet SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.x
+      - name: Build providers
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FAKE_DETAILED_ERRORS: true
+          ENABLE_COVERAGE: false
+        run: |
+          ./build.sh BuildProviders

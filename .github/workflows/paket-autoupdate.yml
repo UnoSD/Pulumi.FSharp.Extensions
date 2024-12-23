@@ -1,0 +1,33 @@
+name: Paket Update
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 */4 * * *"
+      
+jobs:
+  paket-update:
+    permissions:
+      packages: read
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup necessary dotnet SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.x
+      # https://github.com/orgs/community/discussions/26560#discussioncomment-3531273
+      - name: Configure Git
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+      - name: Paket Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FAKE_DETAILED_ERRORS: true
+        run: |
+          ./build.sh PaketUpdate

@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "inputs": [
+        {
+            "id": "provider",
+            "description": "Pulumi provider name",
+            "type": "pickString",
+            "options": [
+                "Auth0",
+                "Aws",
+                "Azure",
+                "AzureAD",
+                "AzureNative",
+                "AzureNativeV2",
+                "Command",
+                "Docker",
+                "DigitalOcean",
+                "Gcp",
+                "Kubernetes",
+                "Random",
+                "Tls"]
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Debug Myriad code generation",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${userHome}/.nuget/packages/myriad.sdk/0.8.1/tools/net6.0/any/Myriad.dll",
+            "args": ["--inputfile", "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/Myriad.fs", "--outputfile", "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/Generated.fs", "--plugin", "${workspaceFolder}/src/Pulumi.FSharp.Myriad/bin/Debug/net6.0/Pulumi.FSharp.Myriad.dll"],
+            "cwd": "${workspaceFolder}/providers/Pulumi.FSharp.${input:provider}/",
+            "stopAtEntry": true,
+            "justMyCode": true,
+            "console": "internalConsole"
+        },
+
+    ]
+}
