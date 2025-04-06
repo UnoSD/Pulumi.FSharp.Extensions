@@ -37,8 +37,8 @@
     <Import Project="../Pulumi.FSharp.Myriad\build\Pulumi.FSharp.Myriad.InTest.props" />
     
     <ItemGroup>
-        <PackageReference Include="Pulumi.Tls" Version="4.6.1" />
-        <PackageReference Include="Pulumi.FSharp" Version="3.43.1" />
+        <PackageReference Include="Pulumi.Tls" Version="5.1.1" />
+        <PackageReference Include="Pulumi.FSharp" Version="3.77.0" />
         <PackageReference Include="FSharp.Core" />
         <PackageReference Include="Myriad.Sdk" Version="0.8.1" PrivateAssets="All" />
         <!-- This is required only to force build of the plugin -->
