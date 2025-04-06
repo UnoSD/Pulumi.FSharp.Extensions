@@ -1,0 +1,18 @@
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: Bash@3
+  displayName: 'Upgrade packages'
+  inputs:
+    targetType: 'inline'
+    script: |
+      ls -l
+      echo Test
