@@ -1,9 +1,6 @@
 schedules:
 - cron: '0 0 * * *'
   displayName: Daily midnight build
-  branches:
-    include:
-    - master
 
 pool:
   vmImage: ubuntu-latest
@@ -14,5 +11,11 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      ls -l
-      echo Test
+      for i in $(find . -type d -name 'Pulumi.FSharp.*' | grep -v 'Myriad\|Test\|Common')
+      do
+        PACKAGE=$(awk -F/ '{{split($2,a,"FSharp."); print a[1]a[2]}}' <<< $i)
+        dotnet add $i package Pulumi.FSharp > /dev/null
+        dotnet add $i package $PACKAGE > /dev/null
+      done
+      git add .
+      git commit -m "Upgrade NuGet packages"
