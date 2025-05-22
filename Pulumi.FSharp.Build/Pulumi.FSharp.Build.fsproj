@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <FSharpCoreImplicitPackageVersion>8.0.*</FSharpCoreImplicitPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Fake.BuildServer.TeamFoundation" Version="6.1.3" />
+    <PackageReference Include="Fake.Core.CommandLineParsing" Version="6.1.3" />
+    <PackageReference Include="Fake.Core.Target" Version="6.1.3" />
+    <PackageReference Include="Fake.Core.Xml" Version="6.1.3" />
+    <PackageReference Include="Fake.DotNet.Cli" Version="6.1.3" />
+    <PackageReference Include="Fake.IO.FileSystem" Version="6.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

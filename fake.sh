@@ -3,5 +3,4 @@
 set -eu
 set -o pipefail
 
-dotnet tool restore
-dotnet fake "$@"
+dotnet run -v:m --project ./Pulumi.FSharp.Build/Pulumi.FSharp.Build.fsproj -- -t "$@"

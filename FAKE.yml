@@ -44,6 +44,6 @@ steps:
   env:
     FAKE_DETAILED_ERRORS: true
   inputs:
-    command: custom
-    custom: fake
-    arguments: run
+    command: run
+    projects: ./Pulumi.FSharp.Build/Pulumi.FSharp.Build.fsproj
+    arguments: -v:m

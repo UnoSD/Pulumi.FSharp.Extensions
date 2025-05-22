@@ -1,2 +1,1 @@
-dotnet tool restore
-dotnet fake %*
+dotnet run --project ./Pulumi.FSharp.Build/Pulumi.FSharp.Build.fsproj -- -t %*

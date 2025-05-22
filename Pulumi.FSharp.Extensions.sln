@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-#
+# 
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Myriad", "Pulumi.FSharp.Myriad\Pulumi.FSharp.Myriad.fsproj", "{EDDFE9E5-9B82-4ECF-AB23-86F3347D77EC}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Azure", "Pulumi.FSharp.Azure\Pulumi.FSharp.Azure.fsproj", "{0CDB4B8E-343B-45A5-A1C6-951470C965F9}"
@@ -43,6 +43,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNativeV2", "Pulumi.FSharp.AzureNativeV2\Pulumi.FSharp.AzureNativeV2.fsproj", "{C93C3853-4894-4CB6-9F1E-3CD544E10870}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.AzureNative.Common", "Pulumi.FSharp.AzureNative.Common\Pulumi.FSharp.AzureNative.Common.fsproj", "{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pulumi.FSharp.Build", "Pulumi.FSharp.Build\Pulumi.FSharp.Build.fsproj", "{44A7E45F-B8EE-49F7-81E8-BA5635B19FCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,5 +116,9 @@ Global
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A01D65E8-98E4-41A2-BA49-67CC4CB9126A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A7E45F-B8EE-49F7-81E8-BA5635B19FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A7E45F-B8EE-49F7-81E8-BA5635B19FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A7E45F-B8EE-49F7-81E8-BA5635B19FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A7E45F-B8EE-49F7-81E8-BA5635B19FCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
