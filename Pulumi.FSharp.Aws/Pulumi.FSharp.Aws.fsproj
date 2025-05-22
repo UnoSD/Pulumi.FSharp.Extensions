@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Description>F# computational expressions to reduce boilerplate in Pulumi code</Description>
         <Copyright>Copyright 2020</Copyright>
         <PackageProjectUrl>https://github.com/UnoSD/Pulumi.FSharp.Extensions</PackageProjectUrl>
