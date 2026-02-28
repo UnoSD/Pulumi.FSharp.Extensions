@@ -18,6 +18,7 @@ module Region =
                   .Replace("south"       , "s"  )
                   .Replace("east"        , "e"  )
                   .Replace("west"        , "w"  )
+                  .Replace("italy"       , "i"  )
     
     let private configuredRegion = Config("azure-native").Get("location")
 
