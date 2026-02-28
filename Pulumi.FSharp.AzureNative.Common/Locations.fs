@@ -225,3 +225,5 @@ let locationsMap =
     |> Map.add "brazilsoutheast" "brazilsoutheast"
     |> Map.add "Brazil Southeast" "brazilsoutheast"
     |> Map.add "(South America) Brazil Southeast" "brazilsoutheast"
+    |> Map.add "Italy North" "italynorth"
+    |> Map.add "italynorth" "italynorth"
